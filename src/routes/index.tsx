@@ -2,13 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import {
   ArrowDown,
   ArrowRight,
-  Asterisk,
   Check,
   ChevronRight,
   ExternalLink,
   Menu,
   Send,
-  Sparkles,
   X,
 } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
@@ -55,7 +53,13 @@ export const Route = createFileRoute("/")({
 });
 
 const navItems = ["About", "Projects", "Services", "Process", "Contact"];
-const roles = ["creative developer", "digital storyteller", "interaction designer"];
+const roles = ["CREATIVE FULL-STACK DEVELOPER", "3D WEB EXPERIENCE DESIGNER", "MOTION UI CREATOR"];
+
+const socialLinks = {
+  instagram: "https://instagram.com/samar._.x7",
+  github: "https://github.com/",
+  linkedin: "https://linkedin.com/",
+};
 
 const projects = [
   {
@@ -66,8 +70,7 @@ const projects = [
     year: "2026",
     summary:
       "A calm, high-velocity workspace that turns scattered research into clear, actionable intelligence.",
-    tags: ["Product design", "React", "AI systems"],
-    result: "42% faster time-to-insight",
+    tags: ["Next.js", "TypeScript", "WebGL"],
     palette: "project-orbit",
     detail:
       "Orbit AI reframes a complex research workflow as an approachable visual system. I led the experience from product language and interaction models through a performant front-end system.",
@@ -81,8 +84,7 @@ const projects = [
     year: "2025",
     summary:
       "A playful spatial portfolio where visitors navigate ideas through motion, light, and responsive sound.",
-    tags: ["Creative direction", "WebGL", "Spatial design"],
-    result: "Awwwards Honorable Mention",
+    tags: ["Three.js", "React Three Fiber", "GSAP"],
     palette: "project-beyond",
     detail:
       "Beyond Limits is an experimental web space built around discovery. I developed the creative concept, spatial interaction language, and adaptive system that keeps the experience fluid across devices.",
@@ -98,10 +100,10 @@ const services = [
 ];
 
 const process = [
-  ["Listen", "We uncover the real ambition, audience, and tension behind the brief."],
-  ["Frame", "We define the idea, experience architecture, and measures of success."],
-  ["Make", "Design and code evolve together through quick, tangible prototypes."],
-  ["Refine", "We tune motion, performance, accessibility, and every final detail."],
+  ["Discover", "Understanding ideas and goals"],
+  ["Design", "Planning interfaces and experiences"],
+  ["Build", "Writing clean, scalable code"],
+  ["Refine", "Polish, optimize and perfect"],
 ];
 
 type Project = (typeof projects)[number];
@@ -113,7 +115,6 @@ function Portfolio() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [projectType, setProjectType] = useState("");
-  const [budget, setBudget] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success">("idle");
   const processRef = useRef<HTMLElement>(null);
@@ -179,7 +180,6 @@ function Portfolio() {
       setSubmitState("success");
       event.currentTarget?.reset();
       setProjectType("");
-      setBudget("");
     }, 850);
   };
 
@@ -217,10 +217,12 @@ function Portfolio() {
         <div className="crosshair crosshair-one" aria-hidden="true" />
         <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
           <div className="hero-copy self-center pb-4 lg:pb-14">
-            <p className="eyebrow mb-5"><span>✦</span> INDEPENDENT CREATIVE STUDIO · 2026</p>
-            <h1 className="hero-title">SAMAR<br /><em>DEV</em><span>.</span></h1>
-            <div className="role-line mt-5"><span>I shape</span><strong key={roleIndex}>{roles[roleIndex]}</strong></div>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-muted-foreground sm:text-lg">Building expressive digital experiences where clear thinking, playful motion, and thoughtful code converge.</p>
+            <p className="eyebrow mb-5"><span>◆</span> SAMAR DEV · CREATIVE DEVELOPER</p>
+            <h1 className="hero-title hero-statement">I’m born to build <em>immersive web experiences.</em></h1>
+            <p className="signature-line">Code with a point of view.</p>
+            <div className="role-line mt-5"><strong key={roleIndex}>{roles[roleIndex]}</strong></div>
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">I bridge clean engineering and bold visual design to create digital experiences that people remember.</p>
+            <div className="hero-stats mt-8"><div><b>1+ Year</b><span>Hands-on development</span></div><div><b>Global-ready</b><span>Built for connected audiences</span></div><div><b>Selected work</b><span>Projects with a point of view</span></div></div>
           </div>
           <div className="avatar-stage relative flex min-h-[390px] items-end justify-center sm:min-h-[520px] lg:min-h-[650px]">
             <span className="avatar-label avatar-label-left">BASED IN<br /><b>THE INTERNET</b></span>
@@ -232,18 +234,15 @@ function Portfolio() {
         </div>
       </section>
 
-      <div className="ticker" aria-label="Creative development services"><div>{Array.from({ length: 6 }).map((_, i) => <span key={i}>CREATIVE DEVELOPMENT <Asterisk /> DIGITAL EXPERIENCES <Asterisk /> MOTION & 3D <Asterisk /></span>)}</div></div>
+      <div className="ticker" aria-label="Creative development services"><div>{Array.from({ length: 4 }).map((_, i) => <span key={i}>CREATIVE CODE <b>◆</b> FULL-STACK DEVELOPER <b>•</b> WEB DESIGNER <b>◆</b> 3D WEB EXPERIENCES <b>•</b> ANIMATION SPECIALIST <b>◆</b> MOTION UI <b>•</b></span>)}</div></div>
 
       <section id="about" className="section-shell grid-section">
         <SectionIndex number="01" label="About" />
         <div className="about-copy">
-          <p className="display-copy">I turn ambitious ideas into <em>digital experiences</em> people remember.</p>
+          <p className="display-copy">I turn ideas into <em>high-performance digital experiences.</em></p>
           <div className="mt-12 grid gap-8 sm:grid-cols-2">
-            <p className="body-copy">I’m Samar, a creative developer with an eye for systems, stories, and the small moments that make interfaces feel alive.</p>
-            <p className="body-copy">My practice moves fluidly between strategy, design, code, and motion—keeping the original idea intact from sketch to screen.</p>
-          </div>
-          <div className="stats-row mt-16">
-            <div><b>06+</b><span>Years shaping pixels</span></div><div><b>28</b><span>Products launched</span></div><div><b>11</b><span>Countries reached</span></div>
+            <p className="body-copy">I create modern websites, interactive interfaces and immersive 3D web experiences with a focus on performance, usability and visual precision.</p>
+            <p className="body-copy location-copy"><span>+</span> Punjab, Pakistan · Working globally</p>
           </div>
         </div>
       </section>
@@ -265,7 +264,7 @@ function Portfolio() {
                   <p>{project.summary}</p>
                   <div className="mt-auto flex flex-wrap items-end justify-between gap-5 pt-8">
                     <div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
-                    <span className="view-project">VIEW CASE <ArrowRight /></span>
+                     <span className="view-project">VIEW CONCEPT <ArrowRight /></span>
                   </div>
                 </div>
               </button>
@@ -278,7 +277,7 @@ function Portfolio() {
         <SectionIndex number="03" label="Services" aside="Available independently or as one connected engagement." />
         <div className="services-list mt-12 sm:mt-16">
           {services.map(([number, title, description]) => (
-            <div className="service-row" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p><Sparkles /></div>
+            <div className="service-row" key={number}><span>{number}</span><h3>{title}</h3><p>{description}</p><b className="service-diamond" aria-hidden="true">◆</b></div>
           ))}
         </div>
       </section>
@@ -287,9 +286,7 @@ function Portfolio() {
         <div className="section-shell py-0">
           <SectionIndex number="04" label="Experience" />
           <div className="experience-list mt-12">
-            <div><time>2024 — NOW</time><h3>Independent Creative Developer</h3><p>Partnering with studios and product teams worldwide.</p></div>
-            <div><time>2021 — 2024</time><h3>Senior Interactive Developer · Northstar</h3><p>Led creative technology across award-winning launches.</p></div>
-            <div><time>2019 — 2021</time><h3>Front-end Developer · Form/Function</h3><p>Built digital identities for culture-forward brands.</p></div>
+            <div><time>NOW</time><h3>1+ Year Hands-on Web Development</h3><p>Building, learning and shipping modern web experiences.</p></div>
           </div>
         </div>
       </section>
@@ -310,29 +307,26 @@ function Portfolio() {
 
       <section className="availability-band">
         <div className="mx-auto grid max-w-[1500px] gap-8 px-5 py-12 sm:grid-cols-[1fr_auto] sm:items-center sm:px-10 lg:px-16">
-          <div><p className="eyebrow text-primary-foreground"><i className="status-dot light" /> AVAILABLE FOR SELECT COLLABORATIONS</p><h2>Have a bold idea?</h2></div>
-          <Button size="lg" variant="secondary" onClick={() => scrollTo("Contact")} className="h-14 px-7">START A CONVERSATION <ArrowRight /></Button>
+          <div><p className="eyebrow text-primary-foreground"><i className="status-dot available" /> AVAILABLE FOR SELECTED PROJECTS</p><h2>Open to meaningful collaborations</h2></div>
+          <Button size="lg" variant="secondary" onClick={() => scrollTo("Contact")} className="h-14 px-7">START A CONVERSATION ↗</Button>
         </div>
       </section>
 
       <section id="contact" className="section-shell contact-grid">
         <div>
           <SectionIndex number="06" label="Contact" />
-          <h2 className="contact-title mt-12">Let’s make<br /><em>something</em><br />remarkable.</h2>
-          <a className="email-link mt-10" href="mailto:hello@samardev.design">hello@samardev.design <ArrowRight /></a>
+          <h2 className="contact-title mt-12">Have an idea<br /><em>worth building?</em></h2>
+          <div className="contact-links mt-10"><a className="email-link" href="mailto:hello@samerdev.com">hello@samerdev.com <ArrowRight /></a><a href={socialLinks.instagram} target="_blank" rel="noreferrer">Instagram · @samar._.x7</a></div>
         </div>
         <form className="contact-form" onSubmit={submitContact} noValidate>
           {submitState === "success" ? (
             <div className="success-state"><span><Check /></span><h3>Message received.</h3><p>Thanks for the thoughtful note. I’ll get back to you within two working days.</p><Button type="button" variant="outline" onClick={() => setSubmitState("idle")}>Send another note</Button></div>
           ) : (
             <>
-              <Field label="Your name" error={errors.name}><Input name="name" placeholder="Ada Lovelace" maxLength={100} aria-invalid={Boolean(errors.name)} /></Field>
-              <Field label="Email address" error={errors.email}><Input name="email" type="email" placeholder="ada@studio.com" maxLength={255} aria-invalid={Boolean(errors.email)} /></Field>
-              <div className="grid gap-6 sm:grid-cols-2">
-                <Field label="Project type" error={errors.project}><Select value={projectType} onValueChange={setProjectType}><SelectTrigger aria-invalid={Boolean(errors.project)}><SelectValue placeholder="Choose one" /></SelectTrigger><SelectContent><SelectItem value="website">Creative website</SelectItem><SelectItem value="product">Digital product</SelectItem><SelectItem value="3d">3D experience</SelectItem><SelectItem value="other">Something else</SelectItem></SelectContent></Select></Field>
-                <Field label="Budget range"><Select value={budget} onValueChange={setBudget}><SelectTrigger><SelectValue placeholder="Select range" /></SelectTrigger><SelectContent><SelectItem value="10-20">$10k — $20k</SelectItem><SelectItem value="20-40">$20k — $40k</SelectItem><SelectItem value="40+">$40k+</SelectItem></SelectContent></Select></Field>
-              </div>
-              <Field label="The brief" error={errors.message}><Textarea name="message" placeholder="Tell me about the idea, the challenge, and where you’d like to take it..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} /></Field>
+              <Field label="Name" error={errors.name}><Input name="name" placeholder="Your name" maxLength={100} aria-invalid={Boolean(errors.name)} /></Field>
+              <Field label="Email" error={errors.email}><Input name="email" type="email" placeholder="you@example.com" maxLength={255} aria-invalid={Boolean(errors.email)} /></Field>
+              <Field label="Project Type" error={errors.project}><Select value={projectType} onValueChange={setProjectType}><SelectTrigger aria-invalid={Boolean(errors.project)}><SelectValue placeholder="Choose one" /></SelectTrigger><SelectContent><SelectItem value="website">Creative website</SelectItem><SelectItem value="product">Digital product</SelectItem><SelectItem value="3d">3D experience</SelectItem><SelectItem value="other">Something else</SelectItem></SelectContent></Select></Field>
+              <Field label="Message" error={errors.message}><Textarea name="message" placeholder="Tell me about the idea..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} /></Field>
               <Button type="submit" size="lg" className="h-14 w-full sm:w-auto" disabled={submitState === "loading"}>{submitState === "loading" ? "SENDING…" : "SEND INQUIRY"}<Send /></Button>
               <p className="text-xs text-muted-foreground">This demo validates your note locally and does not send or store personal data.</p>
             </>
@@ -340,10 +334,10 @@ function Portfolio() {
         </form>
       </section>
 
-      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><b>SD<span>.</span></b><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn <ExternalLink /></a><a href="https://github.com" target="_blank" rel="noreferrer">GitHub <ExternalLink /></a></div></div></footer>
+      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><b>SD<span>.</span></b><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin} target="_blank" rel="noreferrer">LinkedIn <ExternalLink /></a><a href={socialLinks.github} target="_blank" rel="noreferrer">GitHub <ExternalLink /></a></div></div></footer>
 
       <Dialog open={Boolean(selectedProject)} onOpenChange={(open) => !open && setSelectedProject(null)}>
-        {selectedProject && <DialogContent className="project-dialog max-h-[88vh] max-w-3xl overflow-y-auto"><DialogHeader><p className="eyebrow text-primary">CASE STUDY · {selectedProject.number}</p><DialogTitle>{selectedProject.title}</DialogTitle><DialogDescription>{selectedProject.type} · {selectedProject.year}</DialogDescription></DialogHeader><div className={cn("dialog-art", selectedProject.palette)}>{selectedProject.id === "orbit" ? <OrbitArtwork /> : <BeyondArtwork />}</div><p className="dialog-lede">{selectedProject.detail}</p><div className="dialog-meta"><div><span>SELECTED OUTCOME</span><b>{selectedProject.result}</b></div><div><span>CONTRIBUTIONS</span>{selectedProject.contributions.map((item) => <p key={item}>{item}</p>)}</div></div></DialogContent>}
+        {selectedProject && <DialogContent className="project-dialog max-h-[88vh] max-w-3xl overflow-y-auto"><DialogHeader><p className="eyebrow text-primary">PROJECT CONCEPT · {selectedProject.number}</p><DialogTitle>{selectedProject.title}</DialogTitle><DialogDescription>{selectedProject.type} · {selectedProject.year}</DialogDescription></DialogHeader><div className={cn("dialog-art", selectedProject.palette)}>{selectedProject.id === "orbit" ? <OrbitArtwork /> : <BeyondArtwork />}</div><p className="dialog-lede">{selectedProject.detail}</p><div className="dialog-meta single"><div><span>CONTRIBUTIONS</span>{selectedProject.contributions.map((item) => <p key={item}>{item}</p>)}</div></div></DialogContent>}
       </Dialog>
     </main>
   );
@@ -362,5 +356,5 @@ function OrbitArtwork() {
 }
 
 function BeyondArtwork() {
-  return <div className="beyond-art" aria-hidden="true"><div className="portal"><span /><span /><span /><i>∞</i></div><b className="star s1">✦</b><b className="star s2">✦</b><b className="star s3">✦</b></div>;
+  return <div className="beyond-art" aria-hidden="true"><div className="portal"><span /><span /><span /><i>∞</i></div><b className="tech-mark s1">◆</b><b className="tech-mark s2">+</b><b className="tech-mark s3">&lt;&gt;</b></div>;
 }
