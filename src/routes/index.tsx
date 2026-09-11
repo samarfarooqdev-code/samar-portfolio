@@ -131,7 +131,10 @@ function Portfolio() {
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible) setActiveSection(visible.target.id[0].toUpperCase() + visible.target.id.slice(1));
+        if (visible) {
+          const sectionId = visible.target.id;
+          setActiveSection(sectionId.charAt(0).toUpperCase() + sectionId.slice(1));
+        }
       },
       { rootMargin: "-35% 0px -55%" },
     );
@@ -350,7 +353,7 @@ function SectionIndex({ number, label, aside }: { number: string; label: string;
   return <div className="section-index"><p><span>{number}</span> {label}</p>{aside && <p>{aside}</p>}<span className="section-line" /></div>;
 }
 
-function Field({ label, error, children }: { label: string; error?: string; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error: string | undefined; children: React.ReactNode }) {
   return <label className="field"><span>{label}</span>{children}{error && <small>{error}</small>}</label>;
 }
 
