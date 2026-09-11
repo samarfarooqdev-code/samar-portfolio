@@ -232,7 +232,7 @@ function SignalField({ count = 90 }: { count?: number }) {
   useFrame((state, dt) => {
     if (!ref.current) return;
     ref.current.rotation.y += dt * 0.012;
-    const pos = ref.current.geometry.attributes.position as THREE.BufferAttribute;
+    const pos = ref.current.geometry.attributes['position'] as THREE.BufferAttribute;
     const t = state.clock.elapsedTime;
     for (let i = 0; i < pos.count; i += 7) {
       pos.setY(i, pos.getY(i) + Math.sin(t + i) * dt * 0.12);
