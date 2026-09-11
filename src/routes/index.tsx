@@ -38,12 +38,12 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Samar Dev is a creative developer crafting expressive digital products, AI experiences, and immersive 3D websites.",
+          "Samar Dev builds high-performance websites, interactive interfaces, and immersive 3D web experiences.",
       },
       { property: "og:title", content: "Samar Dev — Creative Developer" },
       {
         property: "og:description",
-        content: "Expressive digital products, AI experiences, and immersive 3D websites.",
+        content: "High-performance websites, interactive interfaces, and immersive 3D web experiences by Samar Dev.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
