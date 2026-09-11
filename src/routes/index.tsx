@@ -353,7 +353,7 @@ function SectionIndex({ number, label, aside }: { number: string; label: string;
   return <div className="section-index"><p><span>{number}</span> {label}</p>{aside && <p>{aside}</p>}<span className="section-line" /></div>;
 }
 
-function Field({ label, error, children }: { label: string; error: string | undefined; children: React.ReactNode }) {
+function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
   return <label className="field"><span>{label}</span>{children}{error && <small>{error}</small>}</label>;
 }
 
