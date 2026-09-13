@@ -54,7 +54,7 @@ function WireRoom({ depth = 1 }: { depth?: number }) {
     g.setAttribute("position", new THREE.Float32BufferAttribute(pts, 3));
     return g;
   }, []);
-  const mat = useMemo(() => lineMaterial(INK, 0.16), []);
+  const mat = useMemo(() => lineMaterial(INK, 0.11), []);
   const ref = useRef<THREE.Group>(null);
   useFrame((_, dt) => {
     if (!ref.current) return;
@@ -143,8 +143,8 @@ function OrbitNodes({ count = 7 }: { count?: number }) {
     () =>
       Array.from({ length: count }, (_, i) => {
         const a = (i / count) * Math.PI * 2;
-        const r = 3.1 + (i % 3) * 0.85;
-        return new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r * 0.42, -4 - (i % 4) * 1.4);
+        const r = 2.0 + (i % 3) * 0.5;
+        return new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r * 0.42, -6 - (i % 4) * 1.4);
       }),
     [count],
   );
@@ -203,12 +203,12 @@ function Diamonds() {
           <lineBasicMaterial color={d.c} transparent opacity={0.6} />
         </lineSegments>
       ))}
-      <mesh rotation={[Math.PI / 2.2, 0, 0.3]} position={[0.4, 0.2, -6]}>
-        <torusGeometry args={[4.6, 0.006, 6, 96]} />
+      <mesh rotation={[Math.PI / 2.2, 0, 0.3]} position={[0.4, 0.2, -9]}>
+        <torusGeometry args={[2.9, 0.005, 6, 96]} />
         <meshBasicMaterial color={INK} transparent opacity={0.28} />
       </mesh>
-      <mesh rotation={[Math.PI / 1.9, 0.3, -0.2]} position={[0.4, 0.2, -7]}>
-        <torusGeometry args={[6.2, 0.006, 6, 96]} />
+      <mesh rotation={[Math.PI / 1.9, 0.3, -0.2]} position={[0.4, 0.2, -10]}>
+        <torusGeometry args={[3.8, 0.005, 6, 96]} />
         <meshBasicMaterial color={VERMILION} transparent opacity={0.32} />
       </mesh>
     </group>
@@ -312,8 +312,10 @@ function SceneContents({ reduced, mobile }: { reduced: boolean; mobile: boolean 
       <Glow />
       <WireRoom />
       <DepthPlanes pointer={pointer} />
-      <OrbitNodes count={mobile ? 5 : 7} />
-      <Diamonds />
+      <group position={[1.9, 0.4, 0]}>
+        <OrbitNodes count={mobile ? 5 : 7} />
+        <Diamonds />
+      </group>
       <SignalField count={mobile ? 40 : 90} />
       {!mobile && !reduced && <CursorLight pointer={pointer} />}
     </>

@@ -182,21 +182,22 @@ function Portfolio() {
   }, [scrollY]);
 
   useEffect(() => {
-    const sections = navItems
-      .map((item) => document.getElementById(item.toLowerCase()))
-      .filter((section): section is HTMLElement => Boolean(section));
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting);
-        if (visible) {
-          const sectionId = visible.target.id;
-          setActiveSection(sectionId.charAt(0).toUpperCase() + sectionId.slice(1));
-        }
-      },
-      { rootMargin: "-35% 0px -55%" },
-    );
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
+    const update = () => {
+      const line = window.innerHeight * 0.35;
+      let current = navItems[0]!;
+      navItems.forEach((item) => {
+        const el = document.getElementById(item.toLowerCase());
+        if (el && el.getBoundingClientRect().top <= line) current = item;
+      });
+      setActiveSection(current);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   useEffect(() => {
