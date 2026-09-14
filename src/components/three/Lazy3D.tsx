@@ -2,7 +2,6 @@ import { ClientOnly } from "@tanstack/react-router";
 import { lazy, Suspense, useEffect, useState } from "react";
 
 const HeroScene = lazy(() => import("./HeroScene"));
-const BeyondScene = lazy(() => import("./BeyondScene"));
 
 function hasWebGL() {
   try {
@@ -49,34 +48,6 @@ function HeroCanvasInner() {
   return (
     <div className="hero-canvas-wrap" aria-hidden="true">
       <Suspense fallback={<GridFallback />}>{ok ? <HeroScene /> : null}</Suspense>
-    </div>
-  );
-}
-
-export function BeyondCanvas({
-  pointerRef,
-}: {
-  pointerRef: React.RefObject<{ x: number; y: number }>;
-}) {
-  return (
-    <ClientOnly fallback={null}>
-      <BeyondCanvasInner pointerRef={pointerRef} />
-    </ClientOnly>
-  );
-}
-
-function BeyondCanvasInner({
-  pointerRef,
-}: {
-  pointerRef: React.RefObject<{ x: number; y: number }>;
-}) {
-  const ok = useWebGL();
-  if (!ok) return null;
-  return (
-    <div className="beyond-canvas-wrap" aria-hidden="true">
-      <Suspense fallback={null}>
-        <BeyondScene pointerRef={pointerRef} />
-      </Suspense>
     </div>
   );
 }
