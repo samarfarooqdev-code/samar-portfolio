@@ -564,7 +564,6 @@ function ProjectStage({
 }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const pointerRef = useRef({ x: 0, y: 0 });
   const [hover, setHover] = useState(false);
   const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start end", "end start"] });
   const scale = useTransform(scrollYProgress, [0, 0.45, 0.85, 1], reduced ? [1, 1, 1, 1] : [0.86, 1, 1, 0.94]);
@@ -577,7 +576,6 @@ function ProjectStage({
     const r = el.getBoundingClientRect();
     const x = (e.clientX - r.left) / r.width - 0.5;
     const y = (e.clientY - r.top) / r.height - 0.5;
-    pointerRef.current = { x: x * 2, y: y * 2 };
     el.style.setProperty("--tilt-x", `${-y * 6}deg`);
     el.style.setProperty("--tilt-y", `${x * 8}deg`);
     el.style.setProperty("--sweep-x", `${(x + 0.5) * 100}%`);
@@ -587,7 +585,6 @@ function ProjectStage({
 
   const reset = () => {
     setHover(false);
-    pointerRef.current = { x: 0, y: 0 };
     const el = stageRef.current;
     if (el) {
       el.style.setProperty("--tilt-x", "0deg");
