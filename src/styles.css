@@ -49,6 +49,11 @@
   --ring: oklch(0.64 0.205 35);
   --peach: oklch(0.85 0.11 47);
   --ink-soft: oklch(0.31 0.01 55);
+  --restaurant-espresso: oklch(0.18 0.028 48);
+  --restaurant-charcoal: oklch(0.23 0.012 58);
+  --restaurant-amber: oklch(0.79 0.14 76);
+  --restaurant-cream: oklch(0.94 0.025 82);
+  --restaurant-red: oklch(0.58 0.18 35);
 }
 
 * { border-color: var(--border); }
@@ -143,13 +148,6 @@ button { cursor: pointer; }
 .tag { border: 1px solid currentColor; border-radius: 999px; padding: .35rem .65rem; font-size: .6rem; font-weight: 800; }
 .view-project { display: flex; align-items: center; gap: .5rem; color: var(--primary); font-size: .7rem; font-weight: 800; }.view-project svg { width: 1rem; transition: transform .25s; }.project-button:hover .view-project svg { transform: translateX(5px); }
 .project-grid-lines { position: absolute; inset: 0; opacity: .16; background-image: linear-gradient(var(--foreground) 1px, transparent 1px), linear-gradient(90deg, var(--foreground) 1px, transparent 1px); background-size: 44px 44px; }
-.project-orbit { background: oklch(0.91 0.05 55); }.project-beyond { background: oklch(0.25 0.055 253); color: oklch(0.96 0.01 80); }
-.orbit-art, .beyond-art { position: absolute; inset: 0; display: grid; place-items: center; }
-.orb-core { display: grid; width: 150px; aspect-ratio: 1; place-items: center; border-radius: 50%; background: var(--primary); color: var(--primary-foreground); box-shadow: inset -18px -18px 30px color-mix(in oklab, var(--foreground) 25%, transparent), 0 28px 40px color-mix(in oklab, var(--foreground) 25%, transparent); }
-.orb-core span { font-family: var(--font-display); font-size: 4rem; }
-.orbit-art .ring { position: absolute; border: 1px solid currentColor; border-radius: 50%; transform: rotateX(66deg) rotateZ(-12deg); }.ring.r1 { width: 280px; height: 280px; }.ring.r2 { width: 390px; height: 390px; opacity: .55; }.ring.r3 { width: 460px; height: 460px; opacity: .25; }
-.orbit-art .node { position: absolute; width: 15px; aspect-ratio: 1; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 7px color-mix(in oklab, var(--primary) 15%, transparent); }.node.n1 { transform: translate(130px,-70px); }.node.n2 { transform: translate(-185px,60px); }.node.n3 { transform: translate(85px,145px); }
-.portal { position: relative; display: grid; width: 230px; aspect-ratio: 1.25; place-items: center; transform: perspective(500px) rotateX(12deg) rotateY(-10deg); }.portal span { position: absolute; inset: 0; border: 1px solid var(--primary); }.portal span:nth-child(2) { inset: 18px; transform: translate(20px,-10px); }.portal span:nth-child(3) { inset: 36px; transform: translate(40px,-20px); }.portal i { z-index: 2; color: var(--primary); font-family: var(--font-display); font-size: 6rem; font-style: normal; text-shadow: 0 0 25px var(--primary); }.tech-mark { position: absolute; color: var(--primary); font-family: var(--font-sans); }.s1 { left: 16%; top: 20%; }.s2 { right: 12%; bottom: 24%; font-size: 2rem; }.s3 { right: 20%; top: 14%; font-size: .7rem; }
 
 .services-list { border-top: 1px solid var(--border); }
 .service-row { display: grid; grid-template-columns: 60px minmax(0,.85fr) minmax(260px,.75fr) auto; align-items: center; gap: 2rem; border-bottom: 1px solid var(--border); padding: 2rem 1rem; transition: background .25s, color .25s; }
@@ -252,15 +250,37 @@ footer { border-top: 1px solid var(--border); }footer b { font-family: var(--fon
 .stage-panel .view-project { pointer-events: auto; }
 .project-stage .project-grid-lines { z-index: 1; }
 
-.living-orbit { position: absolute; inset: 0; display: grid; place-items: center; }
-.lo-spin { position: absolute; inset: 0; display: grid; place-items: center; will-change: transform; }
-.lo-ring { position: absolute; border: 1px solid color-mix(in oklab,var(--foreground) 45%, transparent); border-radius: 50%; }
-.lo-ring.r1 { width: 260px; height: 260px; transform: rotateX(66deg); }
-.lo-ring.r2 { width: 360px; height: 360px; transform: rotateX(66deg) rotateZ(25deg); opacity: .6; }
-.lo-ring.r3 { width: 450px; height: 450px; transform: rotateX(70deg) rotateZ(-18deg); opacity: .3; }
-.lo-node { position: absolute; width: 14px; height: 14px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 7px color-mix(in oklab,var(--primary) 15%, transparent); }
-.lo-node.n1 { transform: translate(130px,-55px); } .lo-node.n2 { transform: translate(-170px,45px); } .lo-node.n3 { transform: translate(70px,130px); } .lo-node.n4 { width: 8px; height: 8px; background: var(--foreground); transform: translate(-90px,-120px); }
-.living-orbit .orb-core { position: relative; z-index: 2; animation: float 6s ease-in-out infinite; }
+.project-restaurant { background: var(--restaurant-espresso); color: var(--restaurant-cream); }
+.project-restaurant .project-grid-lines { opacity: .08; background-image: linear-gradient(var(--restaurant-cream) 1px, transparent 1px), linear-gradient(90deg, var(--restaurant-cream) 1px, transparent 1px); }
+.project-restaurant .stage-panel { border-color: color-mix(in oklab, var(--restaurant-cream) 18%, transparent); background: var(--restaurant-charcoal); color: var(--restaurant-cream); }
+.project-restaurant .stage-heading, .project-restaurant .view-project { color: var(--restaurant-amber); }
+.project-restaurant .stage-summary { color: color-mix(in oklab, var(--restaurant-cream) 70%, transparent); }
+.project-restaurant .tag { border-color: color-mix(in oklab, var(--restaurant-amber) 65%, transparent); color: var(--restaurant-cream); }
+.project-restaurant .stage-diamond { color: var(--restaurant-amber); }
+.project-restaurant .stage-sweep { background: radial-gradient(600px circle at var(--sweep-x,50%) 40%, color-mix(in oklab, var(--restaurant-amber) 38%, transparent), transparent 62%); }
+.project-restaurant .stage-float-label { background: var(--restaurant-amber); color: var(--restaurant-espresso); }
+.restaurant-art { position: absolute; inset: 0; overflow: hidden; color: var(--restaurant-cream); background: radial-gradient(circle at 72% 28%, color-mix(in oklab, var(--restaurant-amber) 24%, transparent), transparent 28%), var(--restaurant-espresso); }
+.restaurant-ambient { position: absolute; inset: 8% 5%; border: 1px solid color-mix(in oklab, var(--restaurant-amber) 28%, transparent); transform: translate3d(calc(var(--parallax-x, 0px) * -.35), calc(var(--parallax-y, 0px) * -.35), 0) rotate(-2deg); transition: transform .4s ease-out; }
+.restaurant-browser { position: absolute; left: 8%; top: 12%; width: 78%; height: 68%; overflow: hidden; border: 1px solid color-mix(in oklab, var(--restaurant-cream) 24%, transparent); background: var(--restaurant-charcoal); box-shadow: 0 28px 55px color-mix(in oklab, var(--restaurant-espresso) 72%, transparent); transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0) rotate(-1.5deg); transition: transform .35s ease-out; }
+.restaurant-browser-bar { display: flex; height: 28px; align-items: center; gap: 5px; border-bottom: 1px solid color-mix(in oklab, var(--restaurant-cream) 16%, transparent); padding-inline: 10px; background: color-mix(in oklab, var(--restaurant-charcoal) 84%, var(--restaurant-espresso)); }
+.restaurant-browser-bar i { width: 5px; height: 5px; border-radius: 50%; background: var(--restaurant-amber); }
+.restaurant-browser-bar i:nth-child(2) { background: var(--restaurant-red); }.restaurant-browser-bar i:nth-child(3) { opacity: .45; }
+.restaurant-browser-bar span { margin-left: 7px; color: color-mix(in oklab, var(--restaurant-cream) 48%, transparent); font-size: .42rem; }
+.restaurant-home { position: relative; height: calc(100% - 28px); overflow: hidden; padding: 16px 18px; background: linear-gradient(105deg, var(--restaurant-espresso) 0 54%, color-mix(in oklab, var(--restaurant-charcoal) 90%, var(--restaurant-amber)) 54%); }
+.restaurant-home header { position: relative; z-index: 2; display: flex; align-items: baseline; gap: 8px; color: var(--restaurant-amber); font-size: .52rem; }
+.restaurant-home header b { font-family: var(--font-display); font-size: .95rem; }.restaurant-home header span { color: var(--restaurant-cream); font-size: .42rem; }.restaurant-home header nav { margin-left: auto; color: color-mix(in oklab, var(--restaurant-cream) 68%, transparent); font-size: .37rem; }
+.restaurant-hero-copy { position: relative; z-index: 2; display: grid; width: 58%; gap: 10px; margin-top: 11%; }
+.restaurant-hero-copy small { color: var(--restaurant-amber); font-size: .42rem; font-weight: 800; }
+.restaurant-hero-copy strong { font-family: var(--font-display); font-size: clamp(1.35rem, 3vw, 3rem); font-weight: 400; line-height: .9; }.restaurant-hero-copy em { color: var(--restaurant-amber); font-weight: 400; }
+.restaurant-hero-copy > span { width: fit-content; border: 1px solid var(--restaurant-amber); padding: 7px 10px; color: var(--restaurant-amber); font-size: .42rem; font-weight: 800; }
+.restaurant-plate { position: absolute; right: -5%; top: 22%; width: 45%; aspect-ratio: 1; border: 8px solid color-mix(in oklab, var(--restaurant-cream) 12%, transparent); border-radius: 50%; background: radial-gradient(circle at center, var(--restaurant-amber) 0 11%, var(--restaurant-red) 12% 17%, var(--restaurant-amber) 18% 54%, color-mix(in oklab, var(--restaurant-red) 75%, var(--restaurant-espresso)) 55% 67%, var(--restaurant-charcoal) 68%); box-shadow: 0 0 42px color-mix(in oklab, var(--restaurant-amber) 22%, transparent); }
+.restaurant-plate .topping { position: absolute; width: 11%; aspect-ratio: 1; border-radius: 50%; background: var(--restaurant-red); }.topping.t1 { left: 30%; top: 22%; }.topping.t2 { right: 25%; top: 38%; }.topping.t3 { left: 25%; bottom: 25%; }.topping.t4 { right: 36%; bottom: 18%; }
+.pizza-cut { position: absolute; left: 50%; top: 10%; width: 1px; height: 80%; background: color-mix(in oklab, var(--restaurant-espresso) 45%, transparent); }.pizza-cut.two { transform: rotate(90deg); }
+.restaurant-menu-card, .restaurant-cart-card, .restaurant-hours-card { position: absolute; z-index: 3; display: grid; gap: 4px; border: 1px solid color-mix(in oklab, var(--restaurant-amber) 38%, transparent); background: color-mix(in oklab, var(--restaurant-charcoal) 94%, transparent); padding: 12px 14px; box-shadow: 0 16px 30px color-mix(in oklab, var(--restaurant-espresso) 55%, transparent); transition: transform .4s ease-out; }
+.restaurant-menu-card { left: 3%; bottom: 4%; transform: translate3d(calc(var(--parallax-x, 0px) * 1.4), calc(var(--parallax-y, 0px) * 1.2), 0) rotate(2deg); }.restaurant-cart-card { right: 3%; top: 14%; transform: translate3d(calc(var(--parallax-x, 0px) * -.8), calc(var(--parallax-y, 0px) * -.8), 0) rotate(2deg); }.restaurant-hours-card { right: 9%; bottom: 5%; transform: translate3d(calc(var(--parallax-x, 0px) * -.55), calc(var(--parallax-y, 0px) * .7), 0) rotate(-2deg); }
+.restaurant-art small { color: var(--restaurant-amber); font-size: .4rem; font-weight: 800; }.restaurant-art b { font-family: var(--font-display); font-size: .85rem; }.restaurant-art span { font-size: .42rem; color: color-mix(in oklab, var(--restaurant-cream) 64%, transparent); }.restaurant-art strong { color: var(--restaurant-amber); font-size: .42rem; }
+.restaurant-mark { position: absolute; z-index: 2; color: var(--restaurant-amber) !important; font-size: .8rem !important; }.restaurant-mark.mark-one { left: 3%; top: 7%; }.restaurant-mark.mark-two { right: 3%; bottom: 6%; font-size: 1.2rem !important; }
+.dialog-art .restaurant-art { position: absolute; }.restaurant-art.is-compact .restaurant-browser { left: 10%; top: 10%; width: 76%; height: 73%; }.restaurant-art.is-compact .restaurant-menu-card { bottom: 3%; }.restaurant-art.is-compact .restaurant-hours-card { display: none; }
 
 /* Services micro-motion */
 .service-row { position: relative; }
@@ -317,6 +337,6 @@ footer { border-top: 1px solid var(--border); }footer b { font-family: var(--fon
 @media (max-width: 400px) { .sticker-field { grid-template-columns: 1fr; } .mega-email { font-size: 1.5rem; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .sticker, .lo-spin, .ao-ring, .btt-orbit, .living-orbit .orb-core, .grid-fallback .gf-floor, .grid-fallback .gf-node { animation: none !important; }
+  .sticker, .ao-ring, .btt-orbit, .grid-fallback .gf-floor, .grid-fallback .gf-node { animation: none !important; }
   .project-sticky { position: relative; }
 }
