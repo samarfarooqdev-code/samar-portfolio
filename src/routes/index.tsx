@@ -31,7 +31,7 @@ import {
 } from "react";
 
 import avatarAsset from "@/assets/samar-avatar.png.asset.json";
-import { BeyondCanvas, HeroCanvas } from "@/components/three/Lazy3D";
+import { HeroCanvas } from "@/components/three/Lazy3D";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -85,38 +85,37 @@ const socialLinks = {
 
 const EMAIL = "hello@samerdev.com";
 
-const projects = [
+type Project = {
+  id: string;
+  number: string;
+  title: string;
+  category: string;
+  description: string;
+  tags: string[];
+  liveUrl?: string;
+  image?: string;
+  features: string[];
+};
+
+const projects: Project[] = [
   {
-    id: "orbit",
+    id: "adnan-pizza-burger-point",
     number: "01",
-    title: "Orbit AI",
-    heading: "Orbit AI — Interactive SaaS Experience",
-    type: "AI PRODUCT EXPERIENCE",
-    year: "2026",
-    cta: "EXPLORE PROJECT",
-    summary:
-      "A calm, high-velocity workspace that turns scattered research into clear, actionable intelligence.",
-    tags: ["Next.js", "TypeScript", "WebGL"],
-    palette: "project-orbit",
-    detail:
-      "Orbit AI reframes a complex research workflow as an approachable visual system. I led the experience from product language and interaction models through a performant front-end system.",
-    contributions: ["Experience strategy", "Interaction design", "Front-end architecture", "Motion direction"],
-  },
-  {
-    id: "beyond",
-    number: "02",
-    title: "Beyond Limits",
-    heading: "Beyond Limits — Immersive Web Experience",
-    type: "IMMERSIVE 3D EXPERIENCE",
-    year: "2025",
-    cta: "ENTER EXPERIENCE",
-    summary:
-      "A playful spatial portfolio where visitors navigate ideas through motion, light, and responsive sound.",
-    tags: ["Three.js", "React Three Fiber", "GSAP"],
-    palette: "project-beyond",
-    detail:
-      "Beyond Limits is an experimental web space built around discovery. I developed the creative concept, spatial interaction language, and adaptive system that keeps the experience fluid across devices.",
-    contributions: ["Creative development", "3D art direction", "Shader prototyping", "Performance design"],
+    title: "Adnan Pizza Burger Point — Restaurant Ordering Experience",
+    category: "RESTAURANT WEBSITE · ORDERING EXPERIENCE",
+    description:
+      "A warm, conversion-focused restaurant website for a Chiniot fast-food point, combining menu discovery, ordering, table reservations, gallery storytelling and direct contact actions in a rich late-night dining visual system.",
+    tags: ["Restaurant Website", "Ordering Flow", "Responsive UI", "Menu Experience"],
+    liveUrl: "https://www.adnanpizzaburgerpoint.online/",
+    features: [
+      "Menu browsing for pizzas, burgers, shawarma, rolls, drinks and sides.",
+      "Online ordering and cart experience.",
+      "Table reservations.",
+      "Gallery section.",
+      "Direct contact and WhatsApp actions.",
+      "Location and opening-hours information.",
+      "Dine-in, takeaway and delivery messaging.",
+    ],
   },
 ];
 
@@ -134,7 +133,6 @@ const process = [
   ["Refine", "Polish, optimize and perfect"],
 ];
 
-type Project = (typeof projects)[number];
 type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
 
 function useIsTouch() {
@@ -420,17 +418,21 @@ function Portfolio() {
         {selectedProject && (
           <DialogContent className="project-dialog max-h-[88vh] max-w-3xl overflow-y-auto">
             <DialogHeader>
-              <p className="eyebrow text-primary">PROJECT CONCEPT · {selectedProject.number}</p>
+              <p className="eyebrow text-primary">FEATURED PROJECT · {selectedProject.number}</p>
               <DialogTitle>{selectedProject.title}</DialogTitle>
-              <DialogDescription>{selectedProject.heading} · {selectedProject.year}</DialogDescription>
+              <DialogDescription>{selectedProject.category} · CHINIOT, PUNJAB, PAKISTAN</DialogDescription>
             </DialogHeader>
-            <div className={cn("dialog-art", selectedProject.palette)}>
-              {selectedProject.id === "orbit" ? <OrbitArtwork /> : <BeyondArtwork />}
+            <div className="dialog-art project-restaurant">
+              <RestaurantArtwork compact />
             </div>
-            <p className="dialog-lede">{selectedProject.detail}</p>
+            <p className="dialog-lede">{selectedProject.description}</p>
             <div className="flex flex-wrap gap-2">{selectedProject.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
-            <div className="dialog-meta single"><div><span>CONTRIBUTIONS</span>{selectedProject.contributions.map((item) => <p key={item}>{item}</p>)}</div></div>
-            <p className="text-xs text-muted-foreground">Concept case study — no public live URL for this project yet.</p>
+            <div className="dialog-meta single"><div><span>VERIFIED FEATURES</span>{selectedProject.features.map((item) => <p key={item}>◆ {item}</p>)}</div></div>
+            {selectedProject.liveUrl && (
+              <Button asChild size="lg" className="press cta-arrow w-fit">
+                <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer">Visit live site <span>↗</span></a>
+              </Button>
+            )}
           </DialogContent>
         )}
       </Dialog>
@@ -536,7 +538,7 @@ function ProjectsSection({
   return (
     <section id="projects" className="projects-section border-t border-border">
       <div className="section-shell pb-0">
-        <SectionIndex number="02" label="Selected projects" aside="Two art-directed experiences — scroll through each stage." />
+        <SectionIndex number="02" label="Selected projects" aside="Verified work, presented in depth." />
       </div>
       <div className="project-track">
         {projects.map((project, index) => (
@@ -579,6 +581,8 @@ function ProjectStage({
     el.style.setProperty("--tilt-x", `${-y * 6}deg`);
     el.style.setProperty("--tilt-y", `${x * 8}deg`);
     el.style.setProperty("--sweep-x", `${(x + 0.5) * 100}%`);
+    el.style.setProperty("--parallax-x", `${x * 14}px`);
+    el.style.setProperty("--parallax-y", `${y * 10}px`);
   };
 
   const reset = () => {
@@ -588,6 +592,8 @@ function ProjectStage({
     if (el) {
       el.style.setProperty("--tilt-x", "0deg");
       el.style.setProperty("--tilt-y", "0deg");
+      el.style.setProperty("--parallax-x", "0px");
+      el.style.setProperty("--parallax-y", "0px");
     }
   };
 
@@ -596,7 +602,7 @@ function ProjectStage({
       <motion.article className="project-sticky" style={{ scale, opacity }}>
         <div
           ref={stageRef}
-          className={cn("project-stage", project.palette, hover && "is-hover")}
+          className={cn("project-stage project-restaurant", hover && "is-hover")}
           onPointerMove={onPointerMove}
           onPointerEnter={() => setHover(true)}
           onPointerLeave={reset}
@@ -604,21 +610,14 @@ function ProjectStage({
           <button
             className="project-hit"
             onClick={() => onOpen(project)}
-            aria-label={`${project.cta} — ${project.heading}`}
+            aria-label={`Open details for ${project.title}`}
           >
-            <span className="sr-only">{project.cta}</span>
+            <span className="sr-only">Open project details</span>
           </button>
           <div className="project-grid-lines" aria-hidden="true" />
           <span className="stage-sweep" aria-hidden="true" />
           <div className="stage-art">
-            {project.id === "orbit" ? (
-              <LivingOrbit pointerRef={pointerRef} />
-            ) : (
-              <>
-                <BeyondCanvas pointerRef={pointerRef} />
-                <BeyondArtwork />
-              </>
-            )}
+            <RestaurantArtwork />
           </div>
           <span className="stage-number">{project.number}</span>
           <span className="stage-crosshair one" aria-hidden="true" />
@@ -630,46 +629,26 @@ function ProjectStage({
             transition={{ duration: 0.22 }}
             aria-hidden="true"
           >
-            {project.cta} ↗
+            VISIT LIVE SITE ↗
           </motion.span>
           <div className="stage-panel">
             <div className="flex items-center justify-between gap-4">
-              <span className="eyebrow">{project.type}</span>
-              <span className="text-xs font-bold">{project.year}</span>
+              <span className="eyebrow">{project.category}</span>
+              <span className="text-xs font-bold">CHINIOT, PUNJAB</span>
             </div>
             <h3>{project.title}</h3>
-            <p className="stage-heading">{project.heading}</p>
-            <p className="stage-summary">{project.summary}</p>
+            <p className="stage-heading">DINING · TAKEAWAY · DELIVERY</p>
+            <p className="stage-summary">{project.description}</p>
             <div className="mt-auto flex flex-wrap items-end justify-between gap-5 pt-6">
               <div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
               <button className="view-project press" onClick={() => onOpen(project)}>
-                {project.cta} <ArrowRight />
+                VIEW PROJECT <ArrowRight />
               </button>
             </div>
           </div>
           {index === 0 && <span className="stage-diamond" aria-hidden="true">◆</span>}
         </div>
       </motion.article>
-    </div>
-  );
-}
-
-/* Living orbit visualization (CSS/RAF driven, pointer parallax) */
-function LivingOrbit({ pointerRef }: { pointerRef: React.RefObject<{ x: number; y: number }> }) {
-  const ref = useRef<HTMLDivElement>(null);
-  useAnimationFrame((t) => {
-    const el = ref.current;
-    if (!el) return;
-    const p = pointerRef.current ?? { x: 0, y: 0 };
-    el.style.transform = `translate3d(${p.x * 18}px, ${p.y * 14}px, 0) rotate(${(t / 90) % 360}deg)`;
-  });
-  return (
-    <div className="living-orbit" aria-hidden="true">
-      <div className="lo-spin" ref={ref}>
-        <i className="lo-ring r1" /><i className="lo-ring r2" /><i className="lo-ring r3" />
-        <b className="lo-node n1" /><b className="lo-node n2" /><b className="lo-node n3" /><b className="lo-node n4" />
-      </div>
-      <div className="orb-core"><span>O</span></div>
     </div>
   );
 }
@@ -838,10 +817,22 @@ function Field({ label, error, children }: { label: string; error?: string | und
   return <label className="field"><span>{label}</span>{children}{error && <small>{error}</small>}</label>;
 }
 
-function OrbitArtwork() {
-  return <div className="orbit-art" aria-hidden="true"><div className="orb-core"><span>O</span></div><i className="ring r1" /><i className="ring r2" /><i className="ring r3" /><b className="node n1" /><b className="node n2" /><b className="node n3" /></div>;
-}
-
-function BeyondArtwork() {
-  return <div className="beyond-art" aria-hidden="true"><b className="tech-mark s1">◆</b><b className="tech-mark s2">+</b><b className="tech-mark s3">&lt;&gt;</b></div>;
+function RestaurantArtwork({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={cn("restaurant-art", compact && "is-compact")} aria-hidden="true">
+      <div className="restaurant-ambient" />
+      <div className="restaurant-browser">
+        <div className="restaurant-browser-bar"><i /><i /><i /><span>adnanpizzaburgerpoint.online</span></div>
+        <div className="restaurant-home">
+          <header><b>ADNAN</b><span>Pizza · Burger · Point</span><nav>MENU&nbsp;&nbsp; RESERVE&nbsp;&nbsp; CONTACT</nav></header>
+          <div className="restaurant-hero-copy"><small>CHINIOT · OPEN FOR ORDERS</small><strong>Late-night cravings,<br /><em>served warm.</em></strong><span>ORDER NOW ↗</span></div>
+          <div className="restaurant-plate"><i className="pizza-slice" /><i className="pizza-cut one" /><i className="pizza-cut two" /><b className="topping t1" /><b className="topping t2" /><b className="topping t3" /><b className="topping t4" /></div>
+        </div>
+      </div>
+      <div className="restaurant-menu-card"><small>POPULAR MENU</small><b>Chicken Pizza</b><span>Freshly prepared · multiple sizes</span><strong>ADD TO CART&nbsp; +</strong></div>
+      <div className="restaurant-cart-card"><small>YOUR ORDER</small><b>2 items</b><span>Takeaway · Chiniot</span><strong>VIEW CART ↗</strong></div>
+      <div className="restaurant-hours-card"><small>VISIT US</small><b>Chiniot, Punjab</b><span>Opening hours & location</span></div>
+      <span className="restaurant-mark mark-one">◆</span><span className="restaurant-mark mark-two">+</span>
+    </div>
+  );
 }
