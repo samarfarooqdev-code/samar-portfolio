@@ -235,7 +235,6 @@ footer { border-top: 1px solid var(--border); }footer b { font-family: var(--fon
 .project-stage.is-hover .stage-sweep { opacity: 1; }
 .stage-art { position: relative; overflow: hidden; min-height: 420px; }
 .stage-art canvas { position: absolute; inset: 0; }
-.beyond-canvas-wrap { position: absolute; inset: 0; }
 .stage-number { position: absolute; left: 1.2rem; top: 1.2rem; z-index: 6; font-size: .72rem; font-weight: 800; }
 .stage-crosshair { position: absolute; z-index: 4; width: 18px; height: 18px; opacity: .6; }
 .stage-crosshair::before, .stage-crosshair::after { content: ""; position: absolute; background: currentColor; }
