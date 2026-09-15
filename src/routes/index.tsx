@@ -92,9 +92,10 @@ type Project = {
   category: string;
   description: string;
   tags: string[];
-  liveUrl?: string;
+  liveUrl: string;
   image?: string;
   features: string[];
+  visualTheme: "restaurant" | "fashion" | "heritage";
 };
 
 const projects: Project[] = [
@@ -116,6 +117,44 @@ const projects: Project[] = [
       "Location and opening-hours information.",
       "Dine-in, takeaway and delivery messaging.",
     ],
+    visualTheme: "restaurant",
+  },
+  {
+    id: "dastan-e-nysa",
+    number: "02",
+    title: "Dastan-e-Nysa — Story-led Fashion Commerce",
+    category: "ECOMMERCE · STORY-LED FASHION EXPERIENCE",
+    description:
+      "A story-led ecommerce experience for women’s ethnic wear, combining editorial brand storytelling, collection discovery, product detail, size guidance, cart flow and WhatsApp-assisted shopping.",
+    tags: ["Ecommerce", "Fashion Brand", "Product UX", "WhatsApp Commerce"],
+    liveUrl: "https://dastan-story-shop.vercel.app/",
+    features: [
+      "Shop, Collections, About, Size Guide and Contact navigation.",
+      "Product and collection browsing.",
+      "Product detail pages with PKR pricing.",
+      "Cart flow, account and search controls.",
+      "WhatsApp support and Instagram touchpoint.",
+      "Shipping, returns, payment, privacy and terms pages.",
+    ],
+    visualTheme: "fashion",
+  },
+  {
+    id: "farooq-saharan",
+    number: "03",
+    title: "Farooq Saharan — Heritage Craft Portfolio",
+    category: "EDITORIAL PORTFOLIO · HERITAGE CRAFT",
+    description:
+      "An editorial heritage portfolio for a third-generation Chiniot master wood artisan, translating decades of royal interiors, architectural woodwork and handcrafted legacy into a refined digital narrative.",
+    tags: ["Editorial Portfolio", "Heritage Craft", "Storytelling", "Responsive Web"],
+    liveUrl: "https://farooqsaharan.vercel.app/",
+    features: [
+      "Legacy, Craft, Assignments, Portfolio, Sketches, Recognition, Curriculum Vitae and Contact.",
+      "Decorative doors, windows and joinery.",
+      "Spiral and trajectory staircases.",
+      "Antique chandeliers and dome finishes.",
+      "Architectural woodwork and heritage craftsmanship.",
+    ],
+    visualTheme: "heritage",
   },
 ];
 
@@ -420,19 +459,17 @@ function Portfolio() {
             <DialogHeader>
               <p className="eyebrow text-primary">FEATURED PROJECT · {selectedProject.number}</p>
               <DialogTitle>{selectedProject.title}</DialogTitle>
-              <DialogDescription>{selectedProject.category} · CHINIOT, PUNJAB, PAKISTAN</DialogDescription>
+              <DialogDescription>{selectedProject.category}</DialogDescription>
             </DialogHeader>
-            <div className="dialog-art project-restaurant">
-              <RestaurantArtwork compact />
+            <div className={cn("dialog-art", `project-${selectedProject.visualTheme}`)}>
+              <ProjectArtwork project={selectedProject} compact />
             </div>
             <p className="dialog-lede">{selectedProject.description}</p>
             <div className="flex flex-wrap gap-2">{selectedProject.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
             <div className="dialog-meta single"><div><span>VERIFIED FEATURES</span>{selectedProject.features.map((item) => <p key={item}>◆ {item}</p>)}</div></div>
-            {selectedProject.liveUrl && (
-              <Button asChild size="lg" className="press cta-arrow w-fit">
-                <a href={selectedProject.liveUrl} target="_blank" rel="noopener noreferrer">Visit live site <span>↗</span></a>
-              </Button>
-            )}
+            <Button asChild size="lg" className="press cta-arrow w-fit">
+              <a href={selectedProject.liveUrl} target="_blank" rel="noreferrer">Visit live site <span>↗</span></a>
+            </Button>
           </DialogContent>
         )}
       </Dialog>
@@ -599,7 +636,7 @@ function ProjectStage({
       <motion.article className="project-sticky" style={{ scale, opacity }}>
         <div
           ref={stageRef}
-          className={cn("project-stage project-restaurant", hover && "is-hover")}
+          className={cn("project-stage", `project-${project.visualTheme}`, hover && "is-hover")}
           onPointerMove={onPointerMove}
           onPointerEnter={() => setHover(true)}
           onPointerLeave={reset}
@@ -614,7 +651,7 @@ function ProjectStage({
           <div className="project-grid-lines" aria-hidden="true" />
           <span className="stage-sweep" aria-hidden="true" />
           <div className="stage-art">
-            <RestaurantArtwork />
+            <ProjectArtwork project={project} />
           </div>
           <span className="stage-number">{project.number}</span>
           <span className="stage-crosshair one" aria-hidden="true" />
@@ -631,16 +668,16 @@ function ProjectStage({
           <div className="stage-panel">
             <div className="flex items-center justify-between gap-4">
               <span className="eyebrow">{project.category}</span>
-              <span className="text-xs font-bold">CHINIOT, PUNJAB</span>
+              <span className="preview-label">ORIGINAL PROJECT PREVIEW</span>
             </div>
             <h3>{project.title}</h3>
-            <p className="stage-heading">DINING · TAKEAWAY · DELIVERY</p>
             <p className="stage-summary">{project.description}</p>
             <div className="mt-auto flex flex-wrap items-end justify-between gap-5 pt-6">
               <div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
-              <button className="view-project press" onClick={() => onOpen(project)}>
-                VIEW PROJECT <ArrowRight />
-              </button>
+              <div className="project-actions">
+                <button className="view-project press" onClick={() => onOpen(project)}>PROJECT DETAILS <ArrowRight /></button>
+                <a className="live-project press" href={project.liveUrl} target="_blank" rel="noreferrer">VISIT LIVE SITE <ArrowUpRight /></a>
+              </div>
             </div>
           </div>
           {index === 0 && <span className="stage-diamond" aria-hidden="true">◆</span>}
@@ -814,10 +851,17 @@ function Field({ label, error, children }: { label: string; error?: string | und
   return <label className="field"><span>{label}</span>{children}{error && <small>{error}</small>}</label>;
 }
 
+function ProjectArtwork({ project, compact = false }: { project: Project; compact?: boolean }) {
+  if (project.visualTheme === "fashion") return <FashionArtwork compact={compact} />;
+  if (project.visualTheme === "heritage") return <HeritageArtwork compact={compact} />;
+  return <RestaurantArtwork compact={compact} />;
+}
+
 function RestaurantArtwork({ compact = false }: { compact?: boolean }) {
   return (
     <div className={cn("restaurant-art", compact && "is-compact")} aria-hidden="true">
       <div className="restaurant-ambient" />
+      <span className="art-preview-label">ORIGINAL ART-DIRECTED PREVIEW</span>
       <div className="restaurant-browser">
         <div className="restaurant-browser-bar"><i /><i /><i /><span>adnanpizzaburgerpoint.online</span></div>
         <div className="restaurant-home">
@@ -830,6 +874,43 @@ function RestaurantArtwork({ compact = false }: { compact?: boolean }) {
       <div className="restaurant-cart-card"><small>YOUR ORDER</small><b>2 items</b><span>Takeaway · Chiniot</span><strong>VIEW CART ↗</strong></div>
       <div className="restaurant-hours-card"><small>VISIT US</small><b>Chiniot, Punjab</b><span>Opening hours & location</span></div>
       <span className="restaurant-mark mark-one">◆</span><span className="restaurant-mark mark-two">+</span>
+    </div>
+  );
+}
+
+function FashionArtwork({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={cn("fashion-art", compact && "is-compact")} aria-label="Original art-directed preview of the Dastan-e-Nysa fashion commerce experience" role="img">
+      <span className="art-preview-label">ORIGINAL ART-DIRECTED PREVIEW</span>
+      <div className="fashion-fabric" />
+      <div className="fashion-browser">
+        <div className="fashion-browser-bar"><i /><i /><i /><span>dastan-story-shop.vercel.app</span></div>
+        <header><b>DASTAN-E-NYSA</b><nav>SHOP&nbsp;&nbsp; COLLECTIONS&nbsp;&nbsp; SIZE GUIDE</nav></header>
+        <div className="fashion-editorial"><small>STORIES WOVEN INTO EVERY DETAIL</small><strong>Ethnic wear,<br /><em>told beautifully.</em></strong><span>DISCOVER COLLECTIONS ↗</span></div>
+        <div className="fashion-silhouette"><i /><i /><i /></div>
+      </div>
+      <div className="fashion-product-card one"><small>COLLECTION</small><b>Chikankari Anarkali</b><span>VIEW PRODUCT ↗</span></div>
+      <div className="fashion-product-card two"><small>NEW STORY</small><b>Noor e Sehar Crimson Set</b><span>PKR · PRODUCT DETAIL</span></div>
+      <div className="fashion-guide-card"><small>SHOP WITH CONFIDENCE</small><b>Size Guide</b><span>WhatsApp assistance available</span></div>
+      <span className="fashion-mark">◇</span>
+    </div>
+  );
+}
+
+function HeritageArtwork({ compact = false }: { compact?: boolean }) {
+  return (
+    <div className={cn("heritage-art", compact && "is-compact")} aria-label="Original art-directed preview of the Farooq Saharan heritage craft portfolio" role="img">
+      <span className="art-preview-label">ORIGINAL ART-DIRECTED PREVIEW</span>
+      <div className="heritage-carving" aria-hidden="true"><i /><i /><i /></div>
+      <div className="heritage-browser">
+        <div className="heritage-browser-bar"><i /><i /><i /><span>farooqsaharan.vercel.app</span></div>
+        <header><b>FAROOQ SAHARAN</b><nav>LEGACY&nbsp;&nbsp; CRAFT&nbsp;&nbsp; PORTFOLIO</nav></header>
+        <div className="heritage-editorial"><small>THIRD-GENERATION MASTER WOOD ARTISAN · CHINIOT</small><strong>A legacy shaped<br /><em>by hand.</em></strong><span>EXPLORE THE CRAFT ↗</span></div>
+        <div className="heritage-door"><i /><i /><i /><b>◆</b></div>
+      </div>
+      <div className="heritage-detail-card"><small>AREAS OF MASTERY</small><b>Architectural Woodwork</b><span>Doors · Joinery · Staircases</span></div>
+      <div className="heritage-legacy-card"><small>PORTFOLIO INDEX</small><b>Legacy / Sketches</b><span>Craft · Assignments · Contact</span></div>
+      <span className="heritage-mark">+</span>
     </div>
   );
 }
