@@ -31,7 +31,7 @@ import {
 } from "react";
 
 import avatarAsset from "@/assets/samar-avatar.png.asset.json";
-import samarLogo from "@/assets/samar-dev-logo.png";
+import samarLogo from "@/assets/samar-dev-logo.png?inline";
 import { HeroCanvas } from "@/components/three/Lazy3D";
 import { Button } from "@/components/ui/button";
 import {

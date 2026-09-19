@@ -10,7 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import faviconAsset from "@/assets/samar-dev-favicon.png";
+import faviconAsset from "@/assets/samar-dev-favicon.png?inline";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
