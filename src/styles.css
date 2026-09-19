@@ -362,7 +362,7 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
 .contact-mega em { color: var(--primary); font-style: normal; }
 .contact-stage { display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
 .copy-label { font-size: .66rem; font-weight: 800; letter-spacing: .12em; color: var(--primary); }
-.mega-email { display: flex; align-items: center; gap: 1rem; margin-top: .8rem; font-family: var(--font-display); font-size: clamp(1.7rem, 4.6vw, 4.4rem); line-height: 1; word-break: break-word; text-align: left; border-bottom: 2px solid var(--foreground); padding-bottom: .4rem; }
+.mega-email { display: flex; align-items: center; gap: 1rem; margin-top: .8rem; max-width: 100%; font-family: var(--font-display); font-size: clamp(1.2rem, 3.2vw, 3.2rem); line-height: 1; white-space: nowrap; word-break: normal; letter-spacing: -.025em; text-align: left; border-bottom: 2px solid var(--foreground); padding-bottom: .4rem; }
 .mega-email:hover { color: var(--primary); border-color: var(--primary); }
 .copy-icon svg { width: 1.4rem; }
 .sticker-field { position: relative; min-height: 320px; }
@@ -397,7 +397,7 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
   .sticker-marker { display: none; }
   .contact-form-wrap { grid-template-columns: 1fr; gap: 2rem; }
 }
-@media (max-width: 400px) { .sticker-field { grid-template-columns: 1fr; } .mega-email { font-size: 1.5rem; } .preview-label { max-width: 8rem; } .fashion-product-card.two, .heritage-legacy-card { display: none; } }
+@media (max-width: 400px) { .sticker-field { grid-template-columns: 1fr; } .mega-email { font-size: 1.05rem; gap: .6rem; } .preview-label { max-width: 8rem; } .fashion-product-card.two, .heritage-legacy-card { display: none; } }
 
 @media (prefers-reduced-motion: reduce) {
   .sticker, .ao-ring, .btt-orbit, .grid-fallback .gf-floor, .grid-fallback .gf-node { animation: none !important; }
