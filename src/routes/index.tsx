@@ -69,6 +69,11 @@ export const Route = createFileRoute("/")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
+    links: [
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.png", type: "image/png" },
+      { rel: "apple-touch-icon", href: "/favicon-apple.png" },
+    ],
   }),
   component: Portfolio,
 });
@@ -434,7 +439,7 @@ function Portfolio() {
         onSubmit={submitContact}
       />
 
-      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><b>SD<span>.</span></b><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight /></a></div></div></footer>
+      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top"><img src="/samar-dev-logo.png" alt="Samar Dev" className="footer-logo" /></a><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight /></a></div></div></footer>
 
       <AnimatePresence>
         {scrolled && (
