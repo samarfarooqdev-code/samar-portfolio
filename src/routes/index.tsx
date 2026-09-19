@@ -84,12 +84,12 @@ const roles = ["CREATIVE FULL-STACK DEVELOPER", "3D WEB EXPERIENCE DESIGNER", "M
 
 const socialLinks = {
   instagram: { url: "https://instagram.com/samar._.x7", label: "Instagram", handle: "@samar._.x7", placeholder: false },
-  github: { url: "https://github.com/", label: "GitHub", handle: "Placeholder link", placeholder: true },
-  linkedin: { url: "https://linkedin.com/", label: "LinkedIn", handle: "Placeholder link", placeholder: true },
-  email: { url: "mailto:hello@samerdev.com", label: "Email", handle: "hello@samerdev.com", placeholder: false },
+  github: { url: "https://github.com/samarfarooqdev-code", label: "GitHub", handle: "samarfarooqdev-code", placeholder: false },
+  linkedin: { url: "https://www.linkedin.com/in/samar-dev-5a4652438/", label: "LinkedIn", handle: "samar-dev-5a4652438", placeholder: false },
+  email: { url: "mailto:samarfarooqdev@gmail.com", label: "Email", handle: "samarfarooqdev@gmail.com", placeholder: false },
 };
 
-const EMAIL = "hello@samerdev.com";
+const EMAIL = "samarfarooqdev@gmail.com";
 
 type Project = {
   id: string;
