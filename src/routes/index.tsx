@@ -31,6 +31,7 @@ import {
 } from "react";
 
 import avatarAsset from "@/assets/samar-avatar.png.asset.json";
+import samarLogo from "@/assets/samar-dev-logo.png";
 import { HeroCanvas } from "@/components/three/Lazy3D";
 import { Button } from "@/components/ui/button";
 import {
@@ -315,7 +316,7 @@ function Portfolio() {
       >
         <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
           <button className="brand-mark" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Samar Dev — Back to top">
-            <img src="/samar-dev-logo.png" alt="Samar Dev" className="brand-logo" />
+            <img src={samarLogo} alt="Samar Dev" className="brand-logo" />
           </button>
           <nav className="hidden items-center gap-1 sm:flex" aria-label="Main navigation">
             {navItems.map((item) => (
@@ -439,7 +440,7 @@ function Portfolio() {
         onSubmit={submitContact}
       />
 
-      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top"><img src="/samar-dev-logo.png" alt="Samar Dev" className="footer-logo" /></a><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight /></a></div></div></footer>
+      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top"><img src={samarLogo} alt="Samar Dev" className="footer-logo" /></a><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight /></a></div></div></footer>
 
       <AnimatePresence>
         {scrolled && (
