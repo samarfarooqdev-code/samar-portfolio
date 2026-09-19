@@ -309,8 +309,8 @@ function Portfolio() {
         {...enter(0.75)}
       >
         <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
-          <button className="brand-mark" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Back to top">
-            SD<span>.</span>
+          <button className="brand-mark" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Samar Dev — Back to top">
+            <img src="/samar-dev-logo.png" alt="Samar Dev" className="brand-logo" />
           </button>
           <nav className="hidden items-center gap-1 sm:flex" aria-label="Main navigation">
             {navItems.map((item) => (

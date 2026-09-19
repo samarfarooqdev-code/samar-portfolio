@@ -75,6 +75,7 @@ button { cursor: pointer; }
 
 .nav-pill, .nav-mobile { border: 1px solid color-mix(in oklab, var(--foreground) 18%, transparent); background: color-mix(in oklab, var(--background) 87%, transparent); backdrop-filter: blur(18px); box-shadow: 0 10px 35px color-mix(in oklab, var(--foreground) 9%, transparent); border-radius: 999px; }
 .brand-mark { padding: .2rem .55rem; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; }
+.brand-logo { display: block; width: 8.6rem; height: auto; }
 .brand-mark span, footer b span { color: var(--primary); }
 .nav-link { position: relative; padding: .55rem .8rem; font-size: .7rem; font-weight: 800; text-transform: uppercase; }
 .nav-link::after { content: ""; position: absolute; inset: auto 50% .15rem; height: 2px; width: 0; background: var(--primary); transition: .25s ease; }
