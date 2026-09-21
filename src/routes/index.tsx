@@ -8,7 +8,9 @@ import {
   ChevronRight,
   Copy,
   Menu,
+  Moon,
   Send,
+  Sun,
   X,
 } from "lucide-react";
 import {
@@ -212,6 +214,7 @@ const skillStages = [
 ];
 
 type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
+type Theme = "light" | "dark";
 
 function useIsTouch() {
   const [touch, setTouch] = useState(false);
@@ -234,9 +237,24 @@ function Portfolio() {
   const [submitState, setSubmitState] = useState<"idle" | "loading" | "success">("idle");
   const [scrolled, setScrolled] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [theme, setTheme] = useState<Theme>("light");
   const processRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const [processProgress, setProcessProgress] = useState(0);
+
+  useEffect(() => {
+    const saved = window.localStorage.getItem("samar-theme");
+    const nextTheme: Theme = saved === "dark" || saved === "light"
+      ? saved
+      : window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    setTheme(nextTheme);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    document.documentElement.style.colorScheme = theme;
+    window.localStorage.setItem("samar-theme", theme);
+  }, [theme]);
 
   const { scrollY } = useScroll();
   const { scrollYProgress: heroProgress } = useScroll({
@@ -388,6 +406,10 @@ function Portfolio() {
             {menuOpen ? <X /> : <Menu />}
           </Button>
           <span className="hidden items-center gap-2 text-[11px] font-bold uppercase sm:flex"><i className="status-dot" /> Available</span>
+          <button type="button" className="theme-toggle press" onClick={() => setTheme((value) => value === "light" ? "dark" : "light")} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`} aria-pressed={theme === "dark"}>
+            <span className="theme-toggle-track"><motion.span className="theme-toggle-thumb" layout transition={{ type: "spring", stiffness: 500, damping: 30 }}>{theme === "light" ? <Sun /> : <Moon />}</motion.span></span>
+            <span className="theme-toggle-label">{theme === "light" ? "Light" : "Dark"}</span>
+          </button>
         </div>
         <AnimatePresence>
           {menuOpen && (
@@ -485,7 +507,7 @@ function Portfolio() {
         onSubmit={submitContact}
       />
 
-      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top"><img src={samarLogo} alt="Samar Dev" className="footer-logo" /></a><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight className="arrow-icon" /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight className="arrow-icon" /></a></div></div></footer>
+      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top"><img src={samarLogo} alt="Samar Dev" className="footer-logo" loading="lazy" decoding="async" /></a><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight className="arrow-icon" /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight className="arrow-icon" /></a></div></div></footer>
 
       <AnimatePresence>
         {scrolled && (

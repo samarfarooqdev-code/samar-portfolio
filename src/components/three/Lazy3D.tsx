@@ -35,9 +35,16 @@ export function GridFallback() {
 }
 
 export function HeroCanvas() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setReady(true), 120);
+    return () => window.clearTimeout(timer);
+  }, []);
+
   return (
     <ClientOnly fallback={<GridFallback />}>
-      <HeroCanvasInner />
+      {ready ? <HeroCanvasInner /> : <GridFallback />}
     </ClientOnly>
   );
 }

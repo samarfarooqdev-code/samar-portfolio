@@ -584,3 +584,31 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
 .premium-experience { position: relative; overflow: hidden; background: var(--foreground); }.premium-experience .section-index > p:first-child, .premium-experience .section-index > p:nth-child(2) { color: var(--background); }.premium-experience .section-line { background: color-mix(in oklab, var(--background) 28%, transparent); }.experience-hero { display: grid; grid-template-columns: 1fr .55fr; gap: 4rem; align-items: end; }.experience-kicker { color: var(--primary); font-size: .62rem; font-weight: 800; letter-spacing: .14em; }.experience-hero h2 { margin-top: .8rem; font-family: var(--font-display); font-size: clamp(3.5rem, 6.5vw, 6.5rem); font-weight: 400; line-height: .86; }.experience-hero h2 em { color: var(--primary); font-style: normal; }.experience-hero > p { max-width: 25rem; color: color-mix(in oklab, var(--background) 65%, transparent); font-size: .9rem; line-height: 1.8; }.premium-experience-list { border-top-color: color-mix(in oklab, var(--background) 25%, transparent); }.premium-experience-list > div { position: relative; grid-template-columns: .3fr .8fr 1fr auto; align-items: start; min-height: 145px; }.premium-experience-list time { color: var(--primary); }.premium-experience-list h3 { color: var(--background); }.premium-experience-list p { max-width: 26rem; }.experience-badge { align-self: start; border: 1px solid color-mix(in oklab, var(--background) 30%, transparent); padding: .4rem .6rem; color: color-mix(in oklab, var(--background) 70%, transparent); font-size: .52rem; font-weight: 800; letter-spacing: .08em; }
 @media (max-width: 900px) { .services-section::before { right: 1rem; }.services-intro, .experience-hero { grid-template-columns: 1fr .75fr; gap: 2rem; }.premium-experience-list > div { grid-template-columns: .4fr 1fr; }.premium-experience-list p { grid-column: 2; }.experience-badge { grid-column: 2; width: fit-content; } }
 @media (max-width: 600px) { .about-metrics { grid-template-columns: 1fr; }.about-metrics > div { min-height: 86px; border-right: 0; border-bottom: 1px solid var(--border); grid-template-columns: 34px 1fr; }.about-metrics > div:last-child { border-bottom: 0; }.about-metrics small { grid-column: 2; }.services-section::before { display: none; }.services-intro, .experience-hero { grid-template-columns: 1fr; gap: 1.5rem; }.services-title, .experience-hero h2 { font-size: clamp(3.3rem, 15vw, 5.5rem); }.premium-services .service-row { grid-template-columns: 35px 1fr auto; }.service-detail { grid-column: 2 / 4; grid-template-columns: 1fr; }.premium-experience-list > div { grid-template-columns: 1fr; gap: .7rem; }.premium-experience-list p, .experience-badge { grid-column: 1; }.experience-badge { margin-top: .3rem; } }
+
+/* ====== Theme system ====== */
+.dark {
+  --background: oklch(0.14 0.012 260);
+  --foreground: oklch(0.94 0.012 82);
+  --card: oklch(0.19 0.016 260);
+  --popover: oklch(0.19 0.016 260);
+  --primary: oklch(0.7 0.2 43);
+  --primary-foreground: oklch(0.14 0.012 260);
+  --secondary: oklch(0.23 0.025 250);
+  --secondary-foreground: oklch(0.94 0.012 82);
+  --muted: oklch(0.22 0.018 260);
+  --muted-foreground: oklch(0.7 0.018 78);
+  --accent: oklch(0.27 0.05 45);
+  --border: oklch(0.34 0.02 260);
+  --input: oklch(0.38 0.02 260);
+  --ring: oklch(0.7 0.2 43);
+  --peach: oklch(0.3 0.08 43);
+  --ink-soft: oklch(0.75 0.012 82);
+}
+html, body { transition: background-color .45s ease, color .45s ease; }
+.nav-pill, .nav-mobile, .skill-tool, .contact-type, .about-metrics > div { transition-property: background-color, border-color, color, box-shadow, transform; transition-duration: .4s; }
+.theme-toggle { display: inline-flex; align-items: center; gap: .45rem; border: 1px solid color-mix(in oklab, var(--foreground) 18%, transparent); border-radius: 999px; background: color-mix(in oklab, var(--background) 65%, transparent); padding: .24rem .55rem .24rem .28rem; color: var(--foreground); font-size: .6rem; font-weight: 800; text-transform: uppercase; transition: border-color .3s ease, background-color .3s ease, color .3s ease, transform .3s ease; }
+.theme-toggle:hover { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, var(--background)); transform: translateY(-2px); }
+.theme-toggle-track { position: relative; display: flex; width: 1.65rem; height: 1.05rem; align-items: center; border-radius: 999px; background: color-mix(in oklab, var(--foreground) 16%, transparent); padding: .12rem; }
+.theme-toggle-thumb { display: grid; width: .8rem; height: .8rem; place-items: center; border-radius: 50%; background: var(--primary); color: var(--primary-foreground); }
+.theme-toggle-thumb svg { width: .5rem; height: .5rem; }.theme-toggle[aria-pressed="true"] .theme-toggle-thumb { margin-left: auto; }
+@media (max-width: 639px) { .theme-toggle { position: absolute; top: .54rem; right: 3.25rem; padding-right: .3rem; }.theme-toggle-label { display: none; } }
