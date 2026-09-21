@@ -527,3 +527,23 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
 @media (prefers-reduced-motion: reduce) {
   .pipeline-orbit { animation: none; }
 }
+
+/* ====== Cinematic first-visit intro ====== */
+.loading-intro { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; background: var(--foreground); color: var(--background); }
+.loading-intro-grid { position: absolute; inset: 0; opacity: .14; background-image: linear-gradient(color-mix(in oklab, var(--background) 35%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--background) 35%, transparent) 1px, transparent 1px); background-size: 54px 54px; mask-image: radial-gradient(circle at center, black, transparent 72%); animation: loading-grid 3s linear infinite; }
+.loading-intro::before { content: ""; position: absolute; left: 50%; top: 50%; width: min(62vw, 620px); aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: radial-gradient(circle, color-mix(in oklab, var(--primary) 34%, transparent), transparent 66%); filter: blur(18px); opacity: .7; }
+.loading-intro-center { position: relative; z-index: 1; display: grid; justify-items: center; }
+.loading-orb { position: absolute; top: -2.1rem; width: .42rem; height: .42rem; border-radius: 50%; background: var(--primary); box-shadow: 0 0 0 7px color-mix(in oklab, var(--primary) 20%, transparent), 0 0 28px var(--primary); animation: loading-pulse 1.2s ease-in-out infinite; }
+.loading-code-mark { margin-bottom: 1.1rem; color: color-mix(in oklab, var(--background) 56%, transparent); font-family: monospace; font-size: .68rem; letter-spacing: .12em; }
+.loading-logo { display: block; width: clamp(11rem, 24vw, 19rem); height: auto; filter: brightness(0) invert(1); }
+.loading-subtitle { margin-top: .8rem; color: var(--primary); font-size: .58rem; font-weight: 800; letter-spacing: .24em; }
+.loading-route { display: flex; align-items: center; gap: .75rem; margin-top: 2.5rem; color: color-mix(in oklab, var(--background) 58%, transparent); font-size: .54rem; font-weight: 800; letter-spacing: .13em; }
+.loading-route i { display: block; width: 2.8rem; height: 1px; background: linear-gradient(90deg, var(--primary), color-mix(in oklab, var(--background) 22%, transparent)); transform-origin: left; animation: loading-route 1.15s ease-in-out infinite; }
+.loading-route i:nth-of-type(2) { animation-delay: .18s; }
+.loading-status, .loading-index { position: absolute; bottom: 1.6rem; color: color-mix(in oklab, var(--background) 48%, transparent); font-size: .53rem; font-weight: 800; letter-spacing: .12em; }
+.loading-status { left: 1.6rem; }.loading-status b { margin-left: .35rem; color: var(--primary); animation: loading-pulse 1s ease-in-out infinite; }.loading-index { right: 1.6rem; }
+@keyframes loading-grid { to { background-position: 0 54px, 54px 0; } }
+@keyframes loading-pulse { 50% { opacity: .45; transform: scale(.78); } }
+@keyframes loading-route { 50% { transform: scaleX(.3); opacity: .45; } }
+@media (max-width: 600px) { .loading-status, .loading-index { bottom: 1rem; font-size: .46rem; }.loading-status { left: 1rem; }.loading-index { right: 1rem; }.loading-route { margin-top: 2rem; gap: .45rem; }.loading-route i { width: 1.5rem; } }
+@media (prefers-reduced-motion: reduce) { .loading-intro-grid, .loading-orb, .loading-route i { animation: none; } }

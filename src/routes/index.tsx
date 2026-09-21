@@ -217,6 +217,7 @@ function useIsTouch() {
 function Portfolio() {
   const reduced = useReducedMotion() ?? false;
   const touch = useIsTouch();
+  const [showIntro, setShowIntro] = useState(true);
   const [roleIndex, setRoleIndex] = useState(0);
   const [activeSection, setActiveSection] = useState("About");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -239,6 +240,24 @@ function Portfolio() {
   const avatarScale = useTransform(heroProgress, [0, 1], [1, reduced ? 1 : 0.9]);
   const heroCopyY = useTransform(heroProgress, [0, 1], [0, reduced ? 0 : 60]);
   const heroFade = useTransform(heroProgress, [0, 0.85], [1, reduced ? 1 : 0.15]);
+
+  useEffect(() => {
+    const introSeen = window.sessionStorage.getItem("samar-dev-intro-seen");
+    if (introSeen || reduced) {
+      setShowIntro(false);
+      return;
+    }
+    document.body.style.overflow = "hidden";
+    const timer = window.setTimeout(() => {
+      window.sessionStorage.setItem("samar-dev-intro-seen", "1");
+      setShowIntro(false);
+      document.body.style.overflow = "";
+    }, 1450);
+    return () => {
+      window.clearTimeout(timer);
+      document.body.style.overflow = "";
+    };
+  }, [reduced]);
 
   useEffect(() => {
     const timer = window.setInterval(() => setRoleIndex((value) => (value + 1) % roles.length), 2600);
@@ -342,6 +361,7 @@ function Portfolio() {
         "--cursor-pointer": `url(${cursorPointer}) 3 3, pointer`,
       } as CSSProperties}
     >
+      <AnimatePresence>{showIntro && <LoadingIntro reduced={reduced} />}</AnimatePresence>
       <motion.header
         className={cn("site-header", scrolled && "is-scrolled")}
         {...enter(0.75)}
@@ -530,6 +550,30 @@ function Portfolio() {
         )}
       </Dialog>
     </main>
+  );
+}
+
+function LoadingIntro({ reduced }: { reduced: boolean }) {
+  return (
+    <motion.div
+      className="loading-intro"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0, y: "-100%" }}
+      transition={{ duration: reduced ? .2 : .55, ease: [0.76, 0, 0.24, 1] }}
+      aria-label="Loading Samar Dev portfolio"
+    >
+      <div className="loading-intro-grid" aria-hidden="true" />
+      <motion.div className="loading-intro-center" initial={reduced ? { opacity: 0 } : { opacity: 0, scale: .92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: reduced ? .2 : .5, ease: [0.2, .8, .2, 1] }}>
+        <motion.span className="loading-orb" initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ duration: .3, delay: reduced ? 0 : .08 }} />
+        <motion.p className="loading-code-mark" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .35, delay: reduced ? 0 : .18 }}>&lt; Samar Dev /&gt;</motion.p>
+        <motion.img src={samarLogo} alt="Samar Dev" className="loading-logo" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .28 }} />
+        <motion.p className="loading-subtitle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .35, delay: reduced ? 0 : .48 }}>CREATIVE DEVELOPER</motion.p>
+        <div className="loading-route" aria-hidden="true"><span>DESIGN</span><i /><span>BUILD</span><i /><span>SHIP</span></div>
+      </motion.div>
+      <span className="loading-status">INITIALIZING EXPERIENCE <b>●</b></span>
+      <span className="loading-index">S / 001</span>
+    </motion.div>
   );
 }
 
