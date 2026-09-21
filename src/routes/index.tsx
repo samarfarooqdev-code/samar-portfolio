@@ -83,7 +83,7 @@ export const Route = createFileRoute("/")({
 });
 
 const navItems = ["About", "Skills", "Projects", "Services", "Process", "Contact"];
-const roles = ["CREATIVE FULL-STACK DEVELOPER", "3D WEB EXPERIENCE DESIGNER", "MOTION UI CREATOR"];
+const roles = ["CREATIVE WEB DEVELOPER", "INTERACTIVE EXPERIENCE DESIGNER", "MOTION-FIRST FRONTEND BUILDER"];
 
 const socialLinks = {
   instagram: { url: "https://instagram.com/samar._.x7", label: "Instagram", handle: "@samar._.x7", placeholder: false },
@@ -184,17 +184,17 @@ const projects: Project[] = [
 ];
 
 const services = [
-  ["01", "Creative development", "Expressive, high-performance sites built where design and engineering meet."],
-  ["02", "Digital product design", "Useful systems shaped from first principle through polished interaction."],
-  ["03", "3D & immersive web", "Spatial stories and WebGL moments that remain fast, clear, and purposeful."],
-  ["04", "Motion & prototyping", "Interaction studies that make an idea tangible before full production."],
+  ["01", "Creative development", "Expressive, high-performance websites where visual direction meets clean engineering."],
+  ["02", "Digital product design", "Clear, useful interfaces shaped from the first idea through every considered interaction."],
+  ["03", "3D & immersive web", "Spatial stories and WebGL moments that feel atmospheric, fast and purposeful."],
+  ["04", "Motion & prototyping", "Interaction studies that make an idea tangible before it becomes production code."],
 ];
 
 const process = [
-  ["Discover", "Understanding ideas and goals"],
-  ["Design", "Planning interfaces and experiences"],
-  ["Build", "Writing clean, scalable code"],
-  ["Refine", "Polish, optimize and perfect"],
+  ["Discover", "Finding the sharpest version of the idea and the people it is for."],
+  ["Design", "Giving the experience a clear visual language and a confident rhythm."],
+  ["Build", "Turning the direction into responsive, maintainable and expressive code."],
+  ["Refine", "Polishing the details, testing the edges and making the work feel inevitable."],
 ];
 
 const skillStages = [
