@@ -104,6 +104,10 @@ type Project = {
   liveUrl: string;
   image?: string;
   features: string[];
+  challenge: string;
+  solution: string;
+  outcome: string;
+  role: string;
   visualTheme: "restaurant" | "fashion" | "heritage";
 };
 
@@ -126,6 +130,10 @@ const projects: Project[] = [
       "Location and opening-hours information.",
       "Dine-in, takeaway and delivery messaging.",
     ],
+    challenge: "Make a local restaurant easy to discover, trust and order from on mobile.",
+    solution: "Built a warm, conversion-focused experience around menu discovery, ordering and direct contact actions.",
+    outcome: "A clear path from craving to order, with the important information visible at every step.",
+    role: "Strategy · UI design · Frontend development",
     visualTheme: "restaurant",
   },
   {
@@ -145,6 +153,10 @@ const projects: Project[] = [
       "WhatsApp support and Instagram touchpoint.",
       "Shipping, returns, payment, privacy and terms pages.",
     ],
+    challenge: "Create a fashion store that feels editorial and personal instead of like a generic catalogue.",
+    solution: "Combined story-led brand sections with collections, product detail, size guidance and WhatsApp-assisted shopping.",
+    outcome: "A premium browsing journey that connects the brand story with practical purchase decisions.",
+    role: "Brand experience · UI design · Frontend development",
     visualTheme: "fashion",
   },
   {
@@ -163,6 +175,10 @@ const projects: Project[] = [
       "Antique chandeliers and dome finishes.",
       "Architectural woodwork and heritage craftsmanship.",
     ],
+    challenge: "Translate four decades of heritage craftsmanship into a digital experience that feels credible and memorable.",
+    solution: "Shaped a cinematic editorial narrative around legacy, mastery, prestigious assignments, sketches and recognition.",
+    outcome: "A focused digital record that lets the artisan's story and body of work lead the experience.",
+    role: "Content structure · Art direction · Frontend development",
     visualTheme: "heritage",
   },
 ];
@@ -528,6 +544,12 @@ function Portfolio() {
             </div>
             <p className="dialog-lede">{selectedProject.description}</p>
             <div className="flex flex-wrap gap-2">{selectedProject.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
+            <div className="case-study-grid">
+              <div><span>THE CHALLENGE</span><p>{selectedProject.challenge}</p></div>
+              <div><span>THE APPROACH</span><p>{selectedProject.solution}</p></div>
+              <div><span>THE OUTCOME</span><p>{selectedProject.outcome}</p></div>
+              <div><span>MY ROLE</span><p>{selectedProject.role}</p></div>
+            </div>
             <div className="dialog-meta single"><div><span>VERIFIED FEATURES</span>{selectedProject.features.map((item) => <p key={item}>◆ {item}</p>)}</div></div>
             <Button asChild size="lg" className="press cta-arrow w-fit">
               <a href={selectedProject.liveUrl} target="_blank" rel="noreferrer">Visit live site <ArrowUpRight className="arrow-icon" /></a>
@@ -703,7 +725,7 @@ function ProjectsSection({
   return (
     <section id="projects" className="projects-section border-t border-border">
       <div className="section-shell pb-0">
-        <SectionIndex number="03" label="Selected projects" aside="Verified work, presented in depth." />
+        <SectionIndex number="03" label="Selected work" aside="Selected digital experiences, presented as case studies." />
       </div>
       <div className="project-track">
         {projects.map((project, index) => (
@@ -787,19 +809,19 @@ function ProjectStage({
             transition={{ duration: 0.22 }}
             aria-hidden="true"
           >
-            VISIT LIVE SITE ↗
+            VIEW CASE STUDY ↗
           </motion.span>
           <div className="stage-panel">
             <div className="flex items-center justify-between gap-4">
               <span className="eyebrow">{project.category}</span>
-              <span className="preview-label">ORIGINAL PROJECT PREVIEW</span>
+              <span className="preview-label">ART-DIRECTED PROJECT PREVIEW</span>
             </div>
             <h3>{project.title}</h3>
             <p className="stage-summary">{project.description}</p>
             <div className="mt-auto flex flex-wrap items-end justify-between gap-5 pt-6">
               <div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
               <div className="project-actions">
-                <button className="view-project press" onClick={() => onOpen(project)}>PROJECT DETAILS <ArrowRight className="arrow-icon" /></button>
+                <button className="view-project press" onClick={() => onOpen(project)}>VIEW CASE STUDY <ArrowRight className="arrow-icon" /></button>
                 <a className="live-project press" href={project.liveUrl} target="_blank" rel="noreferrer">VISIT LIVE SITE <ArrowUpRight className="arrow-icon" /></a>
               </div>
             </div>
