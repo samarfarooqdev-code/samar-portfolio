@@ -24,6 +24,7 @@ import {
 } from "motion/react";
 import {
   FormEvent,
+  type CSSProperties,
   useCallback,
   useEffect,
   useRef,
@@ -32,6 +33,8 @@ import {
 
 import profileAvatar from "@/assets/samar-profile-avatar-transparent.webp";
 import samarLogo from "@/assets/samar-dev-logo.png?inline";
+import cursorArrow from "@/assets/cursor-arrow.svg";
+import cursorPointer from "@/assets/cursor-pointer.svg";
 import { HeroCanvas } from "@/components/three/Lazy3D";
 import { Button } from "@/components/ui/button";
 import {
@@ -309,7 +312,13 @@ function Portfolio() {
         };
 
   return (
-    <main className="overflow-clip bg-background text-foreground">
+    <main
+      className="custom-cursor overflow-clip bg-background text-foreground"
+      style={{
+        "--cursor-default": `url(${cursorArrow}) 3 3, auto`,
+        "--cursor-pointer": `url(${cursorPointer}) 3 3, pointer`,
+      } as CSSProperties}
+    >
       <motion.header
         className={cn("site-header", scrolled && "is-scrolled")}
         {...enter(0.75)}

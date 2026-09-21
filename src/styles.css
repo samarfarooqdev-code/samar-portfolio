@@ -73,6 +73,12 @@ button, a, input, textarea { letter-spacing: 0; }
 button { cursor: pointer; }
 ::selection { background: var(--primary); color: var(--primary-foreground); }
 
+@media (hover: hover) and (pointer: fine) {
+  .custom-cursor, .custom-cursor * { cursor: var(--cursor-default); }
+  .custom-cursor a, .custom-cursor button, .custom-cursor select, .custom-cursor [role="button"] { cursor: var(--cursor-pointer); }
+  .custom-cursor input, .custom-cursor textarea { cursor: text; }
+}
+
 .nav-pill, .nav-mobile { border: 1px solid color-mix(in oklab, var(--foreground) 18%, transparent); background: color-mix(in oklab, var(--background) 87%, transparent); backdrop-filter: blur(18px); box-shadow: 0 10px 35px color-mix(in oklab, var(--foreground) 9%, transparent); border-radius: 999px; }
 .brand-mark { padding: .2rem .55rem; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; }
 .brand-logo { display: block; width: 8.6rem; height: auto; }
