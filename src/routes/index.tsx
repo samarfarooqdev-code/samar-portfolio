@@ -340,7 +340,7 @@ function Portfolio() {
               exit={{ opacity: 0, y: -10, scale: 0.97 }}
               transition={{ duration: 0.22, ease: [0.2, 0.8, 0.2, 1] }}
             >
-              {navItems.map((item) => <button key={item} onClick={() => scrollTo(item)}>{item}<ChevronRight /></button>)}
+              {navItems.map((item) => <button key={item} onClick={() => scrollTo(item)}>{item}<ChevronRight className="arrow-icon" /></button>)}
             </motion.nav>
           )}
         </AnimatePresence>
@@ -381,7 +381,7 @@ function Portfolio() {
             <span className="avatar-label avatar-label-right">OPEN TO<br /><b>SELECT PROJECTS</b></span>
             <div className="signal-card"><i className="status-dot" /><span>ONLINE</span><b>12:48 UTC</b></div>
           </motion.div>
-          <motion.button className="scroll-cue press" onClick={() => scrollTo("About")} {...enter(0.9)}><span>SCROLL TO EXPLORE</span><ArrowDown /></motion.button>
+          <motion.button className="scroll-cue press" onClick={() => scrollTo("About")} {...enter(0.9)}><span>SCROLL TO EXPLORE</span><ArrowDown className="arrow-icon" /></motion.button>
         </div>
       </section>
 
@@ -450,7 +450,7 @@ function Portfolio() {
         onSubmit={submitContact}
       />
 
-      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top"><img src={samarLogo} alt="Samar Dev" className="footer-logo" /></a><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight /></a></div></div></footer>
+      <footer><div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between"><a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top"><img src={samarLogo} alt="Samar Dev" className="footer-logo" /></a><p>© 2026 Samar Dev. Built with curiosity.</p><div><a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">LinkedIn <ArrowUpRight className="arrow-icon" /></a><a href={socialLinks.github.url} target="_blank" rel="noreferrer">GitHub <ArrowUpRight className="arrow-icon" /></a></div></div></footer>
 
       <AnimatePresence>
         {scrolled && (
@@ -464,7 +464,7 @@ function Portfolio() {
             transition={{ duration: 0.25 }}
           >
             <span className="btt-orbit" aria-hidden="true" />
-            <ArrowUp />
+            <ArrowUp className="arrow-icon" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -484,7 +484,7 @@ function Portfolio() {
             <div className="flex flex-wrap gap-2">{selectedProject.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
             <div className="dialog-meta single"><div><span>VERIFIED FEATURES</span>{selectedProject.features.map((item) => <p key={item}>◆ {item}</p>)}</div></div>
             <Button asChild size="lg" className="press cta-arrow w-fit">
-              <a href={selectedProject.liveUrl} target="_blank" rel="noreferrer">Visit live site <span>↗</span></a>
+              <a href={selectedProject.liveUrl} target="_blank" rel="noreferrer">Visit live site <ArrowUpRight className="arrow-icon" /></a>
             </Button>
           </DialogContent>
         )}
@@ -691,8 +691,8 @@ function ProjectStage({
             <div className="mt-auto flex flex-wrap items-end justify-between gap-5 pt-6">
               <div className="flex flex-wrap gap-2">{project.tags.map((tag) => <span className="tag" key={tag}>{tag}</span>)}</div>
               <div className="project-actions">
-                <button className="view-project press" onClick={() => onOpen(project)}>PROJECT DETAILS <ArrowRight /></button>
-                <a className="live-project press" href={project.liveUrl} target="_blank" rel="noreferrer">VISIT LIVE SITE <ArrowUpRight /></a>
+                <button className="view-project press" onClick={() => onOpen(project)}>PROJECT DETAILS <ArrowRight className="arrow-icon" /></button>
+                <a className="live-project press" href={project.liveUrl} target="_blank" rel="noreferrer">VISIT LIVE SITE <ArrowUpRight className="arrow-icon" /></a>
               </div>
             </div>
           </div>
@@ -720,7 +720,7 @@ function AvailabilityBand({ onCta, reduced }: { onCta: () => void; reduced: bool
           <p className="eyebrow text-primary-foreground"><i className="status-dot available" /> AVAILABLE FOR SELECTED PROJECTS</p>
           <h2>Open to meaningful collaborations</h2>
         </div>
-        <Button size="lg" variant="secondary" onClick={onCta} className="press cta-arrow h-14 px-7">START A CONVERSATION <span>↗</span></Button>
+        <Button size="lg" variant="secondary" onClick={onCta} className="press cta-arrow h-14 px-7">START A CONVERSATION <ArrowUpRight className="arrow-icon" /></Button>
       </div>
     </section>
   );
@@ -854,7 +854,7 @@ function Sticker({
     >
       <b>{label}</b>
       <small>{placeholder ? "Placeholder link" : handle}</small>
-      <ArrowUpRight />
+      <ArrowUpRight className="arrow-icon" />
     </a>
   );
 }
