@@ -197,39 +197,11 @@ const process = [
   ["Refine", "Polish, optimize and perfect"],
 ];
 
-const skillGroups = [
-  {
-    label: "Build",
-    description: "The core stack behind fast, responsive interfaces.",
-    skills: [
-      ["HTML5", "</>", "Markup"],
-      ["CSS3", "#", "Styling"],
-      ["JavaScript", "JS", "Logic"],
-      ["TypeScript", "TS", "Systems"],
-      ["React", "R", "Interfaces"],
-      ["Next.js", "N", "Web apps"],
-      ["Tailwind CSS", "TW", "UI systems"],
-    ],
-  },
-  {
-    label: "Shape",
-    description: "Tools for turning direction into a clear visual language.",
-    skills: [
-      ["Figma", "F", "UI / UX"],
-      ["Canva", "C", "Visuals"],
-      ["Motion", "M", "Interaction"],
-    ],
-  },
-  {
-    label: "Ship",
-    description: "A reliable workflow from first commit to live URL.",
-    skills: [
-      ["Git", "git", "Versioning"],
-      ["GitHub", "GH", "Collaboration"],
-      ["Vercel", "▲", "Deployment"],
-      ["VS Code", "<> ", "Workflow"],
-    ],
-  },
+const skillStages = [
+  { label: "Think", kicker: "01", description: "Clarifying the idea, audience and the experience it needs to become.", proof: "Strategy · UX direction", tools: [["Discovery", "◎", "Direction"], ["UX thinking", "↗", "Structure"]] },
+  { label: "Design", kicker: "02", description: "Creating a visual language that makes the product feel clear, distinctive and considered.", proof: "Figma · Motion · Visual systems", tools: [["Figma", "F", "UI / UX"], ["Motion", "M", "Interaction"], ["Canva", "C", "Visuals"]] },
+  { label: "Build", kicker: "03", description: "Turning a visual system into responsive, maintainable interfaces that feel great to use.", proof: "React · Next.js · TypeScript", tools: [["React", "R", "Interfaces"], ["Next.js", "N", "Web apps"], ["TypeScript", "TS", "Systems"], ["Tailwind CSS", "TW", "UI systems"]] },
+  { label: "Ship", kicker: "04", description: "Testing, refining and taking the work from a local idea to a reliable live experience.", proof: "Git · GitHub · Vercel", tools: [["Git", "git", "Versioning"], ["GitHub", "GH", "Collaboration"], ["Vercel", "▲", "Deployment"], ["VS Code", "<> ", "Workflow"]] },
 ];
 
 type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
@@ -648,9 +620,18 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
 
 /* ---------- Skills: tool stack with orbiting reveal cards ---------- */
 function SkillsSection({ reduced }: { reduced: boolean }) {
+  const [activeStage, setActiveStage] = useState(2);
+  const stage = skillStages[activeStage]!;
+
+  useEffect(() => {
+    if (reduced) return;
+    const timer = window.setInterval(() => setActiveStage((value) => (value + 1) % skillStages.length), 3200);
+    return () => window.clearInterval(timer);
+  }, [reduced]);
+
   return (
     <section id="skills" className="skills-section section-shell border-t border-border">
-      <SectionIndex number="02" label="Skills" aside="A focused toolkit for thoughtful, production-ready work." />
+      <SectionIndex number="02" label="How I bring ideas to life" aside="A focused creative-development workflow, from first direction to final deployment." />
       <div className="skills-intro mt-12 sm:mt-16">
         <motion.div
           className="skills-lede"
@@ -659,8 +640,8 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          <p className="eyebrow"><span>◆</span> THE TOOLKIT</p>
-          <h2>Tools that turn<br /><em>ideas into impact.</em></h2>
+          <p className="eyebrow"><span>◆</span> THE WORKFLOW</p>
+          <h2>Designing the feeling.<br /><em>Building the system.</em></h2>
         </motion.div>
         <motion.p
           className="skills-note"
@@ -669,33 +650,33 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.7, delay: 0.12, ease: [0.2, 0.8, 0.2, 1] }}
         >
-          I keep the stack focused: dependable fundamentals, expressive design tools and a workflow that takes a project all the way to a live URL.
+          I don’t collect tools for the sake of it. I choose the right tools for the right experience, then carry the work from a sharp idea to a polished, production-ready website.
         </motion.p>
       </div>
-      <div className="skills-groups">
-        {skillGroups.map((group, groupIndex) => (
-          <div className="skill-group" key={group.label}>
-            <div className="skill-group-heading"><span>0{groupIndex + 1}</span><div><h3>{group.label}</h3><p>{group.description}</p></div></div>
-            <div className="skill-grid">
-              {group.skills.map(([name, mark, detail], index) => (
-                <motion.div
-                  className="skill-card"
-                  key={name}
-                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: 22, scale: .96 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  whileHover={reduced ? undefined : { y: -8, rotate: index % 2 ? 1.2 : -1.2 }}
-                  viewport={{ once: true, margin: "-70px" }}
-                  transition={{ duration: 0.45, delay: index * 0.045, ease: [0.2, 0.8, 0.2, 1] }}
-                >
-                  <span className="skill-mark" aria-hidden="true">{mark}</span>
-                  <span className="skill-name">{name}</span>
-                  <span className="skill-detail">{detail}</span>
-                  <i aria-hidden="true">↗</i>
-                </motion.div>
-              ))}
-            </div>
+      <div className="skill-flow" role="tablist" aria-label="Creative development workflow">
+        {skillStages.map((item, index) => (
+          <div className={cn("skill-flow-step", activeStage >= index && "is-passed", activeStage === index && "is-active")} key={item.label}>
+            <button role="tab" aria-selected={activeStage === index} onClick={() => setActiveStage(index)}>
+              <span>{item.kicker}</span><strong>{item.label}</strong>
+            </button>
+            {index < skillStages.length - 1 && <i aria-hidden="true" />}
           </div>
         ))}
+      </div>
+      <div className="skill-stage-layout">
+        <motion.div className="skill-stage-copy" key={stage.label} initial={reduced ? { opacity: 0 } : { opacity: 0, x: -18 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .45 }}>
+          <span className="skill-stage-kicker">{stage.kicker} / {stage.label.toUpperCase()}</span>
+          <h3>{stage.description}</h3>
+          <p className="skill-stage-proof">{stage.proof}</p>
+          <div className="skill-tool-list">
+            {stage.tools.map(([name, mark, detail]) => (
+              <motion.div className="skill-tool" key={name} whileHover={reduced ? undefined : { y: -4 }} data-tool={name}>
+                <span className="skill-mark" aria-hidden="true">{mark}</span><span><b>{name}</b><small>{detail}</small></span><i aria-hidden="true">↗</i>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+        <SkillPipeline reduced={reduced} activeStage={activeStage} />
       </div>
       <motion.div
         className="skills-proof"
@@ -706,9 +687,22 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
       >
         <span className="status-dot available" />
         <strong>Design · Build · Ship</strong>
-        <span>One connected process, from first frame to final deployment.</span>
+        <span>Responsive by default · Accessible interactions · Optimized assets · Production-ready deployment</span>
       </motion.div>
     </section>
+  );
+}
+
+function SkillPipeline({ reduced, activeStage }: { reduced: boolean; activeStage: number }) {
+  return (
+    <motion.div className="skill-pipeline" initial={reduced ? { opacity: 0 } : { opacity: 0, scale: .94 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: .7 }}>
+      <div className="pipeline-orbit" aria-hidden="true"><i /><i /><b>◆</b></div>
+      <div className={cn("pipeline-node pipeline-code", activeStage >= 2 && "is-lit")}><span>〈/〉</span><small>CODE</small></div>
+      <div className={cn("pipeline-node pipeline-design", activeStage >= 1 && "is-lit")}><span>✦</span><small>DESIGN</small></div>
+      <div className={cn("pipeline-node pipeline-live", activeStage >= 3 && "is-lit")}><span>↗</span><small>LIVE</small></div>
+      <div className="pipeline-line" aria-hidden="true"><i style={{ transform: `scaleX(${Math.max(.2, activeStage / 3)})` }} /></div>
+      <p>FROM FIRST FRAME<br /><strong>TO LIVE EXPERIENCE</strong></p>
+    </motion.div>
   );
 }
 

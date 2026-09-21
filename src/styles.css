@@ -458,3 +458,72 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
   .restaurant-ambient, .restaurant-browser, .restaurant-menu-card, .restaurant-cart-card, .restaurant-hours-card, .fashion-fabric, .fashion-browser, .fashion-product-card, .fashion-guide-card, .heritage-carving, .heritage-browser, .heritage-detail-card, .heritage-legacy-card { transform: none !important; }
   .stage-sweep { display: none; }
 }
+
+/* ====== Premium Skills workflow ====== */
+.skills-section { position: relative; overflow: hidden; }
+.skills-section::after { content: "THINK / DESIGN / BUILD / SHIP"; position: absolute; top: 11rem; right: 2rem; color: color-mix(in oklab, var(--foreground) 16%, transparent); font-size: .55rem; font-weight: 800; letter-spacing: .18em; writing-mode: vertical-rl; }
+.skill-flow { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 5.5rem; }
+.skill-flow-step { position: relative; display: grid; grid-template-columns: auto 1fr; align-items: center; gap: .75rem; }
+.skill-flow-step button { position: relative; z-index: 2; display: grid; justify-items: start; gap: .35rem; background: transparent; text-align: left; }
+.skill-flow-step button > span { color: var(--primary); font-size: .62rem; font-weight: 800; }
+.skill-flow-step button strong { font-family: var(--font-display); font-size: clamp(1.8rem, 3.3vw, 3.5rem); font-weight: 400; line-height: .85; transition: color .3s ease, transform .3s ease; }
+.skill-flow-step.is-active button strong { color: var(--primary); transform: translateY(-3px); }
+.skill-flow-step.is-passed button strong { color: var(--foreground); }
+.skill-flow-step.is-active button::after { content: ""; position: absolute; left: 0; bottom: -.7rem; width: 2.2rem; height: 2px; background: var(--primary); animation: skill-pulse 2s ease-in-out infinite; }
+.skill-flow-step > i { position: relative; display: block; height: 1px; margin-right: 1rem; background: var(--border); overflow: hidden; }
+.skill-flow-step > i::after { content: ""; position: absolute; inset: 0; background: var(--primary); transform: scaleX(0); transform-origin: left; transition: transform .65s cubic-bezier(.2,.8,.2,1); }
+.skill-flow-step.is-passed > i::after { transform: scaleX(1); }
+.skill-stage-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 5rem; align-items: center; margin-top: 4.5rem; }
+.skill-stage-copy { min-height: 355px; }
+.skill-stage-kicker { color: var(--primary); font-size: .65rem; font-weight: 800; letter-spacing: .12em; }
+.skill-stage-copy h3 { max-width: 34rem; margin-top: 1rem; font-family: var(--font-display); font-size: clamp(2rem, 3.8vw, 4rem); font-weight: 400; line-height: .98; }
+.skill-stage-proof { margin-top: 1.35rem; color: var(--muted-foreground); font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.skill-tool-list { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 2.2rem; }
+.skill-tool { display: flex; min-width: 130px; align-items: center; gap: .65rem; border: 1px solid var(--border); background: color-mix(in oklab, var(--card) 75%, transparent); padding: .55rem .7rem; transition: border-color .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease; }
+.skill-tool:hover { border-color: var(--primary); background: var(--primary); color: var(--primary-foreground); box-shadow: 0 12px 25px color-mix(in oklab, var(--primary) 20%, transparent); }
+.skill-tool .skill-mark { display: grid; width: 1.9rem; height: 1.9rem; place-items: center; border: 1px solid currentColor; font-family: var(--font-display); font-size: .75rem; font-weight: 700; }
+.skill-tool b, .skill-tool small { display: block; }
+.skill-tool b { font-size: .68rem; line-height: 1; }
+.skill-tool small { margin-top: .28rem; color: var(--muted-foreground); font-size: .52rem; font-weight: 700; text-transform: uppercase; }
+.skill-tool:hover small { color: inherit; opacity: .72; }
+.skill-tool > i { margin-left: auto; color: var(--primary); font-size: .8rem; font-style: normal; opacity: .5; transition: transform .2s ease, opacity .2s ease; }
+.skill-tool:hover > i { color: inherit; opacity: 1; transform: translate(2px,-2px); }
+.skill-pipeline { position: relative; min-height: 390px; overflow: hidden; border: 1px solid var(--border); background: radial-gradient(circle at 50% 45%, color-mix(in oklab, var(--primary) 13%, transparent), transparent 42%), var(--card); }
+.skill-pipeline::before { content: "CODE → DESIGN → LIVE"; position: absolute; top: 1.1rem; left: 1.2rem; color: var(--muted-foreground); font-size: .55rem; font-weight: 800; letter-spacing: .1em; }
+.pipeline-orbit { position: absolute; left: 50%; top: 48%; width: 230px; aspect-ratio: 1; translate: -50% -50%; border: 1px solid color-mix(in oklab, var(--primary) 38%, transparent); border-radius: 50%; transform: rotateX(62deg) rotateZ(8deg); animation: pipeline-spin 18s linear infinite; }
+.pipeline-orbit::before, .pipeline-orbit::after { content: ""; position: absolute; inset: 15%; border: 1px solid color-mix(in oklab, var(--foreground) 22%, transparent); border-radius: 50%; }
+.pipeline-orbit::after { inset: 32%; border-color: var(--primary); }
+.pipeline-orbit i { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: var(--primary); }
+.pipeline-orbit i:first-child { top: 6%; left: 48%; }.pipeline-orbit i:nth-child(2) { right: 8%; bottom: 22%; background: var(--foreground); }.pipeline-orbit b { position: absolute; left: 50%; top: 50%; translate: -50% -50%; color: var(--primary); font-size: .8rem; transform: rotateZ(-8deg); }
+.pipeline-node { position: absolute; z-index: 2; display: grid; width: 76px; height: 76px; place-items: center; border: 1px solid var(--border); background: var(--background); color: var(--muted-foreground); transition: border-color .35s ease, color .35s ease, box-shadow .35s ease, transform .35s ease; }
+.pipeline-node span { font-family: var(--font-display); font-size: 1.35rem; }.pipeline-node small { font-size: .5rem; font-weight: 800; letter-spacing: .1em; }
+.pipeline-node.is-lit { border-color: var(--primary); color: var(--primary); box-shadow: 0 0 32px color-mix(in oklab, var(--primary) 24%, transparent); transform: translateY(-4px); }
+.pipeline-code { left: 10%; top: 27%; }.pipeline-design { left: 50%; top: 16%; translate: -50% 0; }.pipeline-live { right: 10%; bottom: 19%; }
+.pipeline-line { position: absolute; left: 18%; right: 18%; top: 46%; height: 1px; background: var(--border); transform: rotate(12deg); transform-origin: center; }.pipeline-line i { display: block; width: 100%; height: 2px; background: var(--primary); transform-origin: left; transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+.skill-pipeline > p { position: absolute; left: 1.2rem; bottom: 1.1rem; color: var(--muted-foreground); font-size: .55rem; font-weight: 800; line-height: 1.5; letter-spacing: .12em; }.skill-pipeline > p strong { color: var(--foreground); }
+.skills-proof { position: relative; z-index: 1; }
+@keyframes pipeline-spin { to { transform: rotateX(62deg) rotateZ(368deg); } }
+@keyframes skill-pulse { 50% { opacity: .4; transform: scaleX(.65); transform-origin: left; } }
+@media (max-width: 900px) {
+  .skills-section::after { right: 1rem; }
+  .skill-stage-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+  .skill-stage-copy { min-height: 0; }
+  .skill-pipeline { min-height: 330px; }
+}
+@media (max-width: 600px) {
+  .skills-section::after { display: none; }
+  .skill-flow { grid-template-columns: repeat(4, minmax(112px, 1fr)); overflow-x: auto; gap: 1rem; margin-top: 4rem; padding-bottom: 1rem; scrollbar-width: thin; }
+  .skill-flow-step { grid-template-columns: 1fr; min-width: 105px; }
+  .skill-flow-step > i { display: none; }
+  .skill-flow-step button strong { font-size: 1.65rem; }
+  .skill-stage-layout { margin-top: 2.6rem; }
+  .skill-stage-copy h3 { font-size: 2.45rem; }
+  .skill-tool { min-width: calc(50% - .3rem); }
+  .skill-pipeline { min-height: 295px; }
+  .pipeline-orbit { width: 175px; }
+  .pipeline-node { width: 62px; height: 62px; }.pipeline-node span { font-size: 1rem; }.pipeline-node small { font-size: .42rem; }
+  .pipeline-code { left: 7%; }.pipeline-live { right: 7%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pipeline-orbit { animation: none; }
+}
