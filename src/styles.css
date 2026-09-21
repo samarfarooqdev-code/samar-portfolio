@@ -554,3 +554,24 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
 .skill-stage-copy h3 { max-width: 39rem; letter-spacing: -.01em; }
 .skill-stage-proof { opacity: .85; }
 .skill-stage-timer { display: block; width: min(100%, 220px); height: 1px; margin-top: 1.4rem; overflow: hidden; background: var(--border); transform-origin: left; }.skill-stage-timer i { display: block; width: 100%; height: 2px; background: var(--primary); transform-origin: left; animation: skill-read 5.6s linear both; } @keyframes skill-read { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ====== Interactive project brief contact layer ====== */
+.contact-form-intro { position: relative; }
+.contact-signal { margin-top: 3.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.contact-signal-label { display: block; margin-bottom: 1rem; color: var(--primary); font-size: .6rem; font-weight: 800; letter-spacing: .12em; }
+.contact-signal > div { display: flex; align-items: center; gap: .7rem; color: var(--muted-foreground); font-size: .68rem; font-weight: 800; }
+.contact-signal > div b { min-width: 5.2rem; color: var(--foreground); font-weight: 800; }
+.contact-signal > div i { position: relative; display: block; width: 2.7rem; height: 1px; margin: .65rem 0; background: var(--border); }
+.contact-signal > div i::after { content: ""; position: absolute; inset: 0; width: 42%; background: var(--primary); animation: signal-flow 2.4s ease-in-out infinite; }
+.contact-signal > div:nth-of-type(2) i::after { animation-delay: .35s; }.contact-signal > div:nth-of-type(3) i::after { animation-delay: .7s; }
+.contact-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; margin-top: .25rem; }
+.contact-type { position: relative; display: grid; min-height: 76px; align-content: center; gap: .35rem; border: 1px solid var(--border); background: transparent; padding: .75rem 2rem .75rem .85rem; text-align: left; transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease; }
+.contact-type:hover { border-color: var(--primary); transform: translateY(-3px); }
+.contact-type.is-selected { border-color: var(--primary); background: var(--primary); color: var(--primary-foreground); box-shadow: 0 12px 26px color-mix(in oklab, var(--primary) 20%, transparent); }
+.contact-type b { font-size: .7rem; font-weight: 800; }.contact-type small { color: var(--muted-foreground); font-size: .58rem; line-height: 1.35; }.contact-type.is-selected small { color: inherit; opacity: .78; }
+.contact-type > span { position: absolute; right: .75rem; top: .72rem; color: var(--primary); font-size: .72rem; font-weight: 800; }.contact-type.is-selected > span { color: inherit; }
+.contact-submit { position: relative; overflow: hidden; }.contact-submit::before { content: ""; position: absolute; inset: 0; background: color-mix(in oklab, white 14%, transparent); transform: translateX(-102%); transition: transform .4s cubic-bezier(.2,.8,.2,1); }.contact-submit:hover::before { transform: translateX(0); }.contact-submit svg { position: relative; transition: transform .25s ease; }.contact-submit:hover svg { transform: translate(4px,-3px); }
+.success-state .eyebrow { margin-top: .8rem; }.success-state h3 { max-width: 28rem; line-height: .95; }.success-state > p:not(.eyebrow) { max-width: 28rem; }
+@keyframes signal-flow { 50% { transform: translateX(150%); opacity: .25; } }
+@media (max-width: 600px) { .contact-signal { margin-top: 2.5rem; }.contact-type-grid { grid-template-columns: 1fr; }.contact-type { min-height: 66px; } }
+@media (prefers-reduced-motion: reduce) { .contact-signal > div i::after { animation: none; }.contact-type:hover { transform: none; }.contact-submit::before { display: none; } }

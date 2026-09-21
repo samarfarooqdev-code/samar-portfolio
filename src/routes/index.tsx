@@ -45,13 +45,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
@@ -195,6 +188,13 @@ const process = [
   ["Design", "Giving the experience a clear visual language and a confident rhythm."],
   ["Build", "Turning the direction into responsive, maintainable and expressive code."],
   ["Refine", "Polishing the details, testing the edges and making the work feel inevitable."],
+];
+
+const contactTypes = [
+  ["website", "Creative website", "Brand, portfolio or business"],
+  ["ecommerce", "Ecommerce", "A store with a point of view"],
+  ["product", "Digital product", "A useful interface or system"],
+  ["3d", "3D / interactive", "A more immersive direction"],
 ];
 
 const skillStages = [
@@ -936,12 +936,12 @@ function ContactScene(props: {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.7, ease: [0.2, 0.85, 0.2, 1] }}
         >
-          HAVE AN IDEA <em>WORTH BUILDING?</em>
+          HAVE AN IDEA? <em>LET’S GIVE IT A POINT OF VIEW.</em>
         </motion.h2>
 
         <div className="contact-stage mt-14">
           <div className="email-block">
-            <p className="copy-label">{copied ? "COPIED ✓" : "CLICK TO COPY EMAIL"}</p>
+            <p className="copy-label">{copied ? "EMAIL COPIED ✓" : "START WITH A HELLO"}</p>
             <button className="mega-email press" onClick={onCopy} aria-label={`Copy email address ${EMAIL}`}>
               {EMAIL}
               <span className="copy-icon">{copied ? <Check /> : <Copy />}</span>
@@ -962,20 +962,29 @@ function ContactScene(props: {
 
         <div className="contact-form-wrap mt-20">
           <div className="contact-form-intro">
-            <p className="eyebrow"><span>◆</span> OR SEND A BRIEF</p>
-            <p className="body-copy mt-4">Tell me about the idea and I’ll reply from {EMAIL} within two working days.</p>
+            <p className="eyebrow"><span>◆</span> PROJECT BRIEF</p>
+            <p className="body-copy mt-4">Tell me what you’re building, imagining or untangling. I’ll help shape the next clear step.</p>
+            <div className="contact-signal" aria-label="Project signal workflow">
+              <span className="contact-signal-label">PROJECT SIGNAL</span>
+              <div><b>Idea</b><i /></div><div><b>Direction</b><i /></div><div><b>Experience</b><i /></div><div><b>Live</b></div>
+            </div>
           </div>
           <form className="contact-form" onSubmit={onSubmit} noValidate>
             {submitState === "success" ? (
-              <div className="success-state"><span><Check /></span><h3>Message received.</h3><p>Thanks for the thoughtful note. I’ll get back to you within two working days.</p><Button type="button" variant="outline" className="press" onClick={() => setSubmitState("idle")}>Send another note</Button></div>
+              <div className="success-state"><span><Check /></span><p className="eyebrow"><span>◆</span> BRIEF RECEIVED</p><h3>The next good thing starts here.</h3><p>Thanks for the thoughtful note. I’ll review the idea and get back to you within two working days.</p><Button type="button" variant="outline" className="press" onClick={() => setSubmitState("idle")}>Send another brief</Button></div>
             ) : (
               <>
                 <Field label="Name" error={errors.name}><Input name="name" placeholder="Your name" maxLength={100} aria-invalid={Boolean(errors.name)} /></Field>
                 <Field label="Email" error={errors.email}><Input name="email" type="email" placeholder="you@example.com" maxLength={255} aria-invalid={Boolean(errors.email)} /></Field>
-                <Field label="Project Type" error={errors.project}><Select value={projectType} onValueChange={setProjectType}><SelectTrigger aria-invalid={Boolean(errors.project)}><SelectValue placeholder="Choose one" /></SelectTrigger><SelectContent><SelectItem value="website">Creative website</SelectItem><SelectItem value="product">Digital product</SelectItem><SelectItem value="3d">3D experience</SelectItem><SelectItem value="other">Something else</SelectItem></SelectContent></Select></Field>
-                <Field label="Message" error={errors.message}><Textarea name="message" placeholder="Tell me about the idea..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} /></Field>
-                <Button type="submit" size="lg" className="press h-14 w-full sm:w-auto" disabled={submitState === "loading"}>{submitState === "loading" ? "SENDING…" : "SEND INQUIRY"}<Send /></Button>
-                <p className="text-xs text-muted-foreground">This form validates locally in your browser. It does not send or store your details remotely yet.</p>
+                <Field label="What are we making?" error={errors.project}>
+                  <input type="hidden" name="projectType" value={projectType} />
+                  <div className="contact-type-grid" role="group" aria-label="Choose a project type">
+                    {contactTypes.map(([value, label, detail]) => <button type="button" key={value} className={cn("contact-type", projectType === value && "is-selected")} onClick={() => setProjectType(value)}><b>{label}</b><small>{detail}</small><span>{projectType === value ? "✓" : "↗"}</span></button>)}
+                  </div>
+                </Field>
+                <Field label="What are you imagining?" error={errors.message}><Textarea name="message" placeholder="Tell me about the idea, challenge or feeling you want the experience to create..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} /></Field>
+                <Button type="submit" size="lg" className="press h-14 w-full sm:w-auto contact-submit" disabled={submitState === "loading"}>{submitState === "loading" ? "PREPARING BRIEF…" : "SEND THE BRIEF"}<Send /></Button>
+                <p className="text-xs text-muted-foreground">This is a local-first brief form. Your details are not stored remotely yet.</p>
               </>
             )}
           </form>
