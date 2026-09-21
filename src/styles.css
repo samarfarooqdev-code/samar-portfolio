@@ -547,3 +547,10 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
 @keyframes loading-route { 50% { transform: scaleX(.3); opacity: .45; } }
 @media (max-width: 600px) { .loading-status, .loading-index { bottom: 1rem; font-size: .46rem; }.loading-status { left: 1rem; }.loading-index { right: 1rem; }.loading-route { margin-top: 2rem; gap: .45rem; }.loading-route i { width: 1.5rem; } }
 @media (prefers-reduced-motion: reduce) { .loading-intro-grid, .loading-orb, .loading-route i { animation: none; } }
+
+/* Real tool marks: quiet by default, brand color on interaction */
+.skill-tool .skill-logo { display: block; width: 1.9rem; height: 1.9rem; object-fit: contain; filter: grayscale(1) contrast(.8); opacity: .78; transition: filter .25s ease, opacity .25s ease, transform .25s ease; }
+.skill-tool:hover .skill-logo { filter: grayscale(0) contrast(1); opacity: 1; transform: scale(1.08); }
+.skill-stage-copy h3 { max-width: 39rem; letter-spacing: -.01em; }
+.skill-stage-proof { opacity: .85; }
+.skill-stage-timer { display: block; width: min(100%, 220px); height: 1px; margin-top: 1.4rem; overflow: hidden; background: var(--border); transform-origin: left; }.skill-stage-timer i { display: block; width: 100%; height: 2px; background: var(--primary); transform-origin: left; animation: skill-read 5.6s linear both; } @keyframes skill-read { from { transform: scaleX(0); } to { transform: scaleX(1); } }

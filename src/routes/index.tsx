@@ -198,10 +198,10 @@ const process = [
 ];
 
 const skillStages = [
-  { label: "Think", kicker: "01", description: "Clarifying the idea, audience and the experience it needs to become.", proof: "Strategy · UX direction", tools: [["Discovery", "◎", "Direction"], ["UX thinking", "↗", "Structure"]] },
-  { label: "Design", kicker: "02", description: "Creating a visual language that makes the product feel clear, distinctive and considered.", proof: "Figma · Motion · Visual systems", tools: [["Figma", "F", "UI / UX"], ["Motion", "M", "Interaction"], ["Canva", "C", "Visuals"]] },
-  { label: "Build", kicker: "03", description: "Turning a visual system into responsive, maintainable interfaces that feel great to use.", proof: "React · Next.js · TypeScript", tools: [["React", "R", "Interfaces"], ["Next.js", "N", "Web apps"], ["TypeScript", "TS", "Systems"], ["Tailwind CSS", "TW", "UI systems"]] },
-  { label: "Ship", kicker: "04", description: "Testing, refining and taking the work from a local idea to a reliable live experience.", proof: "Git · GitHub · Vercel", tools: [["Git", "git", "Versioning"], ["GitHub", "GH", "Collaboration"], ["Vercel", "▲", "Deployment"], ["VS Code", "<> ", "Workflow"]] },
+  { label: "Think", kicker: "01", description: "Every strong experience starts with a clear question: who is this for, and what should they feel next?", proof: "Strategy · UX direction", tools: [["Discovery", "◎", "Direction", ""], ["UX thinking", "↗", "Structure", ""]] },
+  { label: "Design", kicker: "02", description: "I shape that direction into a visual language with rhythm, hierarchy and the small details people remember.", proof: "Figma · Motion · Visual systems", tools: [["Figma", "F", "UI / UX", "https://cdn.simpleicons.org/figma"], ["Framer Motion", "M", "Interaction", "https://cdn.simpleicons.org/framer"], ["Canva", "C", "Visuals", "https://cdn.simpleicons.org/canva"]] },
+  { label: "Build", kicker: "03", description: "Then I turn the system into responsive, maintainable interfaces that feel as good to use as they look.", proof: "React · Next.js · TypeScript", tools: [["React", "R", "Interfaces", "https://cdn.simpleicons.org/react"], ["Next.js", "N", "Web apps", "https://cdn.simpleicons.org/nextdotjs"], ["TypeScript", "TS", "Systems", "https://cdn.simpleicons.org/typescript"], ["Tailwind CSS", "TW", "UI systems", "https://cdn.simpleicons.org/tailwindcss"]] },
+  { label: "Ship", kicker: "04", description: "Finally, I refine, test and take the work from a local idea to a reliable experience people can actually use.", proof: "Git · GitHub · Vercel", tools: [["Git", "git", "Versioning", "https://cdn.simpleicons.org/git"], ["GitHub", "GH", "Collaboration", "https://cdn.simpleicons.org/github"], ["Vercel", "▲", "Deployment", "https://cdn.simpleicons.org/vercel"], ["VS Code", "<> ", "Workflow", "https://cdn.simpleicons.org/visualstudiocode"]] },
 ];
 
 type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
@@ -669,7 +669,7 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
 
   useEffect(() => {
     if (reduced) return;
-    const timer = window.setInterval(() => setActiveStage((value) => (value + 1) % skillStages.length), 3200);
+    const timer = window.setInterval(() => setActiveStage((value) => (value + 1) % skillStages.length), 5600);
     return () => window.clearInterval(timer);
   }, [reduced]);
 
@@ -715,15 +715,16 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
             initial={reduced ? { opacity: 0 } : { opacity: 0, x: -16, filter: "blur(5px)" }}
             animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
             exit={reduced ? { opacity: 0 } : { opacity: 0, x: 16, filter: "blur(5px)" }}
-            transition={{ duration: reduced ? .18 : .48, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: reduced ? .18 : .72, ease: [0.2, 0.8, 0.2, 1] }}
           >
             <span className="skill-stage-kicker">{stage.kicker} / {stage.label.toUpperCase()}</span>
             <h3>{stage.description}</h3>
             <p className="skill-stage-proof">{stage.proof}</p>
+            {!reduced && <span className="skill-stage-timer" aria-hidden="true"><i /></span>}
             <div className="skill-tool-list">
-              {stage.tools.map(([name, mark, detail], index) => (
-                <motion.div className="skill-tool" key={name} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .3, delay: reduced ? 0 : index * .06 }} whileHover={reduced ? undefined : { y: -4 }} data-tool={name}>
-                  <span className="skill-mark" aria-hidden="true">{mark}</span><span><b>{name}</b><small>{detail}</small></span><i aria-hidden="true">↗</i>
+              {stage.tools.map(([name, mark, detail, logo], index) => (
+                <motion.div className="skill-tool" key={name} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .42, delay: reduced ? 0 : .18 + index * .11 }} whileHover={reduced ? undefined : { y: -4 }} data-tool={name}>
+                  {logo ? <img className="skill-logo" src={logo} alt="" loading="lazy" /> : <span className="skill-mark" aria-hidden="true">{mark}</span>}<span><b>{name}</b><small>{detail}</small></span><i aria-hidden="true">↗</i>
                 </motion.div>
               ))}
             </div>
