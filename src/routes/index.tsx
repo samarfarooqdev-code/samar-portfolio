@@ -624,12 +624,8 @@ function ProjectStage({
   touch: boolean;
   reduced: boolean;
 }) {
-  const wrapRef = useRef<HTMLDivElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState(false);
-  const { scrollYProgress } = useScroll({ target: wrapRef, offset: ["start end", "end start"] });
-  const scale = useTransform(scrollYProgress, [0, 0.45, 0.85, 1], reduced ? [1, 1, 1, 1] : [0.86, 1, 1, 0.94]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.85, 1], reduced ? [1, 1, 1, 1] : [0.2, 1, 1, 0.35]);
 
   const onPointerMove = (e: React.PointerEvent) => {
     if (touch || reduced) return;
@@ -657,8 +653,8 @@ function ProjectStage({
   };
 
   return (
-    <div className="project-wrap" ref={wrapRef}>
-      <motion.article className="project-sticky" style={{ scale, opacity }}>
+    <div className="project-wrap">
+      <article className="project-sticky">
         <div
           ref={stageRef}
           className={cn("project-stage", `project-${project.visualTheme}`, hover && "is-hover")}
@@ -707,7 +703,7 @@ function ProjectStage({
           </div>
           {index === 0 && <span className="stage-diamond" aria-hidden="true">◆</span>}
         </div>
-      </motion.article>
+      </article>
     </div>
   );
 }
