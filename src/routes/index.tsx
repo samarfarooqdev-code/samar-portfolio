@@ -30,7 +30,7 @@ import {
   useState,
 } from "react";
 
-import avatarAsset from "@/assets/samar-avatar.png.asset.json";
+import profileAvatar from "@/assets/samar-profile-avatar.webp";
 import samarLogo from "@/assets/samar-dev-logo.png?inline";
 import { HeroCanvas } from "@/components/three/Lazy3D";
 import { Button } from "@/components/ui/button";
@@ -367,7 +367,17 @@ function Portfolio() {
             {...enter(0.4)}
           >
             <span className="avatar-label avatar-label-left">BASED IN<br /><b>THE INTERNET</b></span>
-            <img src={avatarAsset.url} alt="3D portrait of Samar Dev wearing a bright orange hoodie" className="avatar-image" />
+            <div className="avatar-frame">
+              <img
+                src={profileAvatar}
+                alt="Illustrated portrait of Samar Dev"
+                className="avatar-image"
+                width={900}
+                height={1125}
+                loading="eager"
+                decoding="async"
+              />
+            </div>
             <span className="avatar-label avatar-label-right">OPEN TO<br /><b>SELECT PROJECTS</b></span>
             <div className="signal-card"><i className="status-dot" /><span>ONLINE</span><b>12:48 UTC</b></div>
           </motion.div>
