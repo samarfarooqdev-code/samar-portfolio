@@ -82,7 +82,7 @@ export const Route = createFileRoute("/")({
   component: Portfolio,
 });
 
-const navItems = ["About", "Projects", "Services", "Process", "Contact"];
+const navItems = ["About", "Skills", "Projects", "Services", "Process", "Contact"];
 const roles = ["CREATIVE FULL-STACK DEVELOPER", "3D WEB EXPERIENCE DESIGNER", "MOTION UI CREATOR"];
 
 const socialLinks = {
@@ -179,6 +179,41 @@ const process = [
   ["Design", "Planning interfaces and experiences"],
   ["Build", "Writing clean, scalable code"],
   ["Refine", "Polish, optimize and perfect"],
+];
+
+const skillGroups = [
+  {
+    label: "Build",
+    description: "The core stack behind fast, responsive interfaces.",
+    skills: [
+      ["HTML5", "</>", "Markup"],
+      ["CSS3", "#", "Styling"],
+      ["JavaScript", "JS", "Logic"],
+      ["TypeScript", "TS", "Systems"],
+      ["React", "R", "Interfaces"],
+      ["Next.js", "N", "Web apps"],
+      ["Tailwind CSS", "TW", "UI systems"],
+    ],
+  },
+  {
+    label: "Shape",
+    description: "Tools for turning direction into a clear visual language.",
+    skills: [
+      ["Figma", "F", "UI / UX"],
+      ["Canva", "C", "Visuals"],
+      ["Motion", "M", "Interaction"],
+    ],
+  },
+  {
+    label: "Ship",
+    description: "A reliable workflow from first commit to live URL.",
+    skills: [
+      ["Git", "git", "Versioning"],
+      ["GitHub", "GH", "Collaboration"],
+      ["Vercel", "▲", "Deployment"],
+      ["VS Code", "<> ", "Workflow"],
+    ],
+  },
 ];
 
 type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
@@ -398,10 +433,12 @@ function Portfolio() {
 
       <AboutSection reduced={reduced} touch={touch} />
 
+      <SkillsSection reduced={reduced} />
+
       <ProjectsSection onOpen={setSelectedProject} touch={touch} reduced={reduced} />
 
       <section id="services" className="section-shell border-t border-border">
-        <SectionIndex number="03" label="Services" aside="Available independently or as one connected engagement." />
+        <SectionIndex number="04" label="Services" aside="Available independently or as one connected engagement." />
         <div className="services-list mt-12 sm:mt-16">
           {services.map(([number, title, description], i) => (
             <motion.div
@@ -423,7 +460,7 @@ function Portfolio() {
 
       <section className="experience-band">
         <div className="section-shell py-0">
-          <SectionIndex number="04" label="Experience" />
+          <SectionIndex number="05" label="Experience" />
           <div className="experience-list mt-12">
             <div><time>NOW</time><h3>1+ Year Hands-on Web Development</h3><p>Building, learning and shipping modern web experiences.</p></div>
           </div>
@@ -431,7 +468,7 @@ function Portfolio() {
       </section>
 
       <section id="process" ref={processRef} className="section-shell border-t border-border">
-        <SectionIndex number="05" label="Process" aside="Clear stages. Close collaboration. No black boxes." />
+        <SectionIndex number="06" label="Process" aside="Clear stages. Close collaboration. No black boxes." />
         <div className="process-layout mt-14">
           <div className="process-rail" aria-hidden="true"><span style={{ transform: `scaleY(${processProgress})` }} /></div>
           <div className="process-steps">
@@ -587,6 +624,72 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
   );
 }
 
+/* ---------- Skills: tool stack with orbiting reveal cards ---------- */
+function SkillsSection({ reduced }: { reduced: boolean }) {
+  return (
+    <section id="skills" className="skills-section section-shell border-t border-border">
+      <SectionIndex number="02" label="Skills" aside="A focused toolkit for thoughtful, production-ready work." />
+      <div className="skills-intro mt-12 sm:mt-16">
+        <motion.div
+          className="skills-lede"
+          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          <p className="eyebrow"><span>◆</span> THE TOOLKIT</p>
+          <h2>Tools that turn<br /><em>ideas into impact.</em></h2>
+        </motion.div>
+        <motion.p
+          className="skills-note"
+          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, delay: 0.12, ease: [0.2, 0.8, 0.2, 1] }}
+        >
+          I keep the stack focused: dependable fundamentals, expressive design tools and a workflow that takes a project all the way to a live URL.
+        </motion.p>
+      </div>
+      <div className="skills-groups">
+        {skillGroups.map((group, groupIndex) => (
+          <div className="skill-group" key={group.label}>
+            <div className="skill-group-heading"><span>0{groupIndex + 1}</span><div><h3>{group.label}</h3><p>{group.description}</p></div></div>
+            <div className="skill-grid">
+              {group.skills.map(([name, mark, detail], index) => (
+                <motion.div
+                  className="skill-card"
+                  key={name}
+                  initial={reduced ? { opacity: 0 } : { opacity: 0, y: 22, scale: .96 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  whileHover={reduced ? undefined : { y: -8, rotate: index % 2 ? 1.2 : -1.2 }}
+                  viewport={{ once: true, margin: "-70px" }}
+                  transition={{ duration: 0.45, delay: index * 0.045, ease: [0.2, 0.8, 0.2, 1] }}
+                >
+                  <span className="skill-mark" aria-hidden="true">{mark}</span>
+                  <span className="skill-name">{name}</span>
+                  <span className="skill-detail">{detail}</span>
+                  <i aria-hidden="true">↗</i>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <motion.div
+        className="skills-proof"
+        initial={reduced ? { opacity: 0 } : { opacity: 0, scaleX: .85 }}
+        whileInView={{ opacity: 1, scaleX: 1 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: .8, ease: [0.2, 0.8, 0.2, 1] }}
+      >
+        <span className="status-dot available" />
+        <strong>Design · Build · Ship</strong>
+        <span>One connected process, from first frame to final deployment.</span>
+      </motion.div>
+    </section>
+  );
+}
+
 /* ---------- Projects: layered sticky stage sequence ---------- */
 function ProjectsSection({
   onOpen,
@@ -600,7 +703,7 @@ function ProjectsSection({
   return (
     <section id="projects" className="projects-section border-t border-border">
       <div className="section-shell pb-0">
-        <SectionIndex number="02" label="Selected projects" aside="Verified work, presented in depth." />
+        <SectionIndex number="03" label="Selected projects" aside="Verified work, presented in depth." />
       </div>
       <div className="project-track">
         {projects.map((project, index) => (
