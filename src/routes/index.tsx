@@ -708,18 +708,27 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
         ))}
       </div>
       <div className="skill-stage-layout">
-        <motion.div className="skill-stage-copy" key={stage.label} initial={reduced ? { opacity: 0 } : { opacity: 0, x: -18 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: .45 }}>
-          <span className="skill-stage-kicker">{stage.kicker} / {stage.label.toUpperCase()}</span>
-          <h3>{stage.description}</h3>
-          <p className="skill-stage-proof">{stage.proof}</p>
-          <div className="skill-tool-list">
-            {stage.tools.map(([name, mark, detail]) => (
-              <motion.div className="skill-tool" key={name} whileHover={reduced ? undefined : { y: -4 }} data-tool={name}>
-                <span className="skill-mark" aria-hidden="true">{mark}</span><span><b>{name}</b><small>{detail}</small></span><i aria-hidden="true">↗</i>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            className="skill-stage-copy"
+            key={stage.label}
+            initial={reduced ? { opacity: 0 } : { opacity: 0, x: -16, filter: "blur(5px)" }}
+            animate={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+            exit={reduced ? { opacity: 0 } : { opacity: 0, x: 16, filter: "blur(5px)" }}
+            transition={{ duration: reduced ? .18 : .48, ease: [0.2, 0.8, 0.2, 1] }}
+          >
+            <span className="skill-stage-kicker">{stage.kicker} / {stage.label.toUpperCase()}</span>
+            <h3>{stage.description}</h3>
+            <p className="skill-stage-proof">{stage.proof}</p>
+            <div className="skill-tool-list">
+              {stage.tools.map(([name, mark, detail], index) => (
+                <motion.div className="skill-tool" key={name} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .3, delay: reduced ? 0 : index * .06 }} whileHover={reduced ? undefined : { y: -4 }} data-tool={name}>
+                  <span className="skill-mark" aria-hidden="true">{mark}</span><span><b>{name}</b><small>{detail}</small></span><i aria-hidden="true">↗</i>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </AnimatePresence>
         <SkillPipeline reduced={reduced} activeStage={activeStage} />
       </div>
       <motion.div
