@@ -183,6 +183,13 @@ const services = [
   ["04", "Motion & prototyping", "Interaction studies that make an idea tangible before it becomes production code."],
 ];
 
+const serviceDetails = [
+  "From structure to final polish: a distinctive digital home for a brand, person or business.",
+  "Useful flows, expressive interfaces and systems that make complex digital products feel simple.",
+  "Immersive layers, 3D moments and spatial storytelling that stay purposeful and performant.",
+  "A faster way to test the feeling before committing to the full build.",
+];
+
 const process = [
   ["Discover", "Finding the sharpest version of the idea and the people it is for."],
   ["Design", "Giving the experience a clear visual language and a confident rhythm."],
@@ -445,35 +452,9 @@ function Portfolio() {
 
       <ProjectsSection onOpen={setSelectedProject} touch={touch} reduced={reduced} />
 
-      <section id="services" className="section-shell border-t border-border">
-        <SectionIndex number="04" label="Services" aside="Available independently or as one connected engagement." />
-        <div className="services-list mt-12 sm:mt-16">
-          {services.map(([number, title, description], i) => (
-            <motion.div
-              className="service-row"
-              key={number}
-              initial={reduced ? { opacity: 0 } : { opacity: 0, y: 34 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.55, delay: i * 0.08, ease: [0.2, 0.8, 0.2, 1] }}
-            >
-              <span>{number}</span><h3>{title}</h3><p>{description}</p>
-              <i className="service-node" aria-hidden="true" />
-              <b className="service-diamond" aria-hidden="true">◆</b>
-              <em className="service-line" aria-hidden="true" />
-            </motion.div>
-          ))}
-        </div>
-      </section>
+      <ServicesSection reduced={reduced} />
 
-      <section className="experience-band">
-        <div className="section-shell py-0">
-          <SectionIndex number="05" label="Experience" />
-          <div className="experience-list mt-12">
-            <div><time>NOW</time><h3>1+ Year Hands-on Web Development</h3><p>Building, learning and shipping modern web experiences.</p></div>
-          </div>
-        </div>
-      </section>
+      <ExperienceSection reduced={reduced} />
 
       <section id="process" ref={processRef} className="section-shell border-t border-border">
         <SectionIndex number="06" label="Process" aside="Clear stages. Close collaboration. No black boxes." />
@@ -642,6 +623,11 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
           <p className="body-copy">I create modern websites, interactive interfaces and immersive 3D web experiences with a focus on performance, usability and visual precision.</p>
           <p className="body-copy location-copy"><span>+</span> Punjab, Pakistan · Working globally</p>
         </div>
+        <div className="about-metrics">
+          <div><strong>01</strong><span>Clear by design</span><small>Every detail earns its place.</small></div>
+          <div><strong>02</strong><span>Built to move</span><small>Motion with meaning, not noise.</small></div>
+          <div><strong>03</strong><span>Ready to ship</span><small>Responsive, refined and live.</small></div>
+        </div>
         <motion.span
           className="signal-draw"
           aria-hidden="true"
@@ -757,6 +743,45 @@ function SkillPipeline({ reduced, activeStage }: { reduced: boolean; activeStage
       <div className="pipeline-line" aria-hidden="true"><i style={{ transform: `scaleX(${Math.max(.2, activeStage / 3)})` }} /></div>
       <p>FROM FIRST FRAME<br /><strong>TO LIVE EXPERIENCE</strong></p>
     </motion.div>
+  );
+}
+
+function ServicesSection({ reduced }: { reduced: boolean }) {
+  const [active, setActive] = useState(0);
+  return (
+    <section id="services" className="services-section section-shell border-t border-border">
+      <SectionIndex number="04" label="What I can bring" aside="Available independently or as one connected engagement." />
+      <div className="services-intro mt-12 sm:mt-16">
+        <motion.h2 className="services-title" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: .65 }}>One idea.<br /><em>Many ways forward.</em></motion.h2>
+        <p>Whether the need is a new digital home, a sharper product flow or a more immersive story, I bring the right mix of thinking, design and build.</p>
+      </div>
+      <div className="services-list premium-services mt-12 sm:mt-16">
+        {services.map(([number, title, description], i) => (
+          <motion.button type="button" className={cn("service-row", active === i && "is-active")} key={number} onClick={() => setActive(i)} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 34 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-80px" }} transition={{ duration: .55, delay: i * .08, ease: [0.2, 0.8, 0.2, 1] }}>
+            <span>{number}</span><h3>{title}</h3><p>{description}</p><i className="service-node" aria-hidden="true" /><b className="service-diamond" aria-hidden="true">◆</b><em className="service-line" aria-hidden="true" />
+            {active === i && <motion.div className="service-detail" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} transition={{ duration: .35 }}><span>THE VALUE</span><strong>{serviceDetails[i]}</strong></motion.div>}
+          </motion.button>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function ExperienceSection({ reduced }: { reduced: boolean }) {
+  return (
+    <section className="experience-band premium-experience">
+      <div className="section-shell py-0">
+        <SectionIndex number="05" label="Experience" aside="A practice built through curiosity, repetition and shipping." />
+        <div className="experience-hero mt-12">
+          <div><span className="experience-kicker">THE RECORD SO FAR</span><h2>Learning fast.<br /><em>Shipping with intent.</em></h2></div>
+          <p>My experience is measured less by a job title and more by the things I have taken from idea to live: restaurant ordering, fashion commerce, heritage storytelling and interactive portfolios.</p>
+        </div>
+        <div className="experience-list premium-experience-list mt-14">
+          <motion.div initial={reduced ? { opacity: 0 } : { opacity: 0, x: -22 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: .6 }}><time>NOW</time><h3>Creative Web Development</h3><p>Building, learning and shipping modern web experiences with a growing focus on motion, clarity and craft.</p><span className="experience-badge">ACTIVE PRACTICE</span></motion.div>
+          <motion.div initial={reduced ? { opacity: 0 } : { opacity: 0, x: -22 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: .6, delay: .12 }}><time>SELECTED</time><h3>Three Live Digital Experiences</h3><p>Restaurant ordering, story-led fashion commerce and a heritage craft portfolio—each with a different visual language.</p><span className="experience-badge">LIVE WORK</span></motion.div>
+        </div>
+      </div>
+    </section>
   );
 }
 
