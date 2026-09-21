@@ -30,7 +30,7 @@ import {
   useState,
 } from "react";
 
-import profileAvatar from "@/assets/samar-profile-avatar.webp";
+import profileAvatar from "@/assets/samar-profile-avatar-transparent.webp";
 import samarLogo from "@/assets/samar-dev-logo.png?inline";
 import { HeroCanvas } from "@/components/three/Lazy3D";
 import { Button } from "@/components/ui/button";
@@ -372,8 +372,8 @@ function Portfolio() {
                 src={profileAvatar}
                 alt="Illustrated portrait of Samar Dev"
                 className="avatar-image"
-                width={900}
-                height={1125}
+                width={1000}
+                height={1000}
                 loading="eager"
                 decoding="async"
               />

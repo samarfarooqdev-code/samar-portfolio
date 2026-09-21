@@ -100,9 +100,8 @@ button { cursor: pointer; }
 .hero-stats { display: grid; max-width: 680px; grid-template-columns: repeat(3,minmax(0,1fr)); border-block: 1px solid var(--border); }
 .hero-stats div { display: grid; gap: .2rem; padding: 1rem .8rem; border-right: 1px solid var(--border); }
 .hero-stats div:last-child { border-right: 0; }.hero-stats b { font-size: .7rem; text-transform: uppercase; }.hero-stats span { color: var(--muted-foreground); font-size: .62rem; line-height: 1.4; }
-.avatar-frame { position: relative; z-index: 2; width: min(100%, 520px); aspect-ratio: 4 / 5; overflow: hidden; border: 1px solid color-mix(in oklab, var(--foreground) 22%, transparent); border-radius: 1.4rem 1.4rem .35rem .35rem; background: var(--foreground); box-shadow: 0 28px 60px color-mix(in oklab, var(--foreground) 22%, transparent); }
-.avatar-frame::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 60%, color-mix(in oklab, var(--foreground) 30%, transparent)); }
-.avatar-image { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center center; filter: saturate(.92) contrast(1.02); animation: float 5s ease-in-out infinite; }
+.avatar-frame { position: relative; z-index: 2; width: min(100%, 590px); aspect-ratio: 1; overflow: visible; background: transparent; }
+.avatar-image { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 25px 24px color-mix(in oklab, var(--foreground) 18%, transparent)); animation: float 5s ease-in-out infinite; }
 .peach-glow { position: absolute; z-index: -1; left: 50%; top: 52%; width: min(56vw, 800px); aspect-ratio: 1; transform: translate(-27%, -45%); border-radius: 50%; background: radial-gradient(circle, color-mix(in oklab, var(--peach) 65%, transparent), transparent 68%); filter: blur(10px); }
 .wire-room { position: absolute; z-index: -2; inset: 13% 2% 4% 38%; overflow: hidden; opacity: .32; perspective: 550px; }
 .wire-room::before, .wire-room::after, .wire-room span { content: ""; position: absolute; border: 1px solid var(--foreground); }
@@ -389,7 +388,7 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
   .hero-grid { grid-template-columns: 1fr; gap: 1rem; }
   .hero-copy { padding-inline: .25rem; }
   .avatar-stage { min-height: 420px !important; margin-top: .5rem; }
-  .avatar-frame { width: min(78vw, 390px); }
+  .avatar-frame { width: min(82vw, 410px); }
   .avatar-label { font-size: .5rem; }
   .avatar-label-left { left: 0; }
   .avatar-label-right { right: 0; }
