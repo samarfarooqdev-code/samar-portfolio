@@ -1,5 +1,5 @@
 import { ClientOnly } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 const HeroScene = lazy(() => import("./HeroScene"));
 
@@ -8,7 +8,7 @@ function hasWebGL() {
     const canvas = document.createElement("canvas");
     return Boolean(
       window.WebGLRenderingContext &&
-        (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")),
+      (canvas.getContext("webgl") || canvas.getContext("experimental-webgl")),
     );
   } catch {
     return false;
@@ -45,9 +45,27 @@ export function HeroCanvas() {
 function HeroCanvasInner() {
   const ok = useWebGL();
   if (ok === false) return <GridFallback />;
+  return <HeroCanvasViewport ok={ok} />;
+}
+
+function HeroCanvasViewport({ ok }: { ok: boolean | null }) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(true);
+
+  useEffect(() => {
+    const element = wrapRef.current;
+    if (!element) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setActive(entry?.isIntersecting ?? false),
+      { rootMargin: "160px 0px" },
+    );
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="hero-canvas-wrap" aria-hidden="true">
-      <Suspense fallback={<GridFallback />}>{ok ? <HeroScene /> : null}</Suspense>
+    <div ref={wrapRef} className="hero-canvas-wrap" aria-hidden="true">
+      <Suspense fallback={<GridFallback />}>{ok ? <HeroScene active={active} /> : null}</Suspense>
     </div>
   );
 }

@@ -232,7 +232,7 @@ function SignalField({ count = 90 }: { count?: number }) {
   useFrame((state, dt) => {
     if (!ref.current) return;
     ref.current.rotation.y += dt * 0.012;
-    const pos = ref.current.geometry.attributes['position'] as THREE.BufferAttribute;
+    const pos = ref.current.geometry.attributes["position"] as THREE.BufferAttribute;
     const t = state.clock.elapsedTime;
     for (let i = 0; i < pos.count; i += 7) {
       pos.setY(i, pos.getY(i) + Math.sin(t + i) * dt * 0.12);
@@ -322,14 +322,14 @@ function SceneContents({ reduced, mobile }: { reduced: boolean; mobile: boolean 
   );
 }
 
-export default function HeroScene() {
+export default function HeroScene({ active = true }: { active?: boolean }) {
   const reduced =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   const mobile = typeof window !== "undefined" && window.innerWidth < 768;
   return (
     <Canvas
       className="hero-canvas"
+      frameloop={active ? "always" : "never"}
       camera={{ position: [0, 0, 8], fov: 55 }}
       dpr={[1, mobile ? 1.3 : 1.8]}
       gl={{ antialias: !mobile, alpha: true }}

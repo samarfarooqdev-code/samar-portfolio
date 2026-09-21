@@ -238,10 +238,10 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
 /* Projects: layered sticky stages */
 .projects-section { position: relative; }
 .project-track { position: relative; }
-.project-wrap { position: relative; height: 200vh; }
+.project-wrap { position: relative; height: 200vh; contain: layout; }
 .project-sticky { position: sticky; top: 0; display: grid; min-height: 100vh; align-content: center; padding: 5rem 1.25rem; background: var(--background); }
 @media (min-width: 1024px) { .project-sticky { padding: 5rem 4rem; } }
-.project-stage { position: relative; overflow: hidden; display: grid; grid-template-columns: 1.15fr .85fr; min-height: 68vh; border: 1px solid var(--border); transform: perspective(1400px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); transition: transform .4s cubic-bezier(.2,.8,.2,1), box-shadow .4s; box-shadow: 0 24px 70px color-mix(in oklab,var(--foreground) 10%, transparent); }
+.project-stage { position: relative; overflow: hidden; display: grid; grid-template-columns: 1.15fr .85fr; min-height: 68vh; border: 1px solid var(--border); transform: perspective(1400px) translateZ(0) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)); transition: transform .28s cubic-bezier(.2,.8,.2,1), box-shadow .28s; box-shadow: 0 24px 70px color-mix(in oklab,var(--foreground) 10%, transparent); backface-visibility: hidden; contain: layout paint; }
 .project-stage.is-hover { box-shadow: 0 34px 90px color-mix(in oklab,var(--foreground) 18%, transparent); }
 .project-hit { position: absolute; inset: 0; z-index: 5; background: transparent; border: 0; }
 .stage-sweep { position: absolute; inset: 0; z-index: 2; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(600px circle at var(--sweep-x,50%) 40%, color-mix(in oklab, white 55%, transparent), transparent 60%); mix-blend-mode: soft-light; }
@@ -267,6 +267,13 @@ footer { border-top: 1px solid var(--border); }footer p { font-size: .72rem; col
 .live-project:hover svg { transform: translate(4px,-4px); }
 .project-stage:focus-within { outline: 2px solid var(--primary); outline-offset: 4px; }
 .project-stage .project-grid-lines { z-index: 1; }
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .project-wrap { contain: layout; }
+  .project-stage { transform: translateZ(0) !important; transition: none; box-shadow: 0 16px 38px color-mix(in oklab,var(--foreground) 8%, transparent); }
+  .stage-sweep, .stage-float-label { display: none; }
+  .stage-art *, .project-grid-lines { transition: none !important; }
+}
 
 .project-restaurant { background: var(--restaurant-espresso); color: var(--restaurant-cream); }
 .project-restaurant .project-grid-lines { opacity: .08; background-image: linear-gradient(var(--restaurant-cream) 1px, transparent 1px), linear-gradient(90deg, var(--restaurant-cream) 1px, transparent 1px); }
