@@ -670,6 +670,7 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
           <i className="ao-ring" /><i className="ao-ring two" /><i className="ao-ring three" />
           <b className="ao-node" /><b className="ao-node two" />
           <span className="ao-diamond">◆</span>
+          <div className="about-orbit-caption"><span>01 / POV</span><strong>MAKE IT<br /><em>MEMORABLE.</em></strong></div>
         </div>
       </div>
     </section>
@@ -1042,16 +1043,16 @@ function ContactScene(props: {
               <div className="success-state"><span><Check /></span><p className="eyebrow"><span>◆</span> BRIEF RECEIVED</p><h3>The next good thing starts here.</h3><p>Thanks for the thoughtful note. I’ll review the idea and get back to you within two working days.</p><Button type="button" variant="outline" className="press" onClick={() => setSubmitState("idle")}>Send another brief</Button></div>
             ) : (
               <>
-                <Field label="Name" error={errors.name}><Input name="name" placeholder="Your name" maxLength={100} aria-invalid={Boolean(errors.name)} /></Field>
-                <Field label="Email" error={errors.email}><Input name="email" type="email" placeholder="you@example.com" maxLength={255} aria-invalid={Boolean(errors.email)} /></Field>
-                <Field label="What are we making?" error={errors.project}>
+                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .05 }}><Field label="Name" error={errors.name}><Input name="name" placeholder="Your name" maxLength={100} aria-invalid={Boolean(errors.name)} /></Field></motion.div>
+                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .12 }}><Field label="Email" error={errors.email}><Input name="email" type="email" placeholder="you@example.com" maxLength={255} aria-invalid={Boolean(errors.email)} /></Field></motion.div>
+                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .19 }}><Field label="What are we making?" error={errors.project}>
                   <input type="hidden" name="projectType" value={projectType} />
                   <div className="contact-type-grid" role="group" aria-label="Choose a project type">
                     {contactTypes.map(([value, label, detail]) => <button type="button" key={value} className={cn("contact-type", projectType === value && "is-selected")} onClick={() => setProjectType(value)}><b>{label}</b><small>{detail}</small><span>{projectType === value ? "✓" : "↗"}</span></button>)}
                   </div>
-                </Field>
-                <Field label="What are you imagining?" error={errors.message}><Textarea name="message" placeholder="Tell me about the idea, challenge or feeling you want the experience to create..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} /></Field>
-                <Button type="submit" size="lg" className="press h-14 w-full sm:w-auto contact-submit" disabled={submitState === "loading"}>{submitState === "loading" ? "PREPARING BRIEF…" : "SEND THE BRIEF"}<Send /></Button>
+                </Field></motion.div>
+                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .26 }}><Field label="What are you imagining?" error={errors.message}><Textarea name="message" placeholder="Tell me about the idea, challenge or feeling you want the experience to create..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} /></Field></motion.div>
+                <motion.div className="contact-submit-wrap" whileHover={submitState === "loading" ? undefined : { y: -3 }} whileTap={submitState === "loading" ? undefined : { scale: .98 }}><Button type="submit" size="lg" className="press h-14 w-full sm:w-auto contact-submit" disabled={submitState === "loading"}>{submitState === "loading" ? <><span className="submit-spinner" /> PREPARING BRIEF…</> : <>SEND THE BRIEF <Send /></>}</Button></motion.div>
                 <p className="text-xs text-muted-foreground">This is a local-first brief form. Your details are not stored remotely yet.</p>
               </>
             )}
