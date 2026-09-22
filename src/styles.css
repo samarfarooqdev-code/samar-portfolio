@@ -685,3 +685,88 @@ html, body { transition: background-color .45s ease, color .45s ease; }
 .dark .skip-link { background: var(--foreground); color: var(--background); }
 
 .form-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important; }
+
+/* ====== Final hero + project responsive refinement ====== */
+.hero-copy { max-width: 760px; }
+.hero-title { text-wrap: balance; }
+.hero-title em { text-wrap: balance; }
+.role-line strong { opacity: 1; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.hero-stats { background: color-mix(in oklab, var(--background) 35%, transparent); backdrop-filter: blur(8px); }
+.avatar-frame { filter: drop-shadow(0 28px 34px color-mix(in oklab, var(--primary) 13%, transparent)); }
+.project-stage { min-height: 64vh; }
+.project-stage::after { content: ""; position: absolute; inset: auto 0 0; z-index: 2; height: 30%; pointer-events: none; background: linear-gradient(transparent, color-mix(in oklab, var(--foreground) 10%, transparent)); opacity: .32; }
+
+@media (min-width: 901px) {
+  .hero-copy { padding-top: 2.5rem; }
+  .hero-title { max-width: 700px; font-size: clamp(4.4rem, 6.4vw, 7.25rem); }
+  .avatar-stage { padding-left: 2rem; }
+  .avatar-frame { width: min(100%, 620px); }
+  .hero-project-signal { max-width: 680px; }
+}
+
+@media (max-width: 900px) {
+  .hero-editorial-meta, .hero .crosshair { display: none; }
+  .hero-grid { padding-top: 1rem; }
+  .hero-copy { padding-inline: 0; }
+  .hero-title { max-width: 680px; }
+  .hero-actions { width: 100%; }
+  .hero-actions > div { flex: 1 1 12rem; }
+  .hero-actions .hero-cta { width: 100%; }
+  .avatar-stage { padding-top: 1.25rem; }
+  .project-stage { min-height: 0; }
+}
+
+@media (max-width: 600px) {
+  .hero { min-height: 790px; padding-top: 7rem; padding-bottom: 1.25rem; }
+  .hero-grid { gap: .25rem; }
+  .hero-copy { display: flex; flex-direction: column; }
+  .hero-copy .eyebrow { margin-bottom: 1.1rem; font-size: .58rem; }
+  .hero-title { font-size: clamp(3.05rem, 13.5vw, 4.8rem); line-height: .91; letter-spacing: -.025em; }
+  .signature-line { margin-top: 1rem; font-size: 1.12rem; line-height: 1.05; }
+  .role-line { min-height: 2.5rem; margin-top: 1rem; }
+  .role-line strong { display: block; color: var(--primary); font-size: .78rem; letter-spacing: .04em; opacity: 1 !important; }
+  .hero-copy > p.text-base { margin-top: 1rem; font-size: .88rem; line-height: 1.6; }
+  .hero-actions { margin-top: 1.2rem; gap: .6rem; }
+  .hero-actions > div { flex-basis: 100%; }
+  .hero-actions .hero-cta { min-height: 3.25rem; font-size: .66rem; }
+  .hero-stats { margin-top: 1.15rem; }
+  .hero-stats div { padding-block: .65rem; }
+  .avatar-stage { min-height: 265px; margin-top: .15rem; padding-top: 0; }
+  .avatar-frame { width: min(100%, 300px); aspect-ratio: .86; }
+  .avatar-image { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+  .signal-card { right: .35rem; bottom: 1%; transform: scale(.82); transform-origin: bottom right; }
+  .scroll-cue { margin-top: .2rem; padding-top: .7rem; font-size: .58rem; }
+
+  /* Mobile projects: compact cards instead of desktop sticky scroll scenes. */
+  .project-track { display: grid; gap: 1rem; padding: 0 1rem 3rem; }
+  .project-wrap { height: auto; contain: layout paint; }
+  .project-sticky { position: relative; top: auto; min-height: 0; padding: 0; background: transparent; }
+  .project-stage { display: grid; grid-template-columns: 1fr; min-height: 0; border-radius: .25rem; box-shadow: 0 16px 38px color-mix(in oklab,var(--foreground) 10%, transparent); }
+  .stage-art { min-height: 0; height: auto; aspect-ratio: 1.08 / 1; }
+  .stage-number { left: .9rem; top: .9rem; }
+  .stage-panel { min-height: 0; padding: 1.2rem; border-top: 1px solid var(--border); border-left: 0; }
+  .stage-panel h3 { margin-top: 1rem; font-size: clamp(2.5rem, 14vw, 4rem); }
+  .stage-summary { margin-top: .8rem; font-size: .84rem; line-height: 1.55; }
+  .preview-label { font-size: .44rem; }
+  .project-actions { width: 100%; justify-content: stretch; gap: .55rem; }
+  .project-actions .view-project, .project-actions .live-project { flex: 1 1 50%; justify-content: center; min-height: 42px; padding-inline: .55rem; font-size: .57rem; }
+  .project-stage::after { height: 18%; opacity: .2; }
+  .stage-art .restaurant-menu-card, .stage-art .restaurant-cart-card, .stage-art .restaurant-hours-card, .stage-art .fashion-product-card, .stage-art .fashion-guide-card, .stage-art .heritage-detail-card { transform: scale(.82); transform-origin: bottom left; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-stage::after { display: none; }
+}
+
+@media (max-width: 600px) {
+  .hero-grid { position: relative; }
+  .hero-copy { position: relative; z-index: 3; }
+  .avatar-stage { position: absolute; z-index: 1; top: 25.5rem; right: -.65rem; width: 54%; min-height: 255px; margin: 0; padding: 0; pointer-events: none; }
+  .avatar-stage .avatar-frame { width: 100%; opacity: .92; }
+  .avatar-stage .signal-card { display: none; }
+  .hero-copy > p.text-base, .hero-actions, .hero-stats, .hero-project-signal { position: relative; z-index: 4; }
+  .hero-copy > p.text-base { max-width: 78%; }
+  .hero-stats { width: 78%; }
+  .hero-project-signal { width: 78%; }
+}
