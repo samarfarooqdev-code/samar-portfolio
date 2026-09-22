@@ -879,6 +879,17 @@ function ProjectStage({
     }
   };
 
+  const artReveal = reduced
+    ? { initial: { opacity: 0 }, whileInView: { opacity: 1 } }
+    : touch
+      ? { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 } }
+      : { initial: { opacity: 0, x: index % 2 === 0 ? -54 : 54 }, whileInView: { opacity: 1, x: 0 } };
+  const panelReveal = reduced
+    ? { initial: { opacity: 0 }, whileInView: { opacity: 1 } }
+    : touch
+      ? { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 } }
+      : { initial: { opacity: 0, x: index % 2 === 0 ? 44 : -44 }, whileInView: { opacity: 1, x: 0 } };
+
   return (
     <div className="project-wrap">
       <article className="project-sticky">
@@ -898,10 +909,10 @@ function ProjectStage({
           </button>
           <div className="project-grid-lines" aria-hidden="true" />
           <span className="stage-sweep" aria-hidden="true" />
-          <div className="stage-art">
+          <motion.div className="stage-art" {...artReveal} viewport={{ once: true, margin: "-15% 0px" }} transition={{ duration: reduced ? .2 : .78, delay: reduced ? 0 : .06, ease: [0.2, 0.8, 0.2, 1] }}>
             <ProjectArtwork project={project} />
-          </div>
-          <span className="stage-number">{project.number}</span>
+          </motion.div>
+          <motion.span className="stage-number" initial={reduced ? { opacity: 0 } : { opacity: 0, scale: .7 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ duration: .45, delay: .2 }}>{project.number}</motion.span>
           <span className="stage-crosshair one" aria-hidden="true" />
           <span className="stage-crosshair two" aria-hidden="true" />
           <motion.span
@@ -913,7 +924,7 @@ function ProjectStage({
           >
             VIEW CASE STUDY ↗
           </motion.span>
-          <div className="stage-panel">
+          <motion.div className="stage-panel" {...panelReveal} viewport={{ once: true, margin: "-15% 0px" }} transition={{ duration: reduced ? .2 : .78, delay: reduced ? 0 : .18, ease: [0.2, 0.8, 0.2, 1] }}>
             <div className="flex items-center justify-between gap-4">
               <span className="eyebrow">{project.category}</span>
               <span className="preview-label">ART-DIRECTED PROJECT PREVIEW</span>
@@ -927,7 +938,7 @@ function ProjectStage({
                 <a className="live-project press" href={project.liveUrl} target="_blank" rel="noreferrer">VISIT LIVE SITE <ArrowUpRight className="arrow-icon" /></a>
               </div>
             </div>
-          </div>
+          </motion.div>
           {index === 0 && <span className="stage-diamond" aria-hidden="true">◆</span>}
         </div>
       </article>
