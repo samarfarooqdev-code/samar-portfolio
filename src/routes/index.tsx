@@ -433,6 +433,8 @@ function Portfolio() {
         </motion.div>
         <motion.div className="peach-glow" {...enter(0.25)} />
         <div className="crosshair crosshair-one" aria-hidden="true" />
+        <motion.div className="hero-editorial-meta hero-meta-top" {...enter(0.35)}><span>CREATIVE SYSTEM / 001</span><i /></motion.div>
+        <motion.div className="hero-editorial-meta hero-meta-side" {...enter(0.45)}><span>31.5204° N<br />74.3587° E</span><b>BUILDING FROM PAKISTAN</b></motion.div>
         <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
           <motion.div className="hero-copy self-center pb-4 lg:pb-14" style={{ y: heroCopyY }}>
             <motion.p className="eyebrow mb-5" {...enter(0.55)}><span>◆</span> SAMAR DEV · CREATIVE DEVELOPER</motion.p>
