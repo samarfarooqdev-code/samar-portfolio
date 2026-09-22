@@ -436,11 +436,13 @@ function Portfolio() {
         <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
           <motion.div className="hero-copy self-center pb-4 lg:pb-14" style={{ y: heroCopyY }}>
             <motion.p className="eyebrow mb-5" {...enter(0.55)}><span>◆</span> SAMAR DEV · CREATIVE DEVELOPER</motion.p>
-            <motion.h1 className="hero-title hero-statement" {...enter(0.6)}>I’m born to build <em>immersive web experiences.</em></motion.h1>
-            <motion.p className="signature-line" {...enter(0.66)}>Code with a point of view.</motion.p>
+            <motion.h1 className="hero-title hero-statement" {...enter(0.6)}>I build digital<br /><em>experiences with<br />a point of view.</em></motion.h1>
+            <motion.p className="signature-line" {...enter(0.66)}>Design with intent. Build with character.</motion.p>
             <motion.div className="role-line mt-5" {...enter(0.7)}><strong key={roleIndex}>{roles[roleIndex]}</strong></motion.div>
-            <motion.p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg" {...enter(0.74)}>I bridge clean engineering and bold visual design to create digital experiences that people remember.</motion.p>
-            <motion.div className="hero-stats mt-8" {...enter(0.8)}><div><b>1+ Year</b><span>Hands-on development</span></div><div><b>Global-ready</b><span>Built for connected audiences</span></div><div><b>Selected work</b><span>Projects with a point of view</span></div></motion.div>
+            <motion.p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg" {...enter(0.74)}>I combine thoughtful design, clean frontend engineering and meaningful motion to turn ideas into live experiences people remember.</motion.p>
+            <motion.div className="hero-actions" {...enter(0.78)}><Button size="lg" className="press cta-arrow" onClick={() => scrollTo("Projects")}>EXPLORE THE WORK <ArrowUpRight className="arrow-icon" /></Button><Button size="lg" variant="outline" className="press cta-arrow" onClick={() => scrollTo("Contact")}>START A CONVERSATION <ArrowUpRight className="arrow-icon" /></Button></motion.div>
+            <motion.div className="hero-stats mt-8" {...enter(0.82)}><div><b>03</b><span>Live experiences</span></div><div><b>04</b><span>Creative disciplines</span></div><div><b>01</b><span>Connected workflow</span></div></motion.div>
+            <motion.div className="hero-project-signal" {...enter(0.88)}><span>SELECTED WORK / 02</span><strong>Dastan-e-Nysa</strong><small>Story-led fashion commerce</small><button onClick={() => setSelectedProject(projects[1]!)}>VIEW CASE STUDY <ArrowUpRight className="arrow-icon" /></button></motion.div>
           </motion.div>
           <motion.div
             className="avatar-stage relative flex min-h-[390px] items-end justify-center sm:min-h-[520px] lg:min-h-[650px]"
@@ -467,6 +469,8 @@ function Portfolio() {
       </section>
 
       <Ticker reduced={reduced} />
+
+      <FeaturedWorkStrip reduced={reduced} onOpen={setSelectedProject} />
 
       <AboutSection reduced={reduced} touch={touch} />
 
@@ -925,6 +929,21 @@ function ProjectStage({
         </div>
       </article>
     </div>
+  );
+}
+
+function FeaturedWorkStrip({ reduced, onOpen }: { reduced: boolean; onOpen: (project: Project) => void }) {
+  return (
+    <section className="featured-strip section-shell" aria-label="Selected work preview">
+      <div className="featured-strip-head"><p className="eyebrow"><span>◆</span> SELECTED WORK</p><span>THREE POINTS OF VIEW / 2026</span></div>
+      <div className="featured-work-grid">
+        {projects.map((project, index) => (
+          <motion.button type="button" className={cn("featured-work-card", `featured-${project.visualTheme}`)} key={project.id} onClick={() => onOpen(project)} initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: "-60px" }} transition={{ duration: .55, delay: index * .08 }}>
+            <span className="featured-number">{project.number}</span><span className="featured-category">{project.category.split(" · ")[0]}</span><strong>{project.title.split(" — ")[0]}</strong><small>{project.tags[0]} · {project.tags[1]}</small><i>VIEW CASE STUDY ↗</i>
+          </motion.button>
+        ))}
+      </div>
+    </section>
   );
 }
 
