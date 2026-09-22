@@ -652,3 +652,8 @@ html, body { transition: background-color .45s ease, color .45s ease; }
 .avatar-image { filter: drop-shadow(0 26px 22px color-mix(in oklab, var(--foreground) 24%, transparent)); }
 @keyframes avatar-halo { 0%, 100% { opacity: .58; transform: scale(1.04); } 50% { opacity: .82; transform: scale(1.1); } }
 @media (prefers-reduced-motion: reduce) { .avatar-frame::before { animation: none; } }
+
+/* Portrait avatar responsive framing */
+.avatar-frame { width: min(100%, 540px); aspect-ratio: .72; }
+@media (max-width: 900px) { .avatar-frame { width: min(82vw, 430px); aspect-ratio: .68; } }
+@media (max-width: 600px) { .avatar-frame { width: min(84vw, 390px); aspect-ratio: .7; } .avatar-label-left { left: -1%; } .avatar-label-right { right: -1%; } }
