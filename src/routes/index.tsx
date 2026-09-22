@@ -66,12 +66,23 @@ export const Route = createFileRoute("/")({
           "High-performance websites, interactive interfaces, and immersive 3D web experiences by Samar Dev.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://samar-dev.vercel.app/" },
+      { property: "og:image", content: "https://samar-dev.vercel.app/og-image.png" },
+      { property: "og:image:alt", content: "Samar Dev — Creative developer portfolio" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Samar Dev — Creative Developer" },
+      { name: "twitter:description", content: "Design-led websites, interactive interfaces and immersive web experiences." },
+      { name: "twitter:image", content: "https://samar-dev.vercel.app/og-image.png" },
+      { name: "author", content: "Samar Dev" },
+      { name: "theme-color", content: "#f5f1e9" },
     ],
     links: [
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
       { rel: "icon", href: "/favicon.png", type: "image/png" },
       { rel: "apple-touch-icon", href: "/favicon-apple.png" },
+      { rel: "canonical", href: "https://samar-dev.vercel.app/" },
     ],
   }),
   component: Portfolio,
@@ -241,6 +252,8 @@ function Portfolio() {
   const processRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const [processProgress, setProcessProgress] = useState(0);
+  const formStartedAt = useRef(Date.now());
+  const lastSubmitAt = useRef(0);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("samar-theme");
@@ -354,13 +367,18 @@ function Portfolio() {
     const name = String(data.get("name") ?? "").trim();
     const email = String(data.get("email") ?? "").trim();
     const message = String(data.get("message") ?? "").trim();
+    const honeypot = String(data.get("website") ?? "").trim();
+    if (honeypot) return;
     const nextErrors: Errors = {};
+    if (Date.now() - formStartedAt.current < 1800) nextErrors.message = "Please take a moment to review the brief before sending.";
+    if (Date.now() - lastSubmitAt.current < 30000) nextErrors.message = "Please wait a moment before sending another brief.";
     if (name.length < 2) nextErrors.name = "Please share your name.";
     if (!/^\S+@\S+\.\S+$/.test(email)) nextErrors.email = "Enter a valid email address.";
     if (!projectType) nextErrors.project = "Choose a project type.";
     if (message.length < 20) nextErrors.message = "Tell me a little more (at least 20 characters).";
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
+    lastSubmitAt.current = Date.now();
     setSubmitState("loading");
     window.setTimeout(() => {
       setSubmitState("success");
@@ -380,12 +398,14 @@ function Portfolio() {
 
   return (
     <main
+      id="main-content"
       className="custom-cursor overflow-clip bg-background text-foreground"
       style={{
         "--cursor-default": `url(${cursorArrow}) 3 3, auto`,
         "--cursor-pointer": `url(${cursorPointer}) 3 3, pointer`,
       } as CSSProperties}
     >
+      <a className="skip-link" href="#about">Skip to main content</a>
       <AnimatePresence>{showIntro && <LoadingIntro reduced={reduced} />}</AnimatePresence>
       <motion.header
         className={cn("site-header", scrolled && "is-scrolled")}
@@ -397,7 +417,7 @@ function Portfolio() {
           </button>
           <nav className="hidden items-center gap-1 sm:flex" aria-label="Main navigation">
             {navItems.map((item) => (
-              <button key={item} onClick={() => scrollTo(item)} className={cn("nav-link", activeSection === item && "is-active")}>
+              <button key={item} onClick={() => scrollTo(item)} className={cn("nav-link", activeSection === item && "is-active")} aria-current={activeSection === item ? "location" : undefined}>
                 {item}
               </button>
             ))}
@@ -421,7 +441,7 @@ function Portfolio() {
               exit={{ opacity: 0, y: -10, scale: 0.97 }}
               transition={{ duration: 0.22, ease: [0.2, 0.8, 0.2, 1] }}
             >
-              {navItems.map((item) => <button key={item} onClick={() => scrollTo(item)}>{item}<ChevronRight className="arrow-icon" /></button>)}
+              {navItems.map((item) => <button key={item} onClick={() => scrollTo(item)} aria-current={activeSection === item ? "location" : undefined}>{item}<ChevronRight className="arrow-icon" /></button>)}
             </motion.nav>
           )}
         </AnimatePresence>
@@ -1049,20 +1069,21 @@ function ContactScene(props: {
               <div><b>Idea</b><i /></div><div><b>Direction</b><i /></div><div><b>Experience</b><i /></div><div><b>Live</b></div>
             </div>
           </div>
-          <form className="contact-form" onSubmit={onSubmit} noValidate>
+          <form className="contact-form" onSubmit={onSubmit} noValidate aria-busy={submitState === "loading"}>
             {submitState === "success" ? (
-              <div className="success-state"><span><Check /></span><p className="eyebrow"><span>◆</span> BRIEF RECEIVED</p><h3>The next good thing starts here.</h3><p>Thanks for the thoughtful note. I’ll review the idea and get back to you within two working days.</p><Button type="button" variant="outline" className="press" onClick={() => setSubmitState("idle")}>Send another brief</Button></div>
+              <div className="success-state" role="status" aria-live="polite"><span><Check /></span><p className="eyebrow"><span>◆</span> BRIEF RECEIVED</p><h3>The next good thing starts here.</h3><p>Thanks for the thoughtful note. I’ll review the idea and get back to you within two working days.</p><Button type="button" variant="outline" className="press" onClick={() => setSubmitState("idle")}>Send another brief</Button></div>
             ) : (
               <>
-                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .05 }}><Field label="Name" error={errors.name}><Input name="name" placeholder="Your name" maxLength={100} aria-invalid={Boolean(errors.name)} /></Field></motion.div>
-                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .12 }}><Field label="Email" error={errors.email}><Input name="email" type="email" placeholder="you@example.com" maxLength={255} aria-invalid={Boolean(errors.email)} /></Field></motion.div>
+                <input className="form-honeypot" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .05 }}><Field label="Name" error={errors.name} errorId="name-error"><Input name="name" autoComplete="name" placeholder="Your name" maxLength={100} aria-invalid={Boolean(errors.name)} aria-describedby={errors.name ? "name-error" : undefined} /></Field></motion.div>
+                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .12 }}><Field label="Email" error={errors.email} errorId="email-error"><Input name="email" type="email" autoComplete="email" placeholder="you@example.com" maxLength={255} aria-invalid={Boolean(errors.email)} aria-describedby={errors.email ? "email-error" : undefined} /></Field></motion.div>
                 <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .19 }}><Field label="What are we making?" error={errors.project}>
                   <input type="hidden" name="projectType" value={projectType} />
                   <div className="contact-type-grid" role="group" aria-label="Choose a project type">
-                    {contactTypes.map(([value, label, detail]) => <button type="button" key={value} className={cn("contact-type", projectType === value && "is-selected")} onClick={() => setProjectType(value)}><b>{label}</b><small>{detail}</small><span>{projectType === value ? "✓" : "↗"}</span></button>)}
+                    {contactTypes.map(([value, label, detail]) => <button type="button" key={value} className={cn("contact-type", projectType === value && "is-selected")} onClick={() => setProjectType(value)} aria-pressed={projectType === value}><b>{label}</b><small>{detail}</small><span aria-hidden="true">{projectType === value ? "✓" : "↗"}</span></button>)}
                   </div>
                 </Field></motion.div>
-                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .26 }}><Field label="What are you imagining?" error={errors.message}><Textarea name="message" placeholder="Tell me about the idea, challenge or feeling you want the experience to create..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} /></Field></motion.div>
+                <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .26 }}><Field label="What are you imagining?" error={errors.message} errorId="message-error"><Textarea name="message" placeholder="Tell me about the idea, challenge or feeling you want the experience to create..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "message-error" : undefined} /></Field></motion.div>
                 <motion.div className="contact-submit-wrap" whileHover={submitState === "loading" ? undefined : { y: -3 }} whileTap={submitState === "loading" ? undefined : { scale: .98 }}><Button type="submit" size="lg" className="press h-14 w-full sm:w-auto contact-submit" disabled={submitState === "loading"}>{submitState === "loading" ? <><span className="submit-spinner" /> PREPARING BRIEF…</> : <>SEND THE BRIEF <Send /></>}</Button></motion.div>
                 <p className="text-xs text-muted-foreground">This is a local-first brief form. Your details are not stored remotely yet.</p>
               </>
@@ -1130,8 +1151,8 @@ function SectionIndex({ number, label, aside }: { number: string; label: string;
   return <div className="section-index"><p><span>{number}</span> {label}</p>{aside && <p>{aside}</p>}<span className="section-line" /></div>;
 }
 
-function Field({ label, error, children }: { label: string; error?: string | undefined; children: React.ReactNode }) {
-  return <label className="field"><span>{label}</span>{children}{error && <small>{error}</small>}</label>;
+function Field({ label, error, errorId, children }: { label: string; error?: string | undefined; errorId?: string; children: React.ReactNode }) {
+  return <label className="field"><span>{label}</span>{children}{error && <small id={errorId} role="alert">{error}</small>}</label>;
 }
 
 function ProjectArtwork({ project, compact = false }: { project: Project; compact?: boolean }) {

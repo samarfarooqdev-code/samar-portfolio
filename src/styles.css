@@ -676,3 +676,12 @@ html, body { transition: background-color .45s ease, color .45s ease; }
 /* Mobile audit fixes: keep editorial sections single-column and readable */
 @media (max-width: 900px) { .grid-section { grid-template-columns: 1fr; gap: 2rem; }.grid-section .about-copy { grid-column: 1; }.about-metrics { margin-top: 3rem; } }
 @media (max-width: 600px) { .section-shell { padding-inline: 1rem; }.contact-mega { font-size: clamp(2.65rem, 13vw, 4.6rem); }.contact-form-wrap { padding-top: 2rem; }.contact-signal { overflow-x: auto; padding-bottom: .45rem; }.contact-signal > div { min-width: max-content; }.sticker { min-width: 0; padding: .72rem .85rem; }.sticker b { font-size: .68rem; }.sticker small { font-size: .58rem; }.about-copy .body-copy { font-size: .92rem; }.about-metrics { margin-top: 2.5rem; } }
+
+/* ====== Accessibility and keyboard navigation ====== */
+.skip-link { position: fixed; z-index: 100; top: .75rem; left: .75rem; transform: translateY(-180%); border: 2px solid var(--primary); border-radius: .35rem; background: var(--foreground); color: var(--background); padding: .7rem 1rem; font-size: .75rem; font-weight: 800; transition: transform .2s ease; }
+.skip-link:focus { transform: translateY(0); outline: 3px solid color-mix(in oklab, var(--primary) 45%, transparent); outline-offset: 3px; }
+:where(button, a, input, textarea, [role="tab"]):focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+:where(button, a, input, textarea, [role="tab"]):focus:not(:focus-visible) { outline: none; }
+.dark .skip-link { background: var(--foreground); color: var(--background); }
+
+.form-honeypot { position: absolute !important; left: -10000px !important; width: 1px !important; height: 1px !important; opacity: 0 !important; pointer-events: none !important; }
