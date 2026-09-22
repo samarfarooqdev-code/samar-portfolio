@@ -33,7 +33,7 @@ import {
   useState,
 } from "react";
 
-import profileAvatar from "@/assets/samar-profile-avatar-transparent.webp";
+import profileAvatar from "@/assets/samar-profile-avatar-hero.webp";
 import samarLogo from "@/assets/samar-dev-logo.png?inline";
 import cursorArrow from "@/assets/cursor-arrow.svg";
 import cursorPointer from "@/assets/cursor-pointer.svg";

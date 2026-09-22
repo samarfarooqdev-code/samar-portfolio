@@ -646,3 +646,9 @@ html, body { transition: background-color .45s ease, color .45s ease; }
 .hero-cta-secondary:hover { border-color: var(--primary); background: color-mix(in oklab, var(--primary) 12%, var(--background)); color: var(--foreground); }
 @media (max-width: 600px) { .hero-actions > div { width: 100%; }.hero-cta { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .hero-cta::before { display: none; }.hero-cta:hover .arrow-icon { transform: none; } }
+
+/* New portrait: restrained halo and grounded editorial depth */
+.avatar-frame::before { content: ""; position: absolute; z-index: -1; inset: 13% 4% 12%; border-radius: 50%; background: radial-gradient(ellipse at 48% 43%, color-mix(in oklab, var(--primary) 42%, transparent), transparent 66%); filter: blur(28px); opacity: .72; transform: scale(1.08); animation: avatar-halo 6s ease-in-out infinite; }
+.avatar-image { filter: drop-shadow(0 26px 22px color-mix(in oklab, var(--foreground) 24%, transparent)); }
+@keyframes avatar-halo { 0%, 100% { opacity: .58; transform: scale(1.04); } 50% { opacity: .82; transform: scale(1.1); } }
+@media (prefers-reduced-motion: reduce) { .avatar-frame::before { animation: none; } }
