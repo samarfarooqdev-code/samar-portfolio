@@ -657,3 +657,9 @@ html, body { transition: background-color .45s ease, color .45s ease; }
 .avatar-frame { width: min(100%, 540px); aspect-ratio: .72; }
 @media (max-width: 900px) { .avatar-frame { width: min(82vw, 430px); aspect-ratio: .68; } }
 @media (max-width: 600px) { .avatar-frame { width: min(84vw, 390px); aspect-ratio: .7; } .avatar-label-left { left: -1%; } .avatar-label-right { right: -1%; } }
+
+/* Cinematic side light: visible separation without a neon outline */
+.avatar-frame::after { content: ""; position: absolute; z-index: -1; top: 17%; right: 2%; width: 42%; height: 56%; border-radius: 50%; background: radial-gradient(ellipse, color-mix(in oklab, var(--primary) 28%, transparent), transparent 70%); filter: blur(32px); opacity: .52; transform: rotate(-12deg); pointer-events: none; }
+.avatar-image { filter: drop-shadow(11px 0 19px color-mix(in oklab, var(--primary) 20%, transparent)) drop-shadow(0 26px 22px color-mix(in oklab, var(--foreground) 24%, transparent)); }
+.dark .avatar-frame::after { opacity: .68; }
+@media (max-width: 600px) { .avatar-frame::after { opacity: .46; filter: blur(26px); } }
