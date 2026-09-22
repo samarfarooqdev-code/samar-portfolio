@@ -99,6 +99,7 @@ const socialLinks = {
 };
 
 const EMAIL = "samarfarooqdev@gmail.com";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkjgrpqb";
 
 type Project = {
   id: string;
@@ -360,7 +361,7 @@ function Portfolio() {
     window.setTimeout(() => setCopied(false), 1800);
   }, []);
 
-  const submitContact = (event: FormEvent<HTMLFormElement>) => {
+  const submitContact = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -380,11 +381,20 @@ function Portfolio() {
     if (Object.keys(nextErrors).length) return;
     lastSubmitAt.current = Date.now();
     setSubmitState("loading");
-    window.setTimeout(() => {
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) throw new Error("Formspree submission failed");
       setSubmitState("success");
       form.reset();
       setProjectType("");
-    }, 850);
+    } catch {
+      setSubmitState("idle");
+      setErrors({ message: "Something went wrong while sending the brief. Please try again or email me directly." });
+    }
   };
 
   const enter = (delay: number) =>
@@ -1085,7 +1095,7 @@ function ContactScene(props: {
                 </Field></motion.div>
                 <motion.div className="contact-field-reveal" initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .45, delay: reduced ? 0 : .26 }}><Field label="What are you imagining?" error={errors.message} errorId="message-error"><Textarea name="message" placeholder="Tell me about the idea, challenge or feeling you want the experience to create..." maxLength={1200} rows={5} aria-invalid={Boolean(errors.message)} aria-describedby={errors.message ? "message-error" : undefined} /></Field></motion.div>
                 <motion.div className="contact-submit-wrap" whileHover={submitState === "loading" ? undefined : { y: -3 }} whileTap={submitState === "loading" ? undefined : { scale: .98 }}><Button type="submit" size="lg" className="press h-14 w-full sm:w-auto contact-submit" disabled={submitState === "loading"}>{submitState === "loading" ? <><span className="submit-spinner" /> PREPARING BRIEF…</> : <>SEND THE BRIEF <Send /></>}</Button></motion.div>
-                <p className="text-xs text-muted-foreground">This is a local-first brief form. Your details are not stored remotely yet.</p>
+                <p className="text-xs text-muted-foreground">Your brief is sent securely to Samar’s inbox via Formspree. Please don’t include passwords or sensitive personal information.</p>
               </>
             )}
           </form>
