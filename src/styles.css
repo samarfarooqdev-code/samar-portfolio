@@ -770,3 +770,7 @@ html, body { transition: background-color .45s ease, color .45s ease; }
   .hero-stats { width: 78%; }
   .hero-project-signal { width: 78%; }
 }
+
+/* VS Code brand mark: keep the local SVG crisp and visible in the workflow cards. */
+.skill-tool[data-tool="VS Code"] .skill-logo { width: 2rem; height: 2rem; filter: none; opacity: 1; }
+.skill-tool[data-tool="VS Code"]:hover .skill-logo { transform: scale(1.12) rotate(-4deg); }
