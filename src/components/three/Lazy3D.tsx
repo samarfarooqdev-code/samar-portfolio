@@ -51,6 +51,10 @@ export function HeroCanvas() {
 
 function HeroCanvasInner() {
   const ok = useWebGL();
+  const lowMotionDevice = window.matchMedia(
+    "(pointer: coarse), (prefers-reduced-motion: reduce)",
+  ).matches;
+  if (lowMotionDevice) return <GridFallback />;
   if (ok === false) return <GridFallback />;
   return <HeroCanvasViewport ok={ok} />;
 }

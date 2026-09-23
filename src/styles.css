@@ -482,7 +482,7 @@ footer b span {
 .ticker > div {
   display: flex;
   width: max-content;
-  animation: ticker 28s linear infinite;
+  animation: none;
 }
 .ticker span {
   display: flex;
@@ -1760,6 +1760,58 @@ footer svg {
   overflow: hidden;
   min-height: 420px;
 }
+.project-visual-stack {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.project-real-preview {
+  position: absolute;
+  z-index: 2;
+  top: 8%;
+  left: 5%;
+  width: 57%;
+  height: 72%;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--foreground) 28%, transparent);
+  background: var(--card);
+  box-shadow: 0 20px 48px color-mix(in oklab, var(--foreground) 20%, transparent);
+  transform: rotate(-2deg);
+}
+.project-real-preview img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+.project-real-preview figcaption {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.55rem;
+  padding: 0.35rem 0.45rem;
+  background: color-mix(in oklab, var(--background) 82%, transparent);
+  color: var(--foreground);
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+.project-art-preview {
+  position: absolute;
+  z-index: 3;
+  right: -5%;
+  bottom: -4%;
+  width: 65%;
+  height: 84%;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--background) 70%, transparent);
+  box-shadow: 0 20px 48px color-mix(in oklab, var(--foreground) 24%, transparent);
+}
+.project-art-preview > * {
+  position: absolute;
+  inset: 0;
+}
 .stage-art canvas {
   position: absolute;
   inset: 0;
@@ -3030,6 +3082,18 @@ footer svg {
   .stage-art {
     min-height: 300px;
   }
+  .project-real-preview {
+    top: 7%;
+    left: 4%;
+    width: 61%;
+    height: 68%;
+  }
+  .project-art-preview {
+    right: -7%;
+    bottom: -2%;
+    width: 67%;
+    height: 78%;
+  }
   .stage-panel {
     border-left: 0;
     border-top: 1px solid var(--border);
@@ -3082,6 +3146,10 @@ footer svg {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ticker > div {
+    transform: none !important;
+  }
+
   .sticker,
   .ao-ring,
   .btt-orbit,
@@ -3658,6 +3726,16 @@ footer svg {
 }
 .loading-status {
   left: 1.6rem;
+}
+.loading-skip {
+  position: absolute;
+  bottom: 1.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: color-mix(in oklab, var(--background) 62%, transparent);
+  font-size: 0.53rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
 }
 .loading-status b {
   margin-left: 0.35rem;

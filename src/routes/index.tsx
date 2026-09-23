@@ -50,13 +50,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Samar Dev builds high-performance websites, interactive interfaces, and immersive 3D web experiences.",
+          "Samar Dev builds responsive websites, interactive interfaces, and immersive 3D web experiences.",
       },
       { property: "og:title", content: "Samar Dev — Creative Developer" },
       {
         property: "og:description",
         content:
-          "High-performance websites, interactive interfaces, and immersive 3D web experiences by Samar Dev.",
+          "Responsive websites, interactive interfaces, and immersive 3D web experiences by Samar Dev.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://samar-dev.vercel.app/" },
@@ -129,6 +129,8 @@ type Project = {
   description: string;
   tags: string[];
   liveUrl: string;
+  screenshot: string;
+  screenshotAlt: string;
   image?: string;
   features: string[];
   challenge: string;
@@ -151,6 +153,8 @@ const projects: Project[] = [
       "A warm, conversion-focused restaurant website for a Chiniot fast-food point, combining menu discovery, ordering, table reservations, gallery storytelling and direct contact actions in a rich late-night dining visual system.",
     tags: ["Restaurant Website", "Ordering Flow", "Responsive UI", "Menu Experience"],
     liveUrl: "https://www.adnanpizzaburgerpoint.online/",
+    screenshot: "/adnan-pizza-live.webp",
+    screenshotAlt: "Live Adnan Pizza Burger Point website captured from the deployed site",
     features: [
       "Menu browsing for pizzas, burgers, shawarma, rolls, drinks and sides.",
       "Online ordering and cart experience.",
@@ -179,6 +183,8 @@ const projects: Project[] = [
       "A story-led ecommerce experience for women’s ethnic wear, combining editorial brand storytelling, collection discovery, product detail, size guidance, cart flow and WhatsApp-assisted shopping.",
     tags: ["Ecommerce", "Fashion Brand", "Product UX", "WhatsApp Commerce"],
     liveUrl: "https://dastan-story-shop.vercel.app/",
+    screenshot: "/dastan-nysa-live.webp",
+    screenshotAlt: "Live Dastan-e-Nysa fashion commerce website captured from the deployed site",
     features: [
       "Shop, Collections, About, Size Guide and Contact navigation.",
       "Product and collection browsing.",
@@ -207,6 +213,8 @@ const projects: Project[] = [
       "An editorial heritage portfolio for a third-generation Chiniot master wood artisan, translating decades of royal interiors, architectural woodwork and handcrafted legacy into a refined digital narrative.",
     tags: ["Editorial Portfolio", "Heritage Craft", "Storytelling", "Responsive Web"],
     liveUrl: "https://farooqsaharan.vercel.app/",
+    screenshot: "/farooq-saharan-live.webp",
+    screenshotAlt: "Live Farooq Saharan heritage portfolio captured from the deployed site",
     features: [
       "Legacy, Craft, Assignments, Portfolio, Sketches, Recognition, Curriculum Vitae and Contact.",
       "Decorative doors, windows and joinery.",
@@ -231,7 +239,7 @@ const services = [
   [
     "01",
     "Creative development",
-    "Expressive, high-performance websites where visual direction meets clean engineering.",
+    "Expressive, responsive websites where visual direction meets clean engineering.",
   ],
   [
     "02",
@@ -354,6 +362,12 @@ function Portfolio() {
   const formStartedAt = useRef(Date.now());
   const lastSubmitAt = useRef(0);
 
+  const skipIntro = useCallback(() => {
+    window.localStorage.setItem("samar-dev-intro-seen", "1");
+    setShowIntro(false);
+    document.body.style.overflow = "";
+  }, []);
+
   useEffect(() => {
     const saved = window.localStorage.getItem("samar-theme");
     const nextTheme: Theme =
@@ -382,22 +396,18 @@ function Portfolio() {
   const heroFade = useTransform(heroProgress, [0, 0.85], [1, reduced ? 1 : 0.15]);
 
   useEffect(() => {
-    const introSeen = window.sessionStorage.getItem("samar-dev-intro-seen");
+    const introSeen = window.localStorage.getItem("samar-dev-intro-seen");
     if (introSeen || reduced) {
       setShowIntro(false);
       return;
     }
     document.body.style.overflow = "hidden";
-    const timer = window.setTimeout(() => {
-      window.sessionStorage.setItem("samar-dev-intro-seen", "1");
-      setShowIntro(false);
-      document.body.style.overflow = "";
-    }, 1450);
+    const timer = window.setTimeout(skipIntro, 1900);
     return () => {
       window.clearTimeout(timer);
       document.body.style.overflow = "";
     };
-  }, [reduced]);
+  }, [reduced, skipIntro]);
 
   useEffect(() => {
     const timer = window.setInterval(
@@ -529,7 +539,9 @@ function Portfolio() {
       <a className="skip-link" href="#about">
         Skip to main content
       </a>
-      <AnimatePresence>{showIntro && <LoadingIntro reduced={reduced} />}</AnimatePresence>
+      <AnimatePresence>
+        {showIntro && <LoadingIntro reduced={reduced} onSkip={skipIntro} />}
+      </AnimatePresence>
       <motion.header className={cn("site-header", scrolled && "is-scrolled")} {...enter(0.75)}>
         <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
           <button
@@ -634,7 +646,7 @@ function Portfolio() {
             31.5204° N<br />
             74.3587° E
           </span>
-          <b>BUILDING FROM PAKISTAN</b>
+          <b>PUNJAB, PAKISTAN — WORKING GLOBALLY</b>
         </motion.div>
         <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
           <motion.div className="hero-copy self-center pb-4 lg:pb-14" style={{ y: heroCopyY }}>
@@ -712,9 +724,9 @@ function Portfolio() {
             {...enter(0.4)}
           >
             <span className="avatar-label avatar-label-left">
-              BASED IN
+              PUNJAB, PAKISTAN
               <br />
-              <b>THE INTERNET</b>
+              <b>WORKING GLOBALLY</b>
             </span>
             <div className="avatar-frame">
               <img
@@ -928,7 +940,7 @@ function Portfolio() {
   );
 }
 
-function LoadingIntro({ reduced }: { reduced: boolean }) {
+function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => void }) {
   return (
     <motion.div
       className="loading-intro"
@@ -937,6 +949,12 @@ function LoadingIntro({ reduced }: { reduced: boolean }) {
       exit={{ opacity: 0, y: "-100%" }}
       transition={{ duration: reduced ? 0.2 : 0.55, ease: [0.76, 0, 0.24, 1] }}
       aria-label="Loading Samar Dev portfolio"
+      role="button"
+      tabIndex={0}
+      onClick={onSkip}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") onSkip();
+      }}
     >
       <div className="loading-intro-grid" aria-hidden="true" />
       <motion.div
@@ -986,6 +1004,7 @@ function LoadingIntro({ reduced }: { reduced: boolean }) {
       <span className="loading-status">
         INITIALIZING EXPERIENCE <b>●</b>
       </span>
+      <span className="loading-skip">CLICK TO ENTER</span>
       <span className="loading-index">S / 001</span>
     </motion.div>
   );
@@ -1008,7 +1027,7 @@ function Ticker({ reduced }: { reduced: boolean }) {
   return (
     <div className="ticker" aria-label="Creative development services">
       <motion.div style={{ x }}>
-        {Array.from({ length: 6 }).map((_, i) => (
+        {Array.from({ length: 3 }).map((_, i) => (
           <span key={i}>
             CREATIVE CODE <b>◆</b> FULL-STACK DEVELOPER <b>•</b> WEB DESIGNER <b>◆</b> 3D WEB
             EXPERIENCES <b>•</b> ANIMATION SPECIALIST <b>◆</b> MOTION UI <b>•</b>
@@ -1021,7 +1040,7 @@ function Ticker({ reduced }: { reduced: boolean }) {
 
 /* ---------- About with line reveal + pointer-reactive orbit ---------- */
 function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) {
-  const lines = ["I turn ideas into", "high-performance", "digital experiences."];
+  const lines = ["I turn ideas into", "responsive", "digital experiences."];
   const orbitRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (touch || reduced) return;
@@ -2102,9 +2121,23 @@ function Field({
 }
 
 function ProjectArtwork({ project, compact = false }: { project: Project; compact?: boolean }) {
-  if (project.visualTheme === "fashion") return <FashionArtwork compact={compact} />;
-  if (project.visualTheme === "heritage") return <HeritageArtwork compact={compact} />;
-  return <RestaurantArtwork compact={compact} />;
+  const art =
+    project.visualTheme === "fashion" ? (
+      <FashionArtwork compact={compact} />
+    ) : project.visualTheme === "heritage" ? (
+      <HeritageArtwork compact={compact} />
+    ) : (
+      <RestaurantArtwork compact={compact} />
+    );
+  return (
+    <div className="project-visual-stack">
+      <figure className="project-real-preview">
+        <img src={project.screenshot} alt={project.screenshotAlt} loading="lazy" />
+        <figcaption>LIVE SITE / REAL CAPTURE</figcaption>
+      </figure>
+      <div className="project-art-preview">{art}</div>
+    </div>
+  );
 }
 
 function RestaurantArtwork({ compact = false }: { compact?: boolean }) {
