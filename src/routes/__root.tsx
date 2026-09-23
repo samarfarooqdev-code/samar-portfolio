@@ -79,11 +79,21 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Samar Dev — Creative Developer" },
-      { name: "description", content: "Creative developer portfolio of Samar Dev." },
+      {
+        name: "description",
+        content:
+          "Samar Dev builds high-performance websites, interactive interfaces, and immersive 3D web experiences for brands and businesses.",
+      },
       { name: "author", content: "Samar Dev" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "Samar Dev — Creative Developer" },
+      {
+        name: "twitter:description",
+        content:
+          "Design-led websites, interactive interfaces and immersive web experiences by Samar Dev.",
+      },
+      { name: "twitter:image", content: "https://samar-dev.vercel.app/og-image.png" },
     ],
     links: [
       {
@@ -92,7 +102,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap",
+      },
       { rel: "icon", href: faviconAsset, type: "image/png" },
       { rel: "shortcut icon", href: faviconAsset, type: "image/png" },
       { rel: "apple-touch-icon", href: faviconAsset },
