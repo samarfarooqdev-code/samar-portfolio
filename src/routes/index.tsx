@@ -50,13 +50,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Samar Dev builds responsive websites, interactive interfaces, and immersive 3D web experiences.",
+          "Samar Dev builds responsive websites, interactive interfaces, and expressive digital experiences.",
       },
       { property: "og:title", content: "Samar Dev — Creative Developer" },
       {
         property: "og:description",
         content:
-          "Responsive websites, interactive interfaces, and immersive 3D web experiences by Samar Dev.",
+          "Responsive websites, interactive interfaces, and expressive digital experiences by Samar Dev.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://samar-dev.vercel.app/" },
@@ -68,7 +68,7 @@ export const Route = createFileRoute("/")({
       { name: "twitter:title", content: "Samar Dev — Creative Developer" },
       {
         name: "twitter:description",
-        content: "Design-led websites, interactive interfaces and immersive web experiences.",
+        content: "Design-led websites, interactive interfaces and expressive digital experiences.",
       },
       { name: "twitter:image", content: "https://samar-dev.vercel.app/og-image.png" },
       { name: "author", content: "Samar Dev" },
@@ -248,8 +248,8 @@ const services = [
   ],
   [
     "03",
-    "3D & immersive web",
-    "Spatial stories and WebGL moments that feel atmospheric, fast and purposeful.",
+    "Interactive visual systems",
+    "Expressive interfaces and motion-led details that make a digital experience feel considered.",
   ],
   [
     "04",
@@ -261,7 +261,7 @@ const services = [
 const serviceDetails = [
   "From structure to final polish: a distinctive digital home for a brand, person or business.",
   "Useful flows, expressive interfaces and systems that make complex digital products feel simple.",
-  "Immersive layers, 3D moments and spatial storytelling that stay purposeful and performant.",
+  "Expressive interface layers and motion details that stay purposeful and easy to use.",
   "A faster way to test the feeling before committing to the full build.",
 ];
 
@@ -276,7 +276,7 @@ const contactTypes = [
   ["website", "Creative website", "Brand, portfolio or business"],
   ["ecommerce", "Ecommerce", "A store with a point of view"],
   ["product", "Digital product", "A useful interface or system"],
-  ["3d", "3D / interactive", "A more immersive direction"],
+  ["interactive", "Interactive experience", "A more expressive direction"],
 ];
 
 const skillStages = [
@@ -1029,7 +1029,7 @@ function Ticker({ reduced }: { reduced: boolean }) {
       <motion.div style={{ x }}>
         {Array.from({ length: 3 }).map((_, i) => (
           <span key={i}>
-            CREATIVE CODE <b>◆</b> FULL-STACK DEVELOPER <b>•</b> WEB DESIGNER <b>◆</b> 3D WEB
+            CREATIVE CODE <b>◆</b> FULL-STACK DEVELOPER <b>•</b> WEB DESIGNER <b>◆</b> INTERACTIVE
             EXPERIENCES <b>•</b> ANIMATION SPECIALIST <b>◆</b> MOTION UI <b>•</b>
           </span>
         ))}
@@ -1076,8 +1076,8 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
         </p>
         <div className="mt-12 grid gap-8 sm:grid-cols-2">
           <p className="body-copy">
-            I create modern websites, interactive interfaces and immersive 3D web experiences with a
-            focus on performance, usability and visual precision.
+            I create modern websites and interactive interfaces with a focus on usability, clarity
+            and visual precision.
           </p>
           <p className="body-copy location-copy">
             <span>+</span> Punjab, Pakistan · Working globally
@@ -1384,7 +1384,7 @@ function ServicesSection({ reduced }: { reduced: boolean }) {
           <em>Many ways forward.</em>
         </motion.h2>
         <p>
-          Whether the need is a new digital home, a sharper product flow or a more immersive story,
+          Whether the need is a new digital home, a sharper product flow or a more expressive story,
           I bring the right mix of thinking, design and build.
         </p>
       </div>
@@ -1692,7 +1692,7 @@ function FeaturedWorkStrip({
         <p className="eyebrow">
           <span>◆</span> SELECTED WORK
         </p>
-        <span>THREE POINTS OF VIEW / 2026</span>
+        <span>THREE LIVE PROJECTS</span>
       </div>
       <div className="featured-work-grid">
         {projects.map((project, index) => (

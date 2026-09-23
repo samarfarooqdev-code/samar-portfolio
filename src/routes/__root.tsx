@@ -82,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Samar Dev builds responsive websites, interactive interfaces, and immersive 3D web experiences for brands and businesses.",
+          "Samar Dev builds responsive websites, interactive interfaces, and expressive digital experiences for brands and businesses.",
       },
       { name: "author", content: "Samar Dev" },
       { property: "og:type", content: "website" },
@@ -91,7 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "Design-led websites, interactive interfaces and immersive web experiences by Samar Dev.",
+          "Design-led websites, interactive interfaces and expressive digital experiences by Samar Dev.",
       },
       { name: "twitter:image", content: "https://samar-dev.vercel.app/og-image.png" },
     ],
