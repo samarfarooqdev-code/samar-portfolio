@@ -706,7 +706,7 @@ function Portfolio() {
               </div>
               <div>
                 <b>24/7</b>
-                <span>Available for work</span>
+                <span>Available for Work</span>
               </div>
             </motion.div>
             <motion.div className="hero-project-signal" {...enter(0.88)}>
