@@ -403,7 +403,7 @@ function Portfolio() {
       return;
     }
     document.body.style.overflow = "hidden";
-    const timer = window.setTimeout(skipIntro, 1900);
+    const timer = window.setTimeout(skipIntro, 1200);
     return () => {
       window.clearTimeout(timer);
       document.body.style.overflow = "";
