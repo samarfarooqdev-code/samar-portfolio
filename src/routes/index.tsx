@@ -27,6 +27,7 @@ import {
 import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
 import profileAvatar from "@/assets/samar-profile-avatar-hero.webp";
+import profileAvatarMobile from "@/assets/samar-profile-avatar-mobile.webp";
 import samarLogo from "@/assets/samar-dev-logo.png?inline";
 import cursorArrow from "@/assets/cursor-arrow.svg";
 import cursorPointer from "@/assets/cursor-pointer.svg";
@@ -729,15 +730,18 @@ function Portfolio() {
               <b>WORKING GLOBALLY</b>
             </span>
             <div className="avatar-frame">
-              <img
-                src={profileAvatar}
-                alt="Illustrated portrait of Samar Dev"
-                className="avatar-image"
-                width={1000}
-                height={1000}
-                loading="eager"
-                decoding="async"
-              />
+              <picture>
+                <source media="(max-width: 767px)" srcSet={profileAvatarMobile} />
+                <img
+                  src={profileAvatar}
+                  alt="Illustrated portrait of Samar Dev"
+                  className="avatar-image"
+                  width={619}
+                  height={1100}
+                  loading="eager"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <span className="avatar-label avatar-label-right">
               OPEN TO
@@ -1336,7 +1340,7 @@ function FullStackProofSection({ reduced }: { reduced: boolean }) {
         <div className="border border-border bg-card/60 p-6 sm:p-8">
           <div className="mb-6 flex items-center justify-between gap-4 border-b border-border pb-4">
             <span className="eyebrow">STATUS / IN PROGRESS</span>
-            <span className="status-dot" aria-label="In progress" />
+            <span className="status-dot" role="img" aria-label="In progress" />
           </div>
           <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
             A real authentication, dashboard and database project is being prepared as the next
