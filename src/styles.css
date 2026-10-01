@@ -282,6 +282,11 @@ footer b span {
   overflow: visible;
   background: transparent;
 }
+.avatar-frame picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .avatar-image {
   display: block;
   width: 100%;
