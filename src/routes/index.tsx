@@ -518,7 +518,9 @@ function Portfolio() {
   };
 
   const enter = (delay: number) =>
-    reduced
+    reduced ||
+    touch ||
+    (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
       ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
       : {
           initial: { opacity: 0, y: 26 },
