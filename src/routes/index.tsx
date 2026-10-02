@@ -338,7 +338,9 @@ type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
 type Theme = "light" | "dark";
 
 function useIsTouch() {
-  const [touch, setTouch] = useState(false);
+  const [touch, setTouch] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
+  );
   useEffect(() => {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
@@ -346,8 +348,8 @@ function useIsTouch() {
 }
 
 function Portfolio() {
-  const reduced = useReducedMotion() ?? false;
   const touch = useIsTouch();
+  const reduced = (useReducedMotion() ?? false) || touch;
   const [showIntro, setShowIntro] = useState(true);
   const [roleIndex, setRoleIndex] = useState(0);
   const [activeSection, setActiveSection] = useState("About");
