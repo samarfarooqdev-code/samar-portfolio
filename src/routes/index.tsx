@@ -744,6 +744,7 @@ function Portfolio() {
                     width={619}
                     height={1100}
                     loading="eager"
+                    fetchPriority="high"
                     decoding="async"
                   />
                 </picture>

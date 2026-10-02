@@ -36,15 +36,27 @@ export function GridFallback() {
 
 export function HeroCanvas() {
   const [ready, setReady] = useState(false);
+  const [skipScene, setSkipScene] = useState(false);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => setReady(true), 120);
+    const shouldSkip = window.matchMedia(
+      "(pointer: coarse), (max-width: 767px), (prefers-reduced-motion: reduce)",
+    ).matches;
+    setSkipScene(shouldSkip);
+    if (shouldSkip) return;
+
+    const enable = () => setReady(true);
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(enable, { timeout: 1800 });
+      return () => window.cancelIdleCallback(idleId);
+    }
+    const timer = window.setTimeout(enable, 1500);
     return () => window.clearTimeout(timer);
   }, []);
 
   return (
     <ClientOnly fallback={<GridFallback />}>
-      {ready ? <HeroCanvasInner /> : <GridFallback />}
+      {skipScene || !ready ? <GridFallback /> : <HeroCanvasInner />}
     </ClientOnly>
   );
 }
