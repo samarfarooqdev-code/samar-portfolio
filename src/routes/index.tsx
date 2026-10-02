@@ -338,7 +338,9 @@ type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
 type Theme = "light" | "dark";
 
 function useIsTouch() {
-  const [touch, setTouch] = useState(false);
+  const [touch, setTouch] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
+  );
   useEffect(() => {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
@@ -400,7 +402,7 @@ function Portfolio() {
 
   useEffect(() => {
     const introSeen = window.localStorage.getItem("samar-dev-intro-seen");
-    if (introSeen || reduced) {
+    if (introSeen || reduced || touch) {
       setShowIntro(false);
       return;
     }
@@ -410,7 +412,7 @@ function Portfolio() {
       window.clearTimeout(timer);
       document.body.style.overflow = "";
     };
-  }, [reduced, skipIntro]);
+  }, [reduced, skipIntro, touch]);
 
   useEffect(() => {
     const timer = window.setInterval(
