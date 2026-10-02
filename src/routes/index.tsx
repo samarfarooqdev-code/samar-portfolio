@@ -15,6 +15,8 @@ import {
 } from "lucide-react";
 import {
   AnimatePresence,
+  LazyMotion,
+  m,
   motion,
   useAnimationFrame,
   useMotionValue,
@@ -529,426 +531,429 @@ function Portfolio() {
         };
 
   return (
-    <main
-      id="main-content"
-      className="custom-cursor overflow-clip bg-background text-foreground"
-      style={
-        {
-          "--cursor-default": `url(${cursorArrow}) 3 3, auto`,
-          "--cursor-pointer": `url(${cursorPointer}) 3 3, pointer`,
-        } as CSSProperties
-      }
-    >
-      <a className="skip-link" href="#about">
-        Skip to main content
-      </a>
-      <AnimatePresence>
-        {showIntro && <LoadingIntro reduced={reduced} onSkip={skipIntro} />}
-      </AnimatePresence>
-      <motion.header className={cn("site-header", scrolled && "is-scrolled")} {...enter(0.75)}>
-        <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
-          <button
-            className="brand-mark"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="Samar Dev — Back to top"
-          >
-            <img src={samarLogo} alt="Samar Dev" className="brand-logo" />
-          </button>
-          <nav className="hidden items-center gap-1 sm:flex" aria-label="Main navigation">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                onClick={() => scrollTo(item)}
-                className={cn("nav-link", activeSection === item && "is-active")}
-                aria-current={activeSection === item ? "location" : undefined}
-              >
-                {item}
-              </button>
-            ))}
-          </nav>
-          <a
-            className="header-github hidden sm:inline-flex"
-            href={socialLinks.github.url}
-            target="_blank"
-            rel="noreferrer"
-            aria-label="Open Samar Dev GitHub profile"
-          >
-            GitHub <ArrowUpRight className="arrow-icon" />
-          </a>
-          <Button
-            size="icon"
-            variant="ghost"
-            className="press sm:hidden"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-          >
-            {menuOpen ? <X /> : <Menu />}
-          </Button>
-          <span className="hidden items-center gap-2 text-[11px] font-bold uppercase sm:flex">
-            <i className="status-dot" /> Available
-          </span>
-          <button
-            type="button"
-            className="theme-toggle press"
-            onClick={() => setTheme((value) => (value === "light" ? "dark" : "light"))}
-            aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
-            aria-pressed={theme === "dark"}
-          >
-            <span className="theme-toggle-track">
-              <motion.span
-                className="theme-toggle-thumb"
-                layout
-                transition={{ type: "spring", stiffness: 500, damping: 30 }}
-              >
-                {theme === "light" ? <Sun /> : <Moon />}
-              </motion.span>
-            </span>
-            <span className="theme-toggle-label">{theme === "light" ? "Light" : "Dark"}</span>
-          </button>
-        </div>
+    <LazyMotion features={() => import("motion/react").then(({ domAnimation }) => domAnimation)}>
+      <main
+        id="main-content"
+        className="custom-cursor overflow-clip bg-background text-foreground"
+        style={
+          {
+            "--cursor-default": `url(${cursorArrow}) 3 3, auto`,
+            "--cursor-pointer": `url(${cursorPointer}) 3 3, pointer`,
+          } as CSSProperties
+        }
+      >
+        <a className="skip-link" href="#about">
+          Skip to main content
+        </a>
         <AnimatePresence>
-          {menuOpen && (
-            <motion.nav
-              className="nav-mobile mx-auto mt-2 max-w-sm p-3 sm:hidden"
-              aria-label="Mobile navigation"
-              initial={{ opacity: 0, y: -10, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.97 }}
-              transition={{ duration: 0.22, ease: [0.2, 0.8, 0.2, 1] }}
+          {showIntro && <LoadingIntro reduced={reduced} onSkip={skipIntro} />}
+        </AnimatePresence>
+        <m.header className={cn("site-header", scrolled && "is-scrolled")} {...enter(0.75)}>
+          <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
+            <button
+              className="brand-mark"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Samar Dev — Back to top"
             >
+              <img src={samarLogo} alt="Samar Dev" className="brand-logo" />
+            </button>
+            <nav className="hidden items-center gap-1 sm:flex" aria-label="Main navigation">
               {navItems.map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollTo(item)}
+                  className={cn("nav-link", activeSection === item && "is-active")}
                   aria-current={activeSection === item ? "location" : undefined}
                 >
                   {item}
-                  <ChevronRight className="arrow-icon" />
                 </button>
               ))}
-            </motion.nav>
-          )}
-        </AnimatePresence>
-      </motion.header>
-
-      <section
-        ref={heroRef}
-        className="hero relative flex min-h-[760px] items-end px-4 pb-10 pt-28 sm:min-h-[820px] sm:px-8 lg:min-h-screen lg:px-12"
-      >
-        <motion.div className="hero-scene-layer" style={{ opacity: heroFade }} {...enter(0)}>
-          <HeroCanvas />
-        </motion.div>
-        <motion.div className="peach-glow" {...enter(0.25)} />
-        <div className="crosshair crosshair-one" aria-hidden="true" />
-        <motion.div className="hero-editorial-meta hero-meta-top" {...enter(0.35)}>
-          <span>CREATIVE SYSTEM / 001</span>
-          <i />
-        </motion.div>
-        <motion.div className="hero-editorial-meta hero-meta-side" {...enter(0.45)}>
-          <span>
-            31.5204° N<br />
-            74.3587° E
-          </span>
-          <b>PUNJAB, PAKISTAN — WORKING GLOBALLY</b>
-        </motion.div>
-        <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
-          <motion.div className="hero-copy self-center pb-4 lg:pb-14" style={{ y: heroCopyY }}>
-            <motion.p className="eyebrow mb-5" {...enter(0.55)}>
-              <span>◆</span> SAMAR DEV · CREATIVE DEVELOPER
-            </motion.p>
-            <motion.h1 className="hero-title hero-statement" {...enter(0.6)}>
-              I build digital
-              <br />
-              <em>
-                experiences with
-                <br />a point of view.
-              </em>
-            </motion.h1>
-            <motion.p className="signature-line" {...enter(0.66)}>
-              Design with intent. Build with character.
-            </motion.p>
-            <motion.div className="role-line mt-5" {...enter(0.7)}>
-              <strong key={roleIndex}>{roles[roleIndex]}</strong>
-            </motion.div>
-            <motion.p
-              className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
-              {...enter(0.74)}
+            </nav>
+            <a
+              className="header-github hidden sm:inline-flex"
+              href={socialLinks.github.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open Samar Dev GitHub profile"
             >
-              I combine thoughtful design, clean frontend engineering and meaningful motion to turn
-              ideas into live experiences people remember.
-            </motion.p>
-            <motion.div className="hero-actions" {...enter(0.78)}>
-              <motion.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
-                <Button
-                  size="lg"
-                  className="press cta-arrow hero-cta hero-cta-primary"
-                  onClick={() => scrollTo("Projects")}
-                >
-                  VIEW SELECTED WORK <ArrowUpRight className="arrow-icon" />
-                </Button>
-              </motion.div>
-              <motion.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="press cta-arrow hero-cta hero-cta-secondary"
-                  onClick={() => scrollTo("Contact")}
-                >
-                  START A PROJECT <ArrowUpRight className="arrow-icon" />
-                </Button>
-              </motion.div>
-            </motion.div>
-            <motion.div className="hero-stats mt-8" {...enter(0.82)}>
-              <div>
-                <b>03</b>
-                <span>Projects shipped</span>
-              </div>
-              <div>
-                <b>04</b>
-                <span>Core disciplines</span>
-              </div>
-              <div>
-                <b>24/7</b>
-                <span>Available for Work</span>
-              </div>
-            </motion.div>
-            <motion.div className="hero-project-signal" {...enter(0.88)}>
-              <span>SELECTED WORK / 02</span>
-              <strong>Dastan-e-Nysa</strong>
-              <small>Story-led fashion commerce</small>
-              <button onClick={() => setSelectedProject(projects[1]!)}>
-                VIEW CASE STUDY <ArrowUpRight className="arrow-icon" />
-              </button>
-            </motion.div>
-          </motion.div>
-          <motion.div
-            className="avatar-stage relative flex min-h-[390px] items-end justify-center sm:min-h-[520px] lg:min-h-[650px]"
-            style={{ y: avatarY, scale: avatarScale }}
-            {...enter(0.4)}
-          >
-            <span className="avatar-label avatar-label-left">
-              PUNJAB, PAKISTAN
-              <br />
-              <b>WORKING GLOBALLY</b>
-            </span>
-            <div className="avatar-frame">
-              <picture>
-                <source media="(max-width: 767px)" srcSet={profileAvatarMobile} />
-                <img
-                  src={profileAvatar}
-                  alt="Illustrated portrait of Samar Dev"
-                  className="avatar-image"
-                  width={619}
-                  height={1100}
-                  loading="eager"
-                  decoding="async"
-                />
-              </picture>
-            </div>
-            <span className="avatar-label avatar-label-right">
-              OPEN TO
-              <br />
-              <b>SELECT PROJECTS</b>
-            </span>
-            <div className="signal-card">
-              <i className="status-dot" />
-              <span>ONLINE</span>
-              <b>12:48 UTC</b>
-            </div>
-          </motion.div>
-          <motion.button
-            className="scroll-cue press"
-            onClick={() => scrollTo("About")}
-            {...enter(0.9)}
-          >
-            <span>SCROLL TO EXPLORE</span>
-            <ArrowDown className="arrow-icon" />
-          </motion.button>
-        </div>
-      </section>
-
-      <Ticker reduced={reduced} />
-
-      <FeaturedWorkStrip reduced={reduced} onOpen={setSelectedProject} />
-
-      <AboutSection reduced={reduced} touch={touch} />
-
-      <SkillsSection reduced={reduced} />
-
-      <ProjectsSection onOpen={setSelectedProject} touch={touch} reduced={reduced} />
-
-      <FullStackProofSection reduced={reduced} />
-
-      <ServicesSection reduced={reduced} />
-
-      <ExperienceSection reduced={reduced} />
-
-      <section id="process" ref={processRef} className="section-shell border-t border-border">
-        <SectionIndex
-          number="06"
-          label="Process"
-          aside="Clear stages. Close collaboration. No black boxes."
-        />
-        <div className="process-layout mt-14">
-          <div className="process-rail" aria-hidden="true">
-            <span style={{ transform: `scaleY(${processProgress})` }} />
-          </div>
-          <div className="process-steps">
-            {process.map(([title, description], index) => (
-              <article
-                key={title}
-                className={cn(
-                  "process-step",
-                  processProgress >= index / process.length && "is-reached",
-                )}
-              >
-                <b>0{index + 1}</b>
-                <h3>{title}</h3>
-                <p>{description}</p>
-                <span className="process-diamond" />
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <AvailabilityBand onCta={() => scrollTo("Contact")} reduced={reduced} />
-
-      <ContactScene
-        reduced={reduced}
-        touch={touch}
-        copied={copied}
-        onCopy={copyEmail}
-        errors={errors}
-        projectType={projectType}
-        setProjectType={setProjectType}
-        submitState={submitState}
-        setSubmitState={setSubmitState}
-        onSubmit={submitContact}
-      />
-
-      <footer>
-        <div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">
-          <a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top">
-            <img
-              src={samarLogo}
-              alt="Samar Dev personal brand logo"
-              className="footer-logo"
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-          <p>© 2026 Samar Dev. Built with curiosity.</p>
-          <div className="footer-links">
-            <a href={`mailto:${EMAIL}`}>
-              Email <ArrowUpRight className="arrow-icon" />
-            </a>
-            <a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">
-              LinkedIn <ArrowUpRight className="arrow-icon" />
-            </a>
-            <a href={socialLinks.github.url} target="_blank" rel="noreferrer">
               GitHub <ArrowUpRight className="arrow-icon" />
             </a>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="press sm:hidden"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              {menuOpen ? <X /> : <Menu />}
+            </Button>
+            <span className="hidden items-center gap-2 text-[11px] font-bold uppercase sm:flex">
+              <i className="status-dot" /> Available
+            </span>
+            <button
+              type="button"
+              className="theme-toggle press"
+              onClick={() => setTheme((value) => (value === "light" ? "dark" : "light"))}
+              aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+              aria-pressed={theme === "dark"}
+            >
+              <span className="theme-toggle-track">
+                <m.span
+                  className="theme-toggle-thumb"
+                  layout
+                  transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                >
+                  {theme === "light" ? <Sun /> : <Moon />}
+                </m.span>
+              </span>
+              <span className="theme-toggle-label">{theme === "light" ? "Light" : "Dark"}</span>
+            </button>
           </div>
-        </div>
-      </footer>
+          <AnimatePresence>
+            {menuOpen && (
+              <m.nav
+                className="nav-mobile mx-auto mt-2 max-w-sm p-3 sm:hidden"
+                aria-label="Mobile navigation"
+                initial={{ opacity: 0, y: -10, scale: 0.97 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.97 }}
+                transition={{ duration: 0.22, ease: [0.2, 0.8, 0.2, 1] }}
+              >
+                {navItems.map((item) => (
+                  <button
+                    key={item}
+                    onClick={() => scrollTo(item)}
+                    aria-current={activeSection === item ? "location" : undefined}
+                  >
+                    {item}
+                    <ChevronRight className="arrow-icon" />
+                  </button>
+                ))}
+              </m.nav>
+            )}
+          </AnimatePresence>
+        </m.header>
 
-      <AnimatePresence>
-        {scrolled && (
-          <motion.button
-            className="back-to-top press"
-            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            aria-label="Back to top"
-            initial={{ opacity: 0, scale: 0.7 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.7 }}
-            transition={{ duration: 0.25 }}
-          >
-            <span className="btt-orbit" aria-hidden="true" />
-            <ArrowUp className="arrow-icon" />
-          </motion.button>
-        )}
-      </AnimatePresence>
+        <section
+          ref={heroRef}
+          className="hero relative flex min-h-[760px] items-end px-4 pb-10 pt-28 sm:min-h-[820px] sm:px-8 lg:min-h-screen lg:px-12"
+        >
+          <m.div className="hero-scene-layer" style={{ opacity: heroFade }} {...enter(0)}>
+            <HeroCanvas />
+          </m.div>
+          <m.div className="peach-glow" {...enter(0.25)} />
+          <div className="crosshair crosshair-one" aria-hidden="true" />
+          <m.div className="hero-editorial-meta hero-meta-top" {...enter(0.35)}>
+            <span>CREATIVE SYSTEM / 001</span>
+            <i />
+          </m.div>
+          <m.div className="hero-editorial-meta hero-meta-side" {...enter(0.45)}>
+            <span>
+              31.5204° N<br />
+              74.3587° E
+            </span>
+            <b>PUNJAB, PAKISTAN — WORKING GLOBALLY</b>
+          </m.div>
+          <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
+            <m.div className="hero-copy self-center pb-4 lg:pb-14" style={{ y: heroCopyY }}>
+              <m.p className="eyebrow mb-5" {...enter(0.55)}>
+                <span>◆</span> SAMAR DEV · CREATIVE DEVELOPER
+              </m.p>
+              <m.h1 className="hero-title hero-statement" {...enter(0.6)}>
+                I build digital
+                <br />
+                <em>
+                  experiences with
+                  <br />a point of view.
+                </em>
+              </m.h1>
+              <m.p className="signature-line" {...enter(0.66)}>
+                Design with intent. Build with character.
+              </m.p>
+              <m.div className="role-line mt-5" {...enter(0.7)}>
+                <strong key={roleIndex}>{roles[roleIndex]}</strong>
+              </m.div>
+              <m.p
+                className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
+                {...enter(0.74)}
+              >
+                I combine thoughtful design, clean frontend engineering and meaningful motion to
+                turn ideas into live experiences people remember.
+              </m.p>
+              <m.div className="hero-actions" {...enter(0.78)}>
+                <m.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
+                  <Button
+                    size="lg"
+                    className="press cta-arrow hero-cta hero-cta-primary"
+                    onClick={() => scrollTo("Projects")}
+                  >
+                    VIEW SELECTED WORK <ArrowUpRight className="arrow-icon" />
+                  </Button>
+                </m.div>
+                <m.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="press cta-arrow hero-cta hero-cta-secondary"
+                    onClick={() => scrollTo("Contact")}
+                  >
+                    START A PROJECT <ArrowUpRight className="arrow-icon" />
+                  </Button>
+                </m.div>
+              </m.div>
+              <m.div className="hero-stats mt-8" {...enter(0.82)}>
+                <div>
+                  <b>03</b>
+                  <span>Projects shipped</span>
+                </div>
+                <div>
+                  <b>04</b>
+                  <span>Core disciplines</span>
+                </div>
+                <div>
+                  <b>24/7</b>
+                  <span>Available for Work</span>
+                </div>
+              </m.div>
+              <m.div className="hero-project-signal" {...enter(0.88)}>
+                <span>SELECTED WORK / 02</span>
+                <strong>Dastan-e-Nysa</strong>
+                <small>Story-led fashion commerce</small>
+                <button onClick={() => setSelectedProject(projects[1]!)}>
+                  VIEW CASE STUDY <ArrowUpRight className="arrow-icon" />
+                </button>
+              </m.div>
+            </m.div>
+            <m.div
+              className="avatar-stage relative flex min-h-[390px] items-end justify-center sm:min-h-[520px] lg:min-h-[650px]"
+              style={{ y: avatarY, scale: avatarScale }}
+              {...enter(0.4)}
+            >
+              <span className="avatar-label avatar-label-left">
+                PUNJAB, PAKISTAN
+                <br />
+                <b>WORKING GLOBALLY</b>
+              </span>
+              <div className="avatar-frame">
+                <picture>
+                  <source media="(max-width: 767px)" srcSet={profileAvatarMobile} />
+                  <img
+                    src={profileAvatar}
+                    alt="Illustrated portrait of Samar Dev"
+                    className="avatar-image"
+                    width={619}
+                    height={1100}
+                    loading="eager"
+                    decoding="async"
+                  />
+                </picture>
+              </div>
+              <span className="avatar-label avatar-label-right">
+                OPEN TO
+                <br />
+                <b>SELECT PROJECTS</b>
+              </span>
+              <div className="signal-card">
+                <i className="status-dot" />
+                <span>ONLINE</span>
+                <b>12:48 UTC</b>
+              </div>
+            </m.div>
+            <m.button
+              className="scroll-cue press"
+              onClick={() => scrollTo("About")}
+              {...enter(0.9)}
+            >
+              <span>SCROLL TO EXPLORE</span>
+              <ArrowDown className="arrow-icon" />
+            </m.button>
+          </div>
+        </section>
 
-      <Dialog
-        open={Boolean(selectedProject)}
-        onOpenChange={(open) => !open && setSelectedProject(null)}
-      >
-        {selectedProject && (
-          <DialogContent className="project-dialog max-h-[88vh] max-w-3xl overflow-y-auto">
-            <DialogHeader>
-              <p className="eyebrow text-primary">FEATURED PROJECT · {selectedProject.number}</p>
-              <DialogTitle>{selectedProject.title}</DialogTitle>
-              <DialogDescription>{selectedProject.category}</DialogDescription>
-            </DialogHeader>
-            <div className={cn("dialog-art", `project-${selectedProject.visualTheme}`)}>
-              <ProjectArtwork project={selectedProject} compact />
+        <Ticker reduced={reduced} />
+
+        <FeaturedWorkStrip reduced={reduced} onOpen={setSelectedProject} />
+
+        <AboutSection reduced={reduced} touch={touch} />
+
+        <SkillsSection reduced={reduced} />
+
+        <ProjectsSection onOpen={setSelectedProject} touch={touch} reduced={reduced} />
+
+        <FullStackProofSection reduced={reduced} />
+
+        <ServicesSection reduced={reduced} />
+
+        <ExperienceSection reduced={reduced} />
+
+        <section id="process" ref={processRef} className="section-shell border-t border-border">
+          <SectionIndex
+            number="06"
+            label="Process"
+            aside="Clear stages. Close collaboration. No black boxes."
+          />
+          <div className="process-layout mt-14">
+            <div className="process-rail" aria-hidden="true">
+              <span style={{ transform: `scaleY(${processProgress})` }} />
             </div>
-            <p className="dialog-lede">{selectedProject.description}</p>
-            <div className="flex flex-wrap gap-2">
-              {selectedProject.tags.map((tag) => (
-                <span className="tag" key={tag}>
-                  {tag}
-                </span>
+            <div className="process-steps">
+              {process.map(([title, description], index) => (
+                <article
+                  key={title}
+                  className={cn(
+                    "process-step",
+                    processProgress >= index / process.length && "is-reached",
+                  )}
+                >
+                  <b>0{index + 1}</b>
+                  <h3>{title}</h3>
+                  <p>{description}</p>
+                  <span className="process-diamond" />
+                </article>
               ))}
             </div>
-            <div className="case-study-grid">
-              <div>
-                <span>PROBLEM</span>
-                <p>{selectedProject.challenge}</p>
-              </div>
-              <div>
-                <span>MY ROLE</span>
-                <p>{selectedProject.role}</p>
-              </div>
-              <div>
-                <span>RESULT</span>
-                <p>{selectedProject.outcome}</p>
-              </div>
-              <div>
-                <span>TECH STACK</span>
-                <p>{selectedProject.techStack.join(" · ")}</p>
-              </div>
+          </div>
+        </section>
+
+        <AvailabilityBand onCta={() => scrollTo("Contact")} reduced={reduced} />
+
+        <ContactScene
+          reduced={reduced}
+          touch={touch}
+          copied={copied}
+          onCopy={copyEmail}
+          errors={errors}
+          projectType={projectType}
+          setProjectType={setProjectType}
+          submitState={submitState}
+          setSubmitState={setSubmitState}
+          onSubmit={submitContact}
+        />
+
+        <footer>
+          <div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">
+            <a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top">
+              <img
+                src={samarLogo}
+                alt="Samar Dev personal brand logo"
+                className="footer-logo"
+                loading="lazy"
+                decoding="async"
+              />
+            </a>
+            <p>© 2026 Samar Dev. Built with curiosity.</p>
+            <div className="footer-links">
+              <a href={`mailto:${EMAIL}`}>
+                Email <ArrowUpRight className="arrow-icon" />
+              </a>
+              <a href={socialLinks.linkedin.url} target="_blank" rel="noreferrer">
+                LinkedIn <ArrowUpRight className="arrow-icon" />
+              </a>
+              <a href={socialLinks.github.url} target="_blank" rel="noreferrer">
+                GitHub <ArrowUpRight className="arrow-icon" />
+              </a>
             </div>
-            {/* TODO: Replace this neutral state with a real client quote after approval. Never invent testimonial copy. */}
-            <div className="testimonial-pending">
-              <span>CLIENT TESTIMONIAL</span>
-              <p>
-                Client quote pending — add an approved WhatsApp message or written testimonial here.
-              </p>
-            </div>
-            <div className="dialog-meta single">
-              <div>
-                <span>VERIFIED FEATURES</span>
-                {selectedProject.features.map((item) => (
-                  <p key={item}>◆ {item}</p>
+          </div>
+        </footer>
+
+        <AnimatePresence>
+          {scrolled && (
+            <m.button
+              className="back-to-top press"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Back to top"
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.7 }}
+              transition={{ duration: 0.25 }}
+            >
+              <span className="btt-orbit" aria-hidden="true" />
+              <ArrowUp className="arrow-icon" />
+            </m.button>
+          )}
+        </AnimatePresence>
+
+        <Dialog
+          open={Boolean(selectedProject)}
+          onOpenChange={(open) => !open && setSelectedProject(null)}
+        >
+          {selectedProject && (
+            <DialogContent className="project-dialog max-h-[88vh] max-w-3xl overflow-y-auto">
+              <DialogHeader>
+                <p className="eyebrow text-primary">FEATURED PROJECT · {selectedProject.number}</p>
+                <DialogTitle>{selectedProject.title}</DialogTitle>
+                <DialogDescription>{selectedProject.category}</DialogDescription>
+              </DialogHeader>
+              <div className={cn("dialog-art", `project-${selectedProject.visualTheme}`)}>
+                <ProjectArtwork project={selectedProject} compact />
+              </div>
+              <p className="dialog-lede">{selectedProject.description}</p>
+              <div className="flex flex-wrap gap-2">
+                {selectedProject.tags.map((tag) => (
+                  <span className="tag" key={tag}>
+                    {tag}
+                  </span>
                 ))}
               </div>
-            </div>
-            <div className="dialog-actions">
-              <Button asChild size="lg" className="press cta-arrow w-fit">
-                <a href={selectedProject.liveUrl} target="_blank" rel="noreferrer">
-                  Visit live site <ArrowUpRight className="arrow-icon" />
-                </a>
-              </Button>
-              {selectedProject.codeUrl && (
-                <Button asChild size="lg" variant="outline" className="press w-fit">
-                  <a href={selectedProject.codeUrl} target="_blank" rel="noreferrer">
-                    Browse public code <ArrowUpRight className="arrow-icon" />
+              <div className="case-study-grid">
+                <div>
+                  <span>PROBLEM</span>
+                  <p>{selectedProject.challenge}</p>
+                </div>
+                <div>
+                  <span>MY ROLE</span>
+                  <p>{selectedProject.role}</p>
+                </div>
+                <div>
+                  <span>RESULT</span>
+                  <p>{selectedProject.outcome}</p>
+                </div>
+                <div>
+                  <span>TECH STACK</span>
+                  <p>{selectedProject.techStack.join(" · ")}</p>
+                </div>
+              </div>
+              {/* TODO: Replace this neutral state with a real client quote after approval. Never invent testimonial copy. */}
+              <div className="testimonial-pending">
+                <span>CLIENT TESTIMONIAL</span>
+                <p>
+                  Client quote pending — add an approved WhatsApp message or written testimonial
+                  here.
+                </p>
+              </div>
+              <div className="dialog-meta single">
+                <div>
+                  <span>VERIFIED FEATURES</span>
+                  {selectedProject.features.map((item) => (
+                    <p key={item}>◆ {item}</p>
+                  ))}
+                </div>
+              </div>
+              <div className="dialog-actions">
+                <Button asChild size="lg" className="press cta-arrow w-fit">
+                  <a href={selectedProject.liveUrl} target="_blank" rel="noreferrer">
+                    Visit live site <ArrowUpRight className="arrow-icon" />
                   </a>
                 </Button>
-              )}
-            </div>
-          </DialogContent>
-        )}
-      </Dialog>
-    </main>
+                {selectedProject.codeUrl && (
+                  <Button asChild size="lg" variant="outline" className="press w-fit">
+                    <a href={selectedProject.codeUrl} target="_blank" rel="noreferrer">
+                      Browse public code <ArrowUpRight className="arrow-icon" />
+                    </a>
+                  </Button>
+                )}
+              </div>
+            </DialogContent>
+          )}
+        </Dialog>
+      </main>
+    </LazyMotion>
   );
 }
 
 function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => void }) {
   return (
-    <motion.div
+    <m.div
       className="loading-intro"
       initial={{ opacity: 1 }}
       animate={{ opacity: 1 }}
@@ -963,27 +968,27 @@ function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => voi
       }}
     >
       <div className="loading-intro-grid" aria-hidden="true" />
-      <motion.div
+      <m.div
         className="loading-intro-center"
         initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: reduced ? 0.2 : 0.5, ease: [0.2, 0.8, 0.2, 1] }}
       >
-        <motion.span
+        <m.span
           className="loading-orb"
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ duration: 0.3, delay: reduced ? 0 : 0.08 }}
         />
-        <motion.p
+        <m.p
           className="loading-code-mark"
           initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.35, delay: reduced ? 0 : 0.18 }}
         >
           &lt; Samar Dev /&gt;
-        </motion.p>
-        <motion.img
+        </m.p>
+        <m.img
           src={samarLogo}
           alt="Samar Dev"
           className="loading-logo"
@@ -991,14 +996,14 @@ function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => voi
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: reduced ? 0 : 0.28 }}
         />
-        <motion.p
+        <m.p
           className="loading-subtitle"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.35, delay: reduced ? 0 : 0.48 }}
         >
           CREATIVE DEVELOPER
-        </motion.p>
+        </m.p>
         <div className="loading-route" aria-hidden="true">
           <span>DESIGN</span>
           <i />
@@ -1006,13 +1011,13 @@ function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => voi
           <i />
           <span>SHIP</span>
         </div>
-      </motion.div>
+      </m.div>
       <span className="loading-status">
         INITIALIZING EXPERIENCE <b>●</b>
       </span>
       <span className="loading-skip">CLICK TO ENTER</span>
       <span className="loading-index">S / 001</span>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -1032,14 +1037,14 @@ function Ticker({ reduced }: { reduced: boolean }) {
   });
   return (
     <div className="ticker" aria-label="Creative development services">
-      <motion.div style={{ x }}>
+      <m.div style={{ x }}>
         {Array.from({ length: 3 }).map((_, i) => (
           <span key={i}>
             CREATIVE CODE <b>◆</b> FULL-STACK DEVELOPER <b>•</b> WEB DESIGNER <b>◆</b> INTERACTIVE
             EXPERIENCES <b>•</b> ANIMATION SPECIALIST <b>◆</b> MOTION UI <b>•</b>
           </span>
         ))}
-      </motion.div>
+      </m.div>
     </div>
   );
 }
@@ -1069,14 +1074,14 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
         <p className="display-copy">
           {lines.map((line, i) => (
             <span className="reveal-line" key={line}>
-              <motion.span
+              <m.span
                 initial={reduced ? { opacity: 0 } : { y: "110%" }}
                 whileInView={reduced ? { opacity: 1 } : { y: "0%" }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.75, delay: i * 0.11, ease: [0.2, 0.85, 0.2, 1] }}
               >
                 {i === 0 ? line : <em>{line}</em>}
-              </motion.span>
+              </m.span>
             </span>
           ))}
         </p>
@@ -1106,7 +1111,7 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
             <small>Responsive, refined and live.</small>
           </div>
         </div>
-        <motion.span
+        <m.span
           className="signal-draw"
           aria-hidden="true"
           initial={{ scaleX: 0 }}
@@ -1159,7 +1164,7 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
         aside="A focused creative-development workflow, from first direction to final deployment."
       />
       <div className="skills-intro mt-12 sm:mt-16">
-        <motion.div
+        <m.div
           className="skills-lede"
           initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1174,8 +1179,8 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
             <br />
             <em>Building the system.</em>
           </h2>
-        </motion.div>
-        <motion.p
+        </m.div>
+        <m.p
           className="skills-note"
           initial={reduced ? { opacity: 0 } : { opacity: 0, y: 18 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1184,7 +1189,7 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
         >
           I don’t collect tools for the sake of it. I choose the right tools for the right
           experience, then carry the work from a sharp idea to a polished, production-ready website.
-        </motion.p>
+        </m.p>
       </div>
       <div className="skill-flow" role="tablist" aria-label="Creative development workflow">
         {skillStages.map((item, index) => (
@@ -1210,7 +1215,7 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
       </div>
       <div className="skill-stage-layout">
         <AnimatePresence mode="wait" initial={false}>
-          <motion.div
+          <m.div
             className="skill-stage-copy"
             key={stage.label}
             initial={reduced ? { opacity: 0 } : { opacity: 0, x: -16, filter: "blur(5px)" }}
@@ -1230,7 +1235,7 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
             )}
             <div className="skill-tool-list">
               {stage.tools.map(([name, mark, detail, logo], index) => (
-                <motion.div
+                <m.div
                   className="skill-tool"
                   key={name}
                   initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
@@ -1251,14 +1256,14 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
                     <small>{detail}</small>
                   </span>
                   <i aria-hidden="true">↗</i>
-                </motion.div>
+                </m.div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
         <SkillPipeline reduced={reduced} activeStage={activeStage} />
       </div>
-      <motion.div
+      <m.div
         className="skills-proof"
         initial={reduced ? { opacity: 0 } : { opacity: 0, scaleX: 0.85 }}
         whileInView={{ opacity: 1, scaleX: 1 }}
@@ -1271,14 +1276,14 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
           Responsive by default · Accessible interactions · Optimized assets · Production-ready
           deployment
         </span>
-      </motion.div>
+      </m.div>
     </section>
   );
 }
 
 function SkillPipeline({ reduced, activeStage }: { reduced: boolean; activeStage: number }) {
   return (
-    <motion.div
+    <m.div
       className="skill-pipeline"
       initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.94 }}
       whileInView={{ opacity: 1, scale: 1 }}
@@ -1310,7 +1315,7 @@ function SkillPipeline({ reduced, activeStage }: { reduced: boolean; activeStage
         <br />
         <strong>TO LIVE EXPERIENCE</strong>
       </p>
-    </motion.div>
+    </m.div>
   );
 }
 
@@ -1322,7 +1327,7 @@ function FullStackProofSection({ reduced }: { reduced: boolean }) {
         label="Full-stack proof"
         aside="A transparent view of what is shipped, and what is still in progress."
       />
-      <motion.div
+      <m.div
         className="mt-12 grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-end sm:mt-16"
         initial={reduced ? { opacity: 0 } : { opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -1363,7 +1368,7 @@ function FullStackProofSection({ reduced }: { reduced: boolean }) {
             Ask about the build <ArrowUpRight className="arrow-icon" />
           </a>
         </div>
-      </motion.div>
+      </m.div>
     </section>
   );
 }
@@ -1378,7 +1383,7 @@ function ServicesSection({ reduced }: { reduced: boolean }) {
         aside="Available independently or as one connected engagement."
       />
       <div className="services-intro mt-12 sm:mt-16">
-        <motion.h2
+        <m.h2
           className="services-title"
           initial={reduced ? { opacity: 0 } : { opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1388,7 +1393,7 @@ function ServicesSection({ reduced }: { reduced: boolean }) {
           One idea.
           <br />
           <em>Many ways forward.</em>
-        </motion.h2>
+        </m.h2>
         <p>
           Whether the need is a new digital home, a sharper product flow or a more expressive story,
           I bring the right mix of thinking, design and build.
@@ -1396,7 +1401,7 @@ function ServicesSection({ reduced }: { reduced: boolean }) {
       </div>
       <div className="services-list premium-services mt-12 sm:mt-16">
         {services.map(([number, title, description], i) => (
-          <motion.button
+          <m.button
             type="button"
             className={cn("service-row", active === i && "is-active")}
             key={number}
@@ -1415,7 +1420,7 @@ function ServicesSection({ reduced }: { reduced: boolean }) {
             </b>
             <em className="service-line" aria-hidden="true" />
             {active === i && (
-              <motion.div
+              <m.div
                 className="service-detail"
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
@@ -1423,9 +1428,9 @@ function ServicesSection({ reduced }: { reduced: boolean }) {
               >
                 <span>THE VALUE</span>
                 <strong>{serviceDetails[i]}</strong>
-              </motion.div>
+              </m.div>
             )}
-          </motion.button>
+          </m.button>
         ))}
       </div>
     </section>
@@ -1457,7 +1462,7 @@ function ExperienceSection({ reduced }: { reduced: boolean }) {
           </p>
         </div>
         <div className="experience-list premium-experience-list mt-14">
-          <motion.div
+          <m.div
             initial={reduced ? { opacity: 0 } : { opacity: 0, x: -22 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -1470,8 +1475,8 @@ function ExperienceSection({ reduced }: { reduced: boolean }) {
               clarity and craft.
             </p>
             <span className="experience-badge">ACTIVE PRACTICE</span>
-          </motion.div>
-          <motion.div
+          </m.div>
+          <m.div
             initial={reduced ? { opacity: 0 } : { opacity: 0, x: -22 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -1484,7 +1489,7 @@ function ExperienceSection({ reduced }: { reduced: boolean }) {
               with a different visual language.
             </p>
             <span className="experience-badge">LIVE WORK</span>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>
@@ -1603,7 +1608,7 @@ function ProjectStage({
           </button>
           <div className="project-grid-lines" aria-hidden="true" />
           <span className="stage-sweep" aria-hidden="true" />
-          <motion.div
+          <m.div
             className="stage-art"
             {...artReveal}
             viewport={{ once: true, margin: "-15% 0px" }}
@@ -1614,8 +1619,8 @@ function ProjectStage({
             }}
           >
             <ProjectArtwork project={project} />
-          </motion.div>
-          <motion.span
+          </m.div>
+          <m.span
             className="stage-number"
             initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.7 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -1623,10 +1628,10 @@ function ProjectStage({
             transition={{ duration: 0.45, delay: 0.2 }}
           >
             {project.number}
-          </motion.span>
+          </m.span>
           <span className="stage-crosshair one" aria-hidden="true" />
           <span className="stage-crosshair two" aria-hidden="true" />
-          <motion.span
+          <m.span
             className="stage-float-label"
             initial={false}
             animate={hover && !touch ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
@@ -1634,8 +1639,8 @@ function ProjectStage({
             aria-hidden="true"
           >
             VIEW CASE STUDY ↗
-          </motion.span>
-          <motion.div
+          </m.span>
+          <m.div
             className="stage-panel"
             {...panelReveal}
             viewport={{ once: true, margin: "-15% 0px" }}
@@ -1673,7 +1678,7 @@ function ProjectStage({
                 </a>
               </div>
             </div>
-          </motion.div>
+          </m.div>
           {index === 0 && (
             <span className="stage-diamond" aria-hidden="true">
               ◆
@@ -1702,7 +1707,7 @@ function FeaturedWorkStrip({
       </div>
       <div className="featured-work-grid">
         {projects.map((project, index) => (
-          <motion.button
+          <m.button
             type="button"
             className={cn("featured-work-card", `featured-${project.visualTheme}`)}
             key={project.id}
@@ -1719,7 +1724,7 @@ function FeaturedWorkStrip({
               {project.tags[0]} · {project.tags[1]}
             </small>
             <i>VIEW CASE STUDY ↗</i>
-          </motion.button>
+          </m.button>
         ))}
       </div>
     </section>
@@ -1730,7 +1735,7 @@ function FeaturedWorkStrip({
 function AvailabilityBand({ onCta, reduced }: { onCta: () => void; reduced: boolean }) {
   return (
     <section className="availability-band">
-      <motion.span
+      <m.span
         className="availability-orbit"
         aria-hidden="true"
         initial={{ scale: 0.75, opacity: 0 }}
@@ -1791,7 +1796,7 @@ function ContactScene(props: {
     <section id="contact" className="contact-scene">
       <div className="section-shell">
         <SectionIndex number="06" label="Contact" aside="Let’s make something that moves." />
-        <motion.h2
+        <m.h2
           className="contact-mega mt-10"
           initial={reduced ? { opacity: 0 } : { opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1799,7 +1804,7 @@ function ContactScene(props: {
           transition={{ duration: 0.7, ease: [0.2, 0.85, 0.2, 1] }}
         >
           HAVE AN IDEA? <em>LET’S GIVE IT A POINT OF VIEW.</em>
-        </motion.h2>
+        </m.h2>
 
         <div className="contact-stage mt-14">
           <div className="email-block">
@@ -1915,7 +1920,7 @@ function ContactScene(props: {
                   autoComplete="off"
                   aria-hidden="true"
                 />
-                <motion.div
+                <m.div
                   className="contact-field-reveal"
                   initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1931,8 +1936,8 @@ function ContactScene(props: {
                       aria-describedby={errors.name ? "name-error" : undefined}
                     />
                   </Field>
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   className="contact-field-reveal"
                   initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1949,8 +1954,8 @@ function ContactScene(props: {
                       aria-describedby={errors.email ? "email-error" : undefined}
                     />
                   </Field>
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   className="contact-field-reveal"
                   initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1978,8 +1983,8 @@ function ContactScene(props: {
                       ))}
                     </div>
                   </Field>
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   className="contact-field-reveal"
                   initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1999,8 +2004,8 @@ function ContactScene(props: {
                       aria-describedby={errors.message ? "message-error" : undefined}
                     />
                   </Field>
-                </motion.div>
-                <motion.div
+                </m.div>
+                <m.div
                   className="contact-submit-wrap"
                   whileHover={submitState === "loading" ? undefined : { y: -3 }}
                   whileTap={submitState === "loading" ? undefined : { scale: 0.98 }}
@@ -2021,7 +2026,7 @@ function ContactScene(props: {
                       </>
                     )}
                   </Button>
-                </motion.div>
+                </m.div>
                 <p className="text-xs text-muted-foreground">
                   Your brief is sent securely to Samar’s inbox via Formspree. Please don’t include
                   passwords or sensitive personal information.
