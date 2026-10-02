@@ -30,7 +30,7 @@ import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState
 
 import profileAvatar from "@/assets/samar-profile-avatar-hero.webp";
 import profileAvatarMobile from "@/assets/samar-profile-avatar-mobile.webp";
-import samarLogo from "@/assets/samar-dev-logo.png?inline";
+const samarLogo = "/samar-dev-logo.webp";
 import cursorArrow from "@/assets/cursor-arrow.svg";
 import cursorPointer from "@/assets/cursor-pointer.svg";
 import { HeroCanvas } from "@/components/three/Lazy3D";
