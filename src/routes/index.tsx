@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import {
   AnimatePresence,
+  domAnimation,
   LazyMotion,
   m,
   useAnimationFrame,
@@ -25,7 +26,6 @@ import {
   useTransform,
   useVelocity,
 } from "motion/react";
-const loadMotionFeatures = () => import("motion").then((module) => module.domAnimation);
 import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
 import profileAvatar from "@/assets/samar-profile-avatar-hero.webp";
@@ -533,7 +533,7 @@ function Portfolio() {
         };
 
   return (
-    <LazyMotion features={loadMotionFeatures}>
+    <LazyMotion features={domAnimation}>
       <main
         id="main-content"
         className="custom-cursor overflow-clip bg-background text-foreground"
