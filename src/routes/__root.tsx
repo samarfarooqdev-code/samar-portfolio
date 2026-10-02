@@ -100,12 +100,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap",
-      },
       { rel: "icon", href: faviconAsset, type: "image/png" },
       { rel: "shortcut icon", href: faviconAsset, type: "image/png" },
       { rel: "apple-touch-icon", href: faviconAsset },
@@ -125,10 +119,34 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <DeferredFonts />
         <Scripts />
       </body>
     </html>
   );
+}
+
+function DeferredFonts() {
+  useEffect(() => {
+    const load = () => {
+      if (document.querySelector("link[data-samar-fonts]")) return;
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href =
+        "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap";
+      link.dataset.samarFonts = "true";
+      document.head.appendChild(link);
+    };
+    const idle =
+      "requestIdleCallback" in window
+        ? window.requestIdleCallback(load, { timeout: 1200 })
+        : window.setTimeout(load, 600);
+    return () => {
+      if (typeof idle === "number") window.clearTimeout(idle);
+      else window.cancelIdleCallback(idle);
+    };
+  }, []);
+  return null;
 }
 
 function RootComponent() {
