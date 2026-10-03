@@ -140,9 +140,9 @@ function RootShell({ children }: { children: ReactNode }) {
         <link
           rel="preload"
           as="image"
-          href="/samar-hero-720.avif"
+          href="/samar-hero-640.avif"
           type="image/avif"
-          imageSrcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
+          imageSrcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-640.avif 640w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
           imageSizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
           fetchPriority="high"
         />

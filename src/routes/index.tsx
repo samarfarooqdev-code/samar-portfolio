@@ -666,12 +666,12 @@ function Portfolio() {
               <picture>
                 <source
                   type="image/avif"
-                  srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
+                  srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-640.avif 640w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
                   sizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
                 />
                 <source
                   type="image/webp"
-                  srcSet="/samar-hero-320.webp 320w, /samar-hero-480.webp 480w, /samar-hero-720.webp 720w, /samar-hero-940.webp 940w"
+                  srcSet="/samar-hero-320.webp 320w, /samar-hero-480.webp 480w, /samar-hero-640.webp 640w, /samar-hero-720.webp 720w, /samar-hero-940.webp 940w"
                   sizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
                 />
                 <img
