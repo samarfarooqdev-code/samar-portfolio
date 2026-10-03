@@ -46,12 +46,8 @@ export function HeroCanvas() {
     if (shouldSkip) return;
 
     const enable = () => setReady(true);
-    if ("requestIdleCallback" in window) {
-      const idleId = window.requestIdleCallback(enable, { timeout: 1800 });
-      return () => window.cancelIdleCallback(idleId);
-    }
-    const timer = window.setTimeout(enable, 1500);
-    return () => window.clearTimeout(timer);
+    const timer = globalThis.setTimeout(enable, 1500);
+    return () => globalThis.clearTimeout(timer);
   }, []);
 
   return (

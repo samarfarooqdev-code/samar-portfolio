@@ -35,7 +35,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: { error: unknown; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -130,6 +130,22 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <link
+          rel="preload"
+          as="font"
+          href="/fonts/anton-portfolio-subset.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/samar-hero-640.avif"
+          type="image/avif"
+          imageSrcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-640.avif 640w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
+          imageSizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+          fetchPriority="high"
+        />
       </head>
       <body>
         {children}
@@ -148,16 +164,12 @@ function DeferredFonts() {
       link.rel = "stylesheet";
       link.href =
         "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap";
-      link.dataset.samarFonts = "true";
+      link.dataset["samarFonts"] = "true";
       document.head.appendChild(link);
     };
-    const idle =
-      "requestIdleCallback" in window
-        ? window.requestIdleCallback(load, { timeout: 1200 })
-        : window.setTimeout(load, 600);
+    const timer = window.setTimeout(load, 600);
     return () => {
-      if (typeof idle === "number") window.clearTimeout(idle);
-      else window.cancelIdleCallback(idle);
+      window.clearTimeout(timer);
     };
   }, []);
   return null;

@@ -10,6 +10,7 @@ import {
   Menu,
   Moon,
   Send,
+  Sparkles,
   Sun,
   X,
 } from "lucide-react";
@@ -24,12 +25,9 @@ import {
 } from "motion/react";
 import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
-import profileAvatar from "@/assets/samar-profile-avatar-hero.webp";
-import profileAvatarMobile from "@/assets/samar-profile-avatar-mobile.webp";
 const samarLogo = "/samar-dev-logo.webp";
 import cursorArrow from "@/assets/cursor-arrow.svg";
 import cursorPointer from "@/assets/cursor-pointer.svg";
-import { HeroCanvas } from "@/components/three/Lazy3D";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -71,7 +69,7 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: "https://samar-dev.vercel.app/og-image.png" },
       { name: "author", content: "Samar Dev" },
-      { name: "theme-color", content: "#f5f1e9" },
+      { name: "theme-color", content: "#0b0b0c" },
     ],
     links: [
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
@@ -84,11 +82,6 @@ export const Route = createFileRoute("/")({
 });
 
 const navItems = ["About", "Skills", "Projects", "Services", "Process", "Contact"];
-const roles = [
-  "CREATIVE WEB DEVELOPER",
-  "INTERACTIVE EXPERIENCE DESIGNER",
-  "MOTION-FIRST FRONTEND BUILDER",
-];
 
 const socialLinks = {
   instagram: {
@@ -271,7 +264,7 @@ const process = [
   ["Refine", "Polishing the details, testing the edges and making the work feel inevitable."],
 ];
 
-const contactTypes = [
+const contactTypes: [string, string, string][] = [
   ["website", "Creative website", "Brand, portfolio or business"],
   ["ecommerce", "Ecommerce", "A store with a point of view"],
   ["product", "Digital product", "A useful interface or system"],
@@ -334,9 +327,7 @@ type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
 type Theme = "light" | "dark";
 
 function useIsTouch() {
-  const [touch, setTouch] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
-  );
+  const [touch, setTouch] = useState(false);
   useEffect(() => {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
@@ -346,8 +337,6 @@ function useIsTouch() {
 function Portfolio() {
   const touch = useIsTouch();
   const reduced = (useReducedMotion() ?? false) || touch;
-  const [showIntro, setShowIntro] = useState(true);
-  const [roleIndex, setRoleIndex] = useState(0);
   const [activeSection, setActiveSection] = useState("About");
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
@@ -357,17 +346,13 @@ function Portfolio() {
   const [scrolled, setScrolled] = useState(false);
   const [copied, setCopied] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
+  const [themeLoaded, setThemeLoaded] = useState(false);
   const processRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
+  const [utcTime, setUtcTime] = useState("--:--");
   const [processProgress, setProcessProgress] = useState(0);
   const formStartedAt = useRef(Date.now());
   const lastSubmitAt = useRef(0);
-
-  const skipIntro = useCallback(() => {
-    window.localStorage.setItem("samar-dev-intro-seen", "1");
-    setShowIntro(false);
-    document.body.style.overflow = "";
-  }, []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("samar-theme");
@@ -378,50 +363,81 @@ function Portfolio() {
           ? "dark"
           : "light";
     setTheme(nextTheme);
+    setThemeLoaded(true);
   }, []);
 
   useEffect(() => {
+    if (!themeLoaded) return;
     document.documentElement.classList.toggle("dark", theme === "dark");
     document.documentElement.style.colorScheme = theme;
     window.localStorage.setItem("samar-theme", theme);
-  }, [theme]);
+  }, [theme, themeLoaded]);
 
   const { scrollY } = useScroll();
-  const { scrollYProgress: heroProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const avatarY = useTransform(heroProgress, [0, 1], [0, reduced ? 0 : -70]);
-  const avatarScale = useTransform(heroProgress, [0, 1], [1, reduced ? 1 : 0.9]);
-  const heroCopyY = useTransform(heroProgress, [0, 1], [0, reduced ? 0 : 60]);
-  const heroFade = useTransform(heroProgress, [0, 0.85], [1, reduced ? 1 : 0.15]);
-
-  useEffect(() => {
-    const introSeen = window.localStorage.getItem("samar-dev-intro-seen");
-    if (introSeen || reduced || touch) {
-      setShowIntro(false);
-      return;
-    }
-    document.body.style.overflow = "hidden";
-    const timer = window.setTimeout(skipIntro, 700);
-    return () => {
-      window.clearTimeout(timer);
-      document.body.style.overflow = "";
-    };
-  }, [reduced, skipIntro, touch]);
-
-  useEffect(() => {
-    const timer = window.setInterval(
-      () => setRoleIndex((value) => (value + 1) % roles.length),
-      2600,
-    );
-    return () => window.clearInterval(timer);
-  }, []);
 
   useEffect(() => {
     const unsub = scrollY.on("change", (v) => setScrolled(v > 320));
     return () => unsub();
   }, [scrollY]);
+
+  useEffect(() => {
+    const desktopClock = window.matchMedia("(min-width: 1024px)");
+    let timer: number | undefined;
+    const refresh = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+      if (!desktopClock.matches) return;
+      const renderClock = () =>
+        setUtcTime(
+          new Intl.DateTimeFormat("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZone: "UTC",
+          }).format(new Date()),
+        );
+      renderClock();
+      timer = window.setInterval(renderClock, 60_000);
+    };
+    refresh();
+    desktopClock.addEventListener("change", refresh);
+    return () => {
+      desktopClock.removeEventListener("change", refresh);
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const desktopPointer = window.matchMedia(
+      "(min-width: 1024px) and (hover: hover) and (pointer: fine)",
+    );
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!hero || !desktopPointer.matches || reducedMotion.matches) return;
+
+    let frame = 0;
+    const reset = () => {
+      window.cancelAnimationFrame(frame);
+      hero.style.removeProperty("--hero-avatar-x");
+      hero.style.removeProperty("--hero-avatar-y");
+    };
+    const move = (event: PointerEvent) => {
+      const bounds = hero.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        hero.style.setProperty("--hero-avatar-x", `${(x * 4).toFixed(1)}px`);
+        hero.style.setProperty("--hero-avatar-y", `${(y * 2).toFixed(1)}px`);
+      });
+    };
+    hero.addEventListener("pointermove", move, { passive: true });
+    hero.addEventListener("pointerleave", reset);
+    return () => {
+      hero.removeEventListener("pointermove", move);
+      hero.removeEventListener("pointerleave", reset);
+      reset();
+    };
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -518,9 +534,7 @@ function Portfolio() {
   };
 
   const enter = (delay: number) =>
-    reduced ||
-    touch ||
-    (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
+    reduced || touch
       ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
       : {
           initial: { opacity: 0, y: 26 },
@@ -543,10 +557,7 @@ function Portfolio() {
         <a className="skip-link" href="#about">
           Skip to main content
         </a>
-        <AnimatePresence>
-          {showIntro && <LoadingIntro reduced={reduced} onSkip={skipIntro} />}
-        </AnimatePresence>
-        <m.header className={cn("site-header", scrolled && "is-scrolled")} {...enter(0.75)}>
+        <header className={cn("site-header site-header--hero-dark", scrolled && "is-scrolled")}>
           <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
             <button
               className="brand-mark"
@@ -630,56 +641,63 @@ function Portfolio() {
               </m.nav>
             )}
           </AnimatePresence>
-        </m.header>
+        </header>
 
-        <section
-          ref={heroRef}
-          className="hero relative flex min-h-[760px] items-end px-4 pb-10 pt-28 sm:min-h-[820px] sm:px-8 lg:min-h-screen lg:px-12"
-        >
-          <m.div className="hero-scene-layer" style={{ opacity: heroFade }} {...enter(0)}>
-            <HeroCanvas />
-          </m.div>
-          <m.div className="peach-glow" {...enter(0.25)} />
-          <div className="crosshair crosshair-one" aria-hidden="true" />
-          <m.div className="hero-editorial-meta hero-meta-top" {...enter(0.35)}>
-            <span>CREATIVE SYSTEM / 001</span>
-            <i />
-          </m.div>
-          <m.div className="hero-editorial-meta hero-meta-side" {...enter(0.45)}>
+        <section id="top" ref={heroRef} className="hero hero-redesign relative overflow-clip">
+          <div className="hero-topline">
+            <span>Creative Developer</span>
             <span>
-              31.5204° N<br />
-              74.3587° E
+              <Sparkles aria-hidden="true" /> Available for select projects
             </span>
-            <b>PUNJAB, PAKISTAN — WORKING GLOBALLY</b>
-          </m.div>
-          <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
-            <m.div className="hero-copy self-center pb-4 lg:pb-14" style={{ y: heroCopyY }}>
-              <m.p className="eyebrow mb-5" {...enter(0.55)}>
-                <span>◆</span> SAMAR DEV · CREATIVE DEVELOPER
-              </m.p>
-              <m.h1 className="hero-title hero-statement" {...enter(0.6)}>
-                I build digital
-                <br />
-                <em>
-                  experiences with
-                  <br />a point of view.
-                </em>
-              </m.h1>
-              <m.p className="signature-line" {...enter(0.66)}>
-                Design with intent. Build with character.
-              </m.p>
-              <m.div className="role-line mt-5" {...enter(0.7)}>
-                <strong key={roleIndex}>{roles[roleIndex]}</strong>
-              </m.div>
-              <m.p
-                className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg"
-                {...enter(0.74)}
-              >
+          </div>
+          <span className="hero-portfolio-word" aria-hidden="true">
+            <span className="hero-word-desktop" aria-hidden="true">
+              PORTFOLIO
+            </span>
+            <span className="hero-word-mobile" aria-hidden="true">
+              <span>PORT</span>
+              <span>FOLIO</span>
+            </span>
+          </span>
+          <div className="hero-grid">
+            <div className="hero-avatar-stage">
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-640.avif 640w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
+                  sizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+                />
+                <source
+                  type="image/webp"
+                  srcSet="/samar-hero-320.webp 320w, /samar-hero-480.webp 480w, /samar-hero-640.webp 640w, /samar-hero-720.webp 720w, /samar-hero-940.webp 940w"
+                  sizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+                />
+                <img
+                  src="/samar-hero-720.webp"
+                  alt="Portrait of Samar Dev in a dark hoodie with red rim lighting"
+                  className="hero-avatar-image"
+                  width={941}
+                  height={1671}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <div className="hero-copy">
+              <p className="hero-intro">Hello, I&apos;m</p>
+              <h1 className="hero-name">
+                <span>SAMAR</span>
+                <span>Dev</span>
+              </h1>
+              <p className="hero-role">Creative Web Developer</p>
+              <p className="hero-lede">
                 I combine thoughtful design, clean frontend engineering and meaningful motion to
                 turn ideas into live experiences people remember.
-              </m.p>
-              <m.div className="hero-actions" {...enter(0.78)}>
-                <m.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
+              </p>
+              <p className="hero-location">Punjab, Pakistan, working globally</p>
+              <div className="hero-actions">
+                <m.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
                   <Button
                     size="lg"
                     className="press cta-arrow hero-cta hero-cta-primary"
@@ -688,7 +706,7 @@ function Portfolio() {
                     VIEW SELECTED WORK <ArrowUpRight className="arrow-icon" />
                   </Button>
                 </m.div>
-                <m.div whileHover={{ y: -4 }} whileTap={{ scale: 0.97 }}>
+                <m.div whileHover={{ y: -3 }} whileTap={{ scale: 0.98 }}>
                   <Button
                     size="lg"
                     variant="outline"
@@ -698,76 +716,43 @@ function Portfolio() {
                     START A PROJECT <ArrowUpRight className="arrow-icon" />
                   </Button>
                 </m.div>
-              </m.div>
-              <m.div className="hero-stats mt-8" {...enter(0.82)}>
-                <div>
-                  <b>03</b>
+              </div>
+            </div>
+            <p className="hero-sparkle-badge">
+              <Sparkles aria-hidden="true" />
+              <span>
+                Design with intent.
+                <br />
+                Build with character.
+              </span>
+            </p>
+            <aside className="hero-side">
+              <ul
+                className="hero-stats"
+                aria-label="Samar Dev availability and portfolio statistics"
+              >
+                <li>
+                  <strong>03</strong>
                   <span>Projects shipped</span>
-                </div>
-                <div>
-                  <b>04</b>
+                </li>
+                <li>
+                  <strong>04</strong>
                   <span>Core disciplines</span>
-                </div>
-                <div>
-                  <b>24/7</b>
-                  <span>Open to select projects</span>
-                </div>
-              </m.div>
-              <m.div className="hero-project-signal" {...enter(0.88)}>
-                <span>SELECTED WORK / 02</span>
-                <strong>Dastan-e-Nysa</strong>
-                <small>Story-led fashion commerce</small>
-                <button onClick={() => setSelectedProject(projects[1]!)}>
-                  VIEW CASE STUDY <ArrowUpRight className="arrow-icon" />
-                </button>
-              </m.div>
-            </m.div>
-            <m.div
-              className="avatar-stage relative flex min-h-[390px] items-end justify-center sm:min-h-[520px] lg:min-h-[650px]"
-              style={{ y: avatarY, scale: avatarScale }}
-              {...enter(0.4)}
-            >
-              <span className="avatar-label avatar-label-left">
-                PUNJAB, PAKISTAN
-                <br />
-                <b>WORKING GLOBALLY</b>
-              </span>
-              <div className="avatar-frame">
-                <picture>
-                  <source media="(max-width: 767px)" srcSet={profileAvatarMobile} />
-                  <img
-                    src={profileAvatar}
-                    alt="Illustrated portrait of Samar Dev"
-                    className="avatar-image"
-                    width={619}
-                    height={1100}
-                    fetchPriority="high"
-                    decoding="async"
-                    loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
-                  />
-                </picture>
-              </div>
-              <span className="avatar-label avatar-label-right">
-                OPEN TO
-                <br />
-                <b>SELECT PROJECTS</b>
-              </span>
-              <div className="signal-card">
-                <i className="status-dot" />
-                <span>ONLINE</span>
-                <b>12:48 UTC</b>
-              </div>
-            </m.div>
-            <m.button
-              className="scroll-cue press"
-              onClick={() => scrollTo("About")}
-              {...enter(0.9)}
-            >
+                </li>
+                <li>
+                  <strong>24/7</strong>
+                  <span>Available for work</span>
+                </li>
+              </ul>
+              <p className="hero-coordinates">
+                <span>31.5204° N&nbsp;&nbsp;74.3587° E</span>
+                <time aria-label="Current time in UTC">UTC {utcTime}</time>
+              </p>
+            </aside>
+            <button type="button" className="scroll-cue press" onClick={() => scrollTo("About")}>
               <span>SCROLL TO EXPLORE</span>
               <ArrowDown className="arrow-icon" />
-            </m.button>
+            </button>
           </div>
         </section>
 
@@ -842,7 +827,6 @@ function Portfolio() {
                 decoding="async"
                 width={258}
                 height={58}
-                decoding="async"
               />
             </a>
             <p>© 2026 Samar Dev. Built with curiosity.</p>
@@ -952,76 +936,6 @@ function Portfolio() {
         </Dialog>
       </main>
     </LazyMotion>
-  );
-}
-
-function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => void }) {
-  return (
-    <m.div
-      className="loading-intro"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, y: "-100%" }}
-      transition={{ duration: reduced ? 0.2 : 0.55, ease: [0.76, 0, 0.24, 1] }}
-      aria-label="Loading Samar Dev portfolio"
-      role="button"
-      tabIndex={0}
-      onClick={onSkip}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") onSkip();
-      }}
-    >
-      <div className="loading-intro-grid" aria-hidden="true" />
-      <m.div
-        className="loading-intro-center"
-        initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.92 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: reduced ? 0.2 : 0.5, ease: [0.2, 0.8, 0.2, 1] }}
-      >
-        <m.span
-          className="loading-orb"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.3, delay: reduced ? 0 : 0.08 }}
-        />
-        <m.p
-          className="loading-code-mark"
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: reduced ? 0 : 0.18 }}
-        >
-          &lt; Samar Dev /&gt;
-        </m.p>
-        <m.img
-          src={samarLogo}
-          alt="Samar Dev"
-          className="loading-logo"
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: reduced ? 0 : 0.28 }}
-        />
-        <m.p
-          className="loading-subtitle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35, delay: reduced ? 0 : 0.48 }}
-        >
-          CREATIVE DEVELOPER
-        </m.p>
-        <div className="loading-route" aria-hidden="true">
-          <span>DESIGN</span>
-          <i />
-          <span>BUILD</span>
-          <i />
-          <span>SHIP</span>
-        </div>
-      </m.div>
-      <span className="loading-status">
-        INITIALIZING EXPERIENCE <b>●</b>
-      </span>
-      <span className="loading-skip">CLICK TO ENTER</span>
-      <span className="loading-index">S / 001</span>
-    </m.div>
   );
 }
 
@@ -1233,7 +1147,7 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
                   initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.42, delay: reduced ? 0 : 0.18 + index * 0.11 }}
-                  whileHover={reduced ? undefined : { y: -4 }}
+                  {...(!reduced ? { whileHover: { y: -4 } } : {})}
                   data-tool={name}
                 >
                   {logo ? (
@@ -2006,8 +1920,9 @@ function ContactScene(props: {
                 </m.div>
                 <m.div
                   className="contact-submit-wrap"
-                  whileHover={submitState === "loading" ? undefined : { y: -3 }}
-                  whileTap={submitState === "loading" ? undefined : { scale: 0.98 }}
+                  {...(submitState !== "loading"
+                    ? { whileHover: { y: -3 }, whileTap: { scale: 0.98 } }
+                    : {})}
                 >
                   <Button
                     type="submit"
