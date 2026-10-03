@@ -344,8 +344,8 @@ function useIsTouch() {
 }
 
 function Portfolio() {
-  const reduced = useReducedMotion() ?? false;
   const touch = useIsTouch();
+  const reduced = (useReducedMotion() ?? false) || touch;
   const [showIntro, setShowIntro] = useState(true);
   const [roleIndex, setRoleIndex] = useState(0);
   const [activeSection, setActiveSection] = useState("About");
@@ -408,7 +408,7 @@ function Portfolio() {
       window.clearTimeout(timer);
       document.body.style.overflow = "";
     };
-  }, [reduced, skipIntro, touch]);
+  }, [reduced, skipIntro]);
 
   useEffect(() => {
     const timer = window.setInterval(
