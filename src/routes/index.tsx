@@ -307,10 +307,10 @@ const skillStages = [
     kicker: "03",
     description:
       "Then I turn the system into responsive, maintainable interfaces that feel as good to use as they look.",
-    proof: "React · Next.js · TypeScript · VS Code",
+    proof: "React · TanStack Start · TypeScript · VS Code",
     tools: [
       ["React", "R", "Interfaces", "/tool-logos/react.svg"],
-      ["Next.js", "N", "Web apps", "/tool-logos/nextdotjs.svg"],
+      ["TanStack Start", "TS", "Web apps", "https://cdn.simpleicons.org/tanstack"],
       ["TypeScript", "TS", "Systems", "/tool-logos/typescript.svg"],
       ["VS Code", "<> ", "Workflow", "/tool-logos/visual-studio-code.svg"],
     ],
@@ -408,7 +408,7 @@ function Portfolio() {
       window.clearTimeout(timer);
       document.body.style.overflow = "";
     };
-  }, [reduced, skipIntro]);
+  }, [reduced, skipIntro, touch]);
 
   useEffect(() => {
     const timer = window.setInterval(
@@ -710,7 +710,7 @@ function Portfolio() {
                 </div>
                 <div>
                   <b>24/7</b>
-                  <span>Available for Work</span>
+                  <span>Open to select projects</span>
                 </div>
               </m.div>
               <m.div className="hero-project-signal" {...enter(0.88)}>
@@ -1829,8 +1829,7 @@ function ContactScene(props: {
               </a>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              <strong className="text-foreground">Resume / CV:</strong> available on request while
-              the latest PDF is being prepared.
+              <strong className="text-foreground">Resume / CV:</strong> available on request.
             </p>
           </div>
 
