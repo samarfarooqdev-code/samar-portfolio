@@ -15,9 +15,9 @@ import {
 } from "lucide-react";
 import {
   AnimatePresence,
+  domAnimation,
   LazyMotion,
   m,
-  motion,
   useAnimationFrame,
   useMotionValue,
   useReducedMotion,
@@ -30,7 +30,7 @@ import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState
 
 import profileAvatar from "@/assets/samar-profile-avatar-hero.webp";
 import profileAvatarMobile from "@/assets/samar-profile-avatar-mobile.webp";
-import samarLogo from "@/assets/samar-dev-logo.png?inline";
+const samarLogo = "/samar-dev-logo.webp";
 import cursorArrow from "@/assets/cursor-arrow.svg";
 import cursorPointer from "@/assets/cursor-pointer.svg";
 import { HeroCanvas } from "@/components/three/Lazy3D";
@@ -402,7 +402,7 @@ function Portfolio() {
 
   useEffect(() => {
     const introSeen = window.localStorage.getItem("samar-dev-intro-seen");
-    if (introSeen || reduced) {
+    if (introSeen || reduced || touch) {
       setShowIntro(false);
       return;
     }
@@ -533,7 +533,7 @@ function Portfolio() {
         };
 
   return (
-    <LazyMotion features={() => import("motion/react").then(({ domAnimation }) => domAnimation)}>
+    <LazyMotion features={domAnimation}>
       <main
         id="main-content"
         className="custom-cursor overflow-clip bg-background text-foreground"
@@ -746,6 +746,7 @@ function Portfolio() {
                     width={619}
                     height={1100}
                     loading="eager"
+                    fetchPriority="high"
                     decoding="async"
                   />
                 </picture>
@@ -1070,7 +1071,7 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
   }, [touch, reduced]);
 
   return (
-    <section id="about" className="section-shell grid-section relative">
+    <section id="about" className="about-section section-shell grid-section relative">
       <SectionIndex number="01" label="About" />
       <div className="about-copy">
         <p className="display-copy">
@@ -1323,7 +1324,7 @@ function SkillPipeline({ reduced, activeStage }: { reduced: boolean; activeStage
 
 function FullStackProofSection({ reduced }: { reduced: boolean }) {
   return (
-    <section id="full-stack-proof" className="section-shell border-t border-border">
+    <section id="full-stack-proof" className="proof-section section-shell border-t border-border">
       <SectionIndex
         number="04A"
         label="Full-stack proof"

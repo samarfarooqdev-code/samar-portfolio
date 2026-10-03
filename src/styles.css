@@ -5522,3 +5522,18 @@ body {
     font-size: 0.72rem;
   }
 }
+
+/* Defer layout/paint work for sections that are not part of the first viewport. */
+@supports (content-visibility: auto) {
+  .about-section,
+  .skills-section,
+  .proof-section,
+  .services-section,
+  .experience-band,
+  .featured-strip,
+  .availability-band,
+  .contact-scene {
+    content-visibility: auto;
+    contain-intrinsic-size: 720px;
+  }
+}
