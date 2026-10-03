@@ -5708,7 +5708,6 @@ body {
   object-position: center bottom;
   -webkit-mask-image: linear-gradient(to bottom, #000 0 72%, transparent 100%);
   mask-image: linear-gradient(to bottom, #000 0 72%, transparent 100%);
-  filter: drop-shadow(0 1.25rem 1.75rem color-mix(in srgb, #000 24%, transparent));
 }
 
 .hero-redesign .hero-grid {
