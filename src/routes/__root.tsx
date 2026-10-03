@@ -143,7 +143,7 @@ function RootShell({ children }: { children: ReactNode }) {
           href="/samar-hero-720.avif"
           type="image/avif"
           imageSrcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
-          imageSizes="(max-width: 600px) 64vw, (max-width: 960px) 60vw, 620px"
+          imageSizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
           fetchPriority="high"
         />
       </head>

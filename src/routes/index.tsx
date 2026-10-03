@@ -69,7 +69,7 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: "https://samar-dev.vercel.app/og-image.png" },
       { name: "author", content: "Samar Dev" },
-      { name: "theme-color", content: "#f5f1e9" },
+      { name: "theme-color", content: "#0b0b0c" },
     ],
     links: [
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
@@ -348,6 +348,8 @@ function Portfolio() {
   const [theme, setTheme] = useState<Theme>("light");
   const [themeLoaded, setThemeLoaded] = useState(false);
   const processRef = useRef<HTMLElement>(null);
+  const heroRef = useRef<HTMLElement>(null);
+  const [utcTime, setUtcTime] = useState("--:--");
   const [processProgress, setProcessProgress] = useState(0);
   const formStartedAt = useRef(Date.now());
   const lastSubmitAt = useRef(0);
@@ -377,6 +379,69 @@ function Portfolio() {
     const unsub = scrollY.on("change", (v) => setScrolled(v > 320));
     return () => unsub();
   }, [scrollY]);
+
+  useEffect(() => {
+    const desktopClock = window.matchMedia("(min-width: 1024px)");
+    let timer: number | undefined;
+    const refresh = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+      if (!desktopClock.matches) return;
+      const renderClock = () =>
+        setUtcTime(
+          new Intl.DateTimeFormat("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+            timeZone: "UTC",
+          }).format(new Date()),
+        );
+      renderClock();
+      timer = window.setInterval(renderClock, 60_000);
+    };
+    refresh();
+    desktopClock.addEventListener("change", refresh);
+    return () => {
+      desktopClock.removeEventListener("change", refresh);
+      window.clearInterval(timer);
+    };
+  }, []);
+
+  useEffect(() => {
+    const hero = heroRef.current;
+    const desktopPointer = window.matchMedia(
+      "(min-width: 1024px) and (hover: hover) and (pointer: fine)",
+    );
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!hero || !desktopPointer.matches || reducedMotion.matches) return;
+
+    let frame = 0;
+    const reset = () => {
+      window.cancelAnimationFrame(frame);
+      hero.style.removeProperty("--hero-word-x");
+      hero.style.removeProperty("--hero-word-y");
+      hero.style.removeProperty("--hero-avatar-x");
+      hero.style.removeProperty("--hero-avatar-y");
+    };
+    const move = (event: PointerEvent) => {
+      const bounds = hero.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        hero.style.setProperty("--hero-word-x", `${(-x * 7).toFixed(1)}px`);
+        hero.style.setProperty("--hero-word-y", `${(-y * 2).toFixed(1)}px`);
+        hero.style.setProperty("--hero-avatar-x", `${(x * 4).toFixed(1)}px`);
+        hero.style.setProperty("--hero-avatar-y", `${(y * 2).toFixed(1)}px`);
+      });
+    };
+    hero.addEventListener("pointermove", move, { passive: true });
+    hero.addEventListener("pointerleave", reset);
+    return () => {
+      hero.removeEventListener("pointermove", move);
+      hero.removeEventListener("pointerleave", reset);
+      reset();
+    };
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -496,7 +561,7 @@ function Portfolio() {
         <a className="skip-link" href="#about">
           Skip to main content
         </a>
-        <m.header className={cn("site-header", scrolled && "is-scrolled")} {...enter(0.75)}>
+        <header className={cn("site-header site-header--hero-dark", scrolled && "is-scrolled")}>
           <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
             <button
               className="brand-mark"
@@ -580,50 +645,51 @@ function Portfolio() {
               </m.nav>
             )}
           </AnimatePresence>
-        </m.header>
+        </header>
 
-        <section
-          id="top"
-          className="hero hero-redesign relative overflow-clip px-4 sm:px-8 lg:px-12"
-        >
-          <m.div className="hero-topline" {...enter(0.08)}>
+        <section id="top" ref={heroRef} className="hero hero-redesign relative overflow-clip">
+          <div className="hero-topline">
             <span>Creative Developer</span>
             <span>
               <Sparkles aria-hidden="true" /> Available for select projects
             </span>
-          </m.div>
-          <span className="hero-portfolio-word" aria-hidden="true">
-            PORTFOLIO
-          </span>
-          <div className="hero-avatar-stage">
-            <picture>
-              <source
-                type="image/avif"
-                srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
-                sizes="(max-width: 600px) 64vw, (max-width: 960px) 60vw, 620px"
-              />
-              <source
-                type="image/webp"
-                srcSet="/samar-hero-320.webp 320w, /samar-hero-480.webp 480w, /samar-hero-720.webp 720w, /samar-hero-940.webp 940w"
-                sizes="(max-width: 600px) 64vw, (max-width: 960px) 60vw, 620px"
-              />
-              <img
-                src="/samar-hero-720.webp"
-                alt="Portrait of Samar Dev wearing glasses and a black hoodie"
-                className="hero-avatar-image"
-                width={941}
-                height={1672}
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-              />
-            </picture>
           </div>
-          <div className="hero-grid relative z-10 mx-auto w-full max-w-[1500px]">
-            <m.div className="hero-copy" {...enter(0.24)}>
+          <span className="hero-portfolio-word" aria-hidden="true">
+            <span className="hero-word-desktop">PORTFOLIO</span>
+            <span className="hero-word-mobile">
+              <span>PORT</span>
+              <span>FOLIO</span>
+            </span>
+          </span>
+          <div className="hero-grid">
+            <div className="hero-avatar-stage">
+              <picture>
+                <source
+                  type="image/avif"
+                  srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
+                  sizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+                />
+                <source
+                  type="image/webp"
+                  srcSet="/samar-hero-320.webp 320w, /samar-hero-480.webp 480w, /samar-hero-720.webp 720w, /samar-hero-940.webp 940w"
+                  sizes="(max-width: 421px) 76vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+                />
+                <img
+                  src="/samar-hero-720.webp"
+                  alt="Portrait of Samar Dev in a dark hoodie with red rim lighting"
+                  className="hero-avatar-image"
+                  width={941}
+                  height={1671}
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                />
+              </picture>
+            </div>
+            <div className="hero-copy">
               <p className="hero-intro">Hello, I&apos;m</p>
               <h1 className="hero-name">
-                <span>Samar</span>
+                <span>SAMAR</span>
                 <span>Dev</span>
               </h1>
               <p className="hero-role">Creative Web Developer</p>
@@ -653,11 +719,16 @@ function Portfolio() {
                   </Button>
                 </m.div>
               </div>
-            </m.div>
-            <m.aside className="hero-side" {...enter(0.32)}>
-              <p className="hero-tagline">
-                <Sparkles aria-hidden="true" /> Design with intent. Build with character.
-              </p>
+            </div>
+            <p className="hero-sparkle-badge">
+              <Sparkles aria-hidden="true" />
+              <span>
+                Design with intent.
+                <br />
+                Build with character.
+              </span>
+            </p>
+            <aside className="hero-side">
               <ul
                 className="hero-stats"
                 aria-label="Samar Dev availability and portfolio statistics"
@@ -675,16 +746,15 @@ function Portfolio() {
                   <span>Available for work</span>
                 </li>
               </ul>
-              <p className="hero-coordinates">31.5204° N&nbsp;&nbsp;74.3587° E</p>
-            </m.aside>
-            <m.button
-              className="scroll-cue press"
-              onClick={() => scrollTo("About")}
-              {...enter(0.4)}
-            >
+              <p className="hero-coordinates">
+                <span>31.5204° N&nbsp;&nbsp;74.3587° E</span>
+                <time aria-label="Current time in UTC">UTC {utcTime}</time>
+              </p>
+            </aside>
+            <button type="button" className="scroll-cue press" onClick={() => scrollTo("About")}>
               <span>SCROLL TO EXPLORE</span>
               <ArrowDown className="arrow-icon" />
-            </m.button>
+            </button>
           </div>
         </section>
 
