@@ -480,14 +480,16 @@ footer b span {
 
 .ticker {
   overflow: hidden;
+  max-width: 100vw;
   background: var(--primary);
   color: var(--primary-foreground);
   transform: rotate(-0.7deg) scale(1.02);
 }
-.ticker > div {
+.ticker-track {
   display: flex;
   width: max-content;
-  animation: none;
+  will-change: transform;
+  animation: ticker 24s linear infinite;
 }
 .ticker span {
   display: flex;
@@ -1484,6 +1486,10 @@ footer svg {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+
   *,
   *::before,
   *::after {
@@ -1604,10 +1610,6 @@ footer svg {
       0 46px,
       60px 0;
   }
-}
-
-.ticker > div {
-  animation: none;
 }
 
 .reveal-line {

@@ -18,13 +18,9 @@ import {
   domAnimation,
   LazyMotion,
   m,
-  useAnimationFrame,
-  useMotionValue,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
-  useVelocity,
 } from "motion/react";
 import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
@@ -301,8 +297,8 @@ const skillStages = [
       "I shape that direction into a visual language with rhythm, hierarchy and the small details people remember.",
     proof: "Figma · Motion · Visual systems",
     tools: [
-      ["Figma", "F", "UI / UX", "https://cdn.simpleicons.org/figma"],
-      ["Framer Motion", "M", "Interaction", "https://cdn.simpleicons.org/framer"],
+      ["Figma", "F", "UI / UX", "/tool-logos/figma.svg"],
+      ["Framer Motion", "M", "Interaction", "/tool-logos/framer.svg"],
       ["Canva", "C", "Visuals", "/tool-logos/canva.svg"],
     ],
   },
@@ -313,9 +309,9 @@ const skillStages = [
       "Then I turn the system into responsive, maintainable interfaces that feel as good to use as they look.",
     proof: "React · Next.js · TypeScript · VS Code",
     tools: [
-      ["React", "R", "Interfaces", "https://cdn.simpleicons.org/react"],
-      ["Next.js", "N", "Web apps", "https://cdn.simpleicons.org/nextdotjs"],
-      ["TypeScript", "TS", "Systems", "https://cdn.simpleicons.org/typescript"],
+      ["React", "R", "Interfaces", "/tool-logos/react.svg"],
+      ["Next.js", "N", "Web apps", "/tool-logos/nextdotjs.svg"],
+      ["TypeScript", "TS", "Systems", "/tool-logos/typescript.svg"],
       ["VS Code", "<> ", "Workflow", "/tool-logos/visual-studio-code.svg"],
     ],
   },
@@ -326,9 +322,9 @@ const skillStages = [
       "Finally, I refine, test and take the work from a local idea to a reliable experience people can actually use.",
     proof: "Git · GitHub · Vercel",
     tools: [
-      ["Git", "git", "Versioning", "https://cdn.simpleicons.org/git"],
-      ["GitHub", "GH", "Collaboration", "https://cdn.simpleicons.org/github"],
-      ["Vercel", "▲", "Deployment", "https://cdn.simpleicons.org/vercel"],
+      ["Git", "git", "Versioning", "/tool-logos/git.svg"],
+      ["GitHub", "GH", "Collaboration", "/tool-logos/github.svg"],
+      ["Vercel", "▲", "Deployment", "/tool-logos/vercel.svg"],
       ["VS Code", "<> ", "Workflow", "/tool-logos/visual-studio-code.svg"],
     ],
   },
@@ -407,7 +403,7 @@ function Portfolio() {
       return;
     }
     document.body.style.overflow = "hidden";
-    const timer = window.setTimeout(skipIntro, 1200);
+    const timer = window.setTimeout(skipIntro, 700);
     return () => {
       window.clearTimeout(timer);
       document.body.style.overflow = "";
@@ -557,7 +553,7 @@ function Portfolio() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               aria-label="Samar Dev — Back to top"
             >
-              <img src={samarLogo} alt="Samar Dev" className="brand-logo" />
+              <img src={samarLogo} alt="Samar Dev" className="brand-logo" width={258} height={58} />
             </button>
             <nav className="hidden items-center gap-1 sm:flex" aria-label="Main navigation">
               {navItems.map((item) => (
@@ -745,6 +741,8 @@ function Portfolio() {
                     className="avatar-image"
                     width={619}
                     height={1100}
+                    fetchPriority="high"
+                    decoding="async"
                     loading="eager"
                     fetchPriority="high"
                     decoding="async"
@@ -841,6 +839,9 @@ function Portfolio() {
                 alt="Samar Dev personal brand logo"
                 className="footer-logo"
                 loading="lazy"
+                decoding="async"
+                width={258}
+                height={58}
                 decoding="async"
               />
             </a>
@@ -1024,30 +1025,18 @@ function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => voi
   );
 }
 
-/* ---------- Ticker with scroll-velocity response ---------- */
-function Ticker({ reduced }: { reduced: boolean }) {
-  const { scrollY } = useScroll();
-  const velocity = useVelocity(scrollY);
-  const smooth = useSpring(velocity, { damping: 50, stiffness: 300 });
-  const x = useMotionValue(0);
-  const base = useRef(0);
-  useAnimationFrame((_, delta) => {
-    if (reduced) return;
-    const boost = Math.min(4, Math.abs(smooth.get()) / 900);
-    base.current -= (delta / 1000) * (60 + boost * 220);
-    if (base.current < -1600) base.current += 1600;
-    x.set(base.current);
-  });
+/* ---------- Ticker: CSS-only, two-copy marquee ---------- */
+function Ticker({ reduced: _reduced }: { reduced: boolean }) {
   return (
     <div className="ticker" aria-label="Creative development services">
-      <m.div style={{ x }}>
-        {Array.from({ length: 3 }).map((_, i) => (
+      <div className="ticker-track">
+        {Array.from({ length: 2 }).map((_, i) => (
           <span key={i}>
             CREATIVE CODE <b>◆</b> FULL-STACK DEVELOPER <b>•</b> WEB DESIGNER <b>◆</b> INTERACTIVE
             EXPERIENCES <b>•</b> ANIMATION SPECIALIST <b>◆</b> MOTION UI <b>•</b>
           </span>
         ))}
-      </m.div>
+      </div>
     </div>
   );
 }
@@ -1248,7 +1237,15 @@ function SkillsSection({ reduced }: { reduced: boolean }) {
                   data-tool={name}
                 >
                   {logo ? (
-                    <img className="skill-logo" src={logo} alt={`${name} logo`} loading="lazy" />
+                    <img
+                      className="skill-logo"
+                      src={logo}
+                      alt={`${name} logo`}
+                      loading="lazy"
+                      decoding="async"
+                      width={24}
+                      height={24}
+                    />
                   ) : (
                     <span className="skill-mark" aria-hidden="true">
                       {mark}
@@ -2146,7 +2143,14 @@ function ProjectArtwork({ project, compact = false }: { project: Project; compac
   return (
     <div className="project-visual-stack">
       <figure className="project-real-preview">
-        <img src={project.screenshot} alt={project.screenshotAlt} loading="lazy" />
+        <img
+          src={project.screenshot}
+          alt={project.screenshotAlt}
+          loading="lazy"
+          decoding="async"
+          width={1440}
+          height={900}
+        />
         <figcaption>LIVE SITE / REAL CAPTURE</figcaption>
       </figure>
       <div className="project-art-preview">{art}</div>
