@@ -6934,7 +6934,7 @@ body {
     min-height: 2.9rem;
   }
 
-  .hero-sparkle-badge {
+  .hero-redesign .hero-sparkle-badge {
     top: 30%;
     right: 1.15rem;
     width: 5.15rem;
@@ -7002,6 +7002,9 @@ body {
 @media (max-width: 374px) {
   .hero-redesign .hero-topline {
     font-size: 0.44rem;
+  }
+  .hero-redesign .hero-avatar-stage {
+    width: min(72vw, 20rem);
   }
   .hero-portfolio-word {
     font-size: 40vw;
