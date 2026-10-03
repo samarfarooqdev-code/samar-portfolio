@@ -417,8 +417,6 @@ function Portfolio() {
     let frame = 0;
     const reset = () => {
       window.cancelAnimationFrame(frame);
-      hero.style.removeProperty("--hero-word-x");
-      hero.style.removeProperty("--hero-word-y");
       hero.style.removeProperty("--hero-avatar-x");
       hero.style.removeProperty("--hero-avatar-y");
     };
@@ -428,8 +426,6 @@ function Portfolio() {
       const y = (event.clientY - bounds.top) / bounds.height - 0.5;
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
-        hero.style.setProperty("--hero-word-x", `${(-x * 7).toFixed(1)}px`);
-        hero.style.setProperty("--hero-word-y", `${(-y * 2).toFixed(1)}px`);
         hero.style.setProperty("--hero-avatar-x", `${(x * 4).toFixed(1)}px`);
         hero.style.setProperty("--hero-avatar-y", `${(y * 2).toFixed(1)}px`);
       });
@@ -655,8 +651,10 @@ function Portfolio() {
             </span>
           </div>
           <span className="hero-portfolio-word" aria-hidden="true">
-            <span className="hero-word-desktop">PORTFOLIO</span>
-            <span className="hero-word-mobile">
+            <span className="hero-word-desktop" aria-hidden="true">
+              PORTFOLIO
+            </span>
+            <span className="hero-word-mobile" aria-hidden="true">
               <span>PORT</span>
               <span>FOLIO</span>
             </span>

@@ -5660,9 +5660,7 @@ body {
   position: absolute;
   z-index: 1;
   top: clamp(10rem, 19vh, 14rem);
-  left: 50%;
   width: 100%;
-  transform: translateX(-50%);
   background: linear-gradient(
     to bottom,
     var(--accent) 0%,
@@ -6240,12 +6238,12 @@ body {
   position: absolute;
   z-index: 1;
   top: clamp(6.5rem, 10vh, 8rem);
-  left: 50%;
-  width: 100%;
+  left: clamp(1rem, 3.1vw, 3.5rem);
+  right: clamp(1rem, 3.1vw, 3.5rem);
+  width: auto;
   overflow: visible;
-  transform: translateX(-50%);
   font-family: "Anton", sans-serif;
-  font-size: min(58svh, 42rem);
+  font-size: 27.418vw;
   font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 0.78;
@@ -6269,12 +6267,9 @@ body {
 .hero-word-desktop {
   position: relative;
   display: block;
-  width: max-content;
-  left: 50%;
+  width: 100%;
   margin: 0;
-  transform: translateX(-50%) scaleX(0.73);
-  transform-origin: center top;
-  translate: var(--hero-word-x, 0px) var(--hero-word-y, 0px);
+  text-align: center;
   animation: hero-word-reveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
@@ -6648,11 +6643,8 @@ body {
 }
 
 @media (min-width: 1024px) and (max-width: 1199px) {
-  .hero-word-desktop {
-    transform: translateX(-50%) scaleX(0.66);
-  }
   .hero-avatar-stage {
-    width: min(100%, 40svh, 30rem);
+    width: min(100%, 47.9svh, 34rem);
   }
   .hero-redesign .hero-copy {
     padding-bottom: 3.25rem;
@@ -6677,27 +6669,9 @@ body {
   }
 }
 
-@media (min-width: 1200px) and (max-width: 1249px) {
-  .hero-word-desktop {
-    transform: translateX(-50%) scaleX(0.66);
-  }
-}
-
-@media (min-width: 1250px) and (max-width: 1359px) {
-  .hero-word-desktop {
-    transform: translateX(-50%) scaleX(0.8);
-  }
-}
-
-@media (min-width: 1360px) and (max-width: 1599px) {
-  .hero-word-desktop {
-    transform: translateX(-50%) scaleX(0.72);
-  }
-}
-
-@media (min-width: 1600px) {
-  .hero-word-desktop {
-    transform: translateX(-50%) scaleX(0.89);
+@media (min-width: 1807px) {
+  .hero-portfolio-word {
+    font-size: 27.525vw;
   }
 }
 
@@ -6711,9 +6685,6 @@ body {
   .hero-portfolio-word {
     top: 6.8rem;
     font-size: min(48svh, 34rem);
-  }
-  .hero-word-desktop {
-    transform: translateX(-50%) scaleX(0.455);
   }
   .hero-redesign .hero-grid {
     min-height: calc(100svh - 7.8rem);
@@ -6766,9 +6737,7 @@ body {
     grid-row: 3;
   }
   .hero-redesign .hero-sparkle-badge {
-    top: 37%;
-    right: 1.5rem;
-    width: 6rem;
+    display: none;
   }
 }
 
@@ -6796,11 +6765,14 @@ body {
   .hero-portfolio-word {
     top: 6.55rem;
     z-index: 1;
-    width: 100%;
-    font-size: clamp(8rem, 42vw, 11rem);
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    font-size: min(53vw, 15rem);
     letter-spacing: -0.06em;
     line-height: 0.82;
     white-space: normal;
+    transform: none;
     -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 63%, transparent 100%);
     mask-image: linear-gradient(180deg, #000 0%, #000 63%, transparent 100%);
   }
@@ -6839,7 +6811,9 @@ body {
   .hero-avatar-stage {
     position: absolute;
     z-index: 2;
-    top: 0.5rem;
+    top: auto;
+    right: auto;
+    bottom: clamp(14rem, 31svh, 17rem);
     left: 50%;
     width: min(76vw, 20rem);
     height: min(55svh, 29rem);
@@ -6933,12 +6907,7 @@ body {
   }
 
   .hero-redesign .hero-sparkle-badge {
-    top: 30%;
-    right: 1.15rem;
-    width: 5.15rem;
-    padding: 0.52rem;
-    font-size: 0.46rem;
-    line-height: 1.25;
+    display: none;
   }
 
   .hero-redesign .hero-sparkle-badge svg {
@@ -7037,5 +7006,120 @@ body {
     clip-path: none !important;
     opacity: 1 !important;
     translate: none !important;
+  }
+}
+
+/* Iteration 3: precision word fit, portrait overlap, and badge placement. */
+.hero-redesign .hero-portfolio-word {
+  top: clamp(7rem, 11vh, 8rem);
+  right: clamp(1rem, 3.1vw, 3.5rem);
+  left: clamp(1rem, 3.1vw, 3.5rem);
+  width: auto;
+  font-size: 27.418vw;
+  line-height: 0.78;
+  text-align: center;
+  transform: none;
+}
+
+.hero-redesign .hero-word-desktop {
+  display: block;
+  width: 100%;
+  transform: none;
+  translate: none;
+}
+
+.hero-redesign .hero-word-mobile {
+  display: none;
+}
+
+.hero-redesign .hero-avatar-stage {
+  position: absolute;
+  z-index: 2;
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 55%;
+  width: min(100%, 47.9svh, 34rem);
+  aspect-ratio: 941 / 1671;
+  grid-column: auto;
+  grid-row: auto;
+  margin: 0;
+  transform: translateX(-50%);
+  transform-origin: center bottom;
+}
+
+.hero-redesign .hero-sparkle-badge {
+  top: 25%;
+  right: clamp(1rem, 3.1vw, 3.5rem);
+}
+
+@media (min-width: 1807px) {
+  .hero-redesign .hero-portfolio-word {
+    font-size: 27.525vw;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-redesign .hero-avatar-stage {
+    width: min(100%, 50.7svh, 33rem);
+  }
+
+  .hero-redesign .hero-sparkle-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-redesign .hero-portfolio-word {
+    top: 6.55rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    font-size: min(53vw, 15rem);
+    letter-spacing: -0.06em;
+    line-height: 0.82;
+    white-space: normal;
+    transform: none;
+  }
+
+  .hero-redesign .hero-word-desktop {
+    display: none;
+  }
+
+  .hero-redesign .hero-word-mobile {
+    display: block;
+    width: 100%;
+  }
+
+  .hero-redesign .hero-word-mobile > span {
+    display: block;
+    width: 100%;
+    line-height: 0.82;
+    text-align: center;
+  }
+
+  .hero-redesign .hero-avatar-stage {
+    top: auto;
+    right: auto;
+    bottom: 0;
+    left: 50%;
+    width: min(84vw, 24rem);
+    height: min(80svh, 40rem);
+    aspect-ratio: auto;
+    grid-column: auto;
+    grid-row: auto;
+    transform: translateX(-50%);
+    transform-origin: center bottom;
+    translate: none;
+  }
+
+  .hero-redesign .hero-sparkle-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 374px) {
+  .hero-redesign .hero-avatar-stage {
+    width: min(72vw, 20rem);
   }
 }
