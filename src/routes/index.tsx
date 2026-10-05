@@ -521,7 +521,7 @@ function Portfolio() {
     reduced ||
     touch ||
     (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
-      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
+      ? { initial: false, animate: { opacity: 1 }, transition: { duration: 0.2 } }
       : {
           initial: { opacity: 0, y: 26 },
           animate: { opacity: 1, y: 0 },
@@ -744,8 +744,6 @@ function Portfolio() {
                     fetchPriority="high"
                     decoding="async"
                     loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
                   />
                 </picture>
               </div>
