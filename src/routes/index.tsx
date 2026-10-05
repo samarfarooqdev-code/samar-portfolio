@@ -308,7 +308,7 @@ const skillStages = [
     proof: "React · TanStack Start · TypeScript · VS Code",
     tools: [
       ["React", "R", "Interfaces", "/tool-logos/react.svg"],
-      ["TanStack Start", "T", "Web apps", ""],
+      ["TanStack Start", "TS", "Web apps", "https://cdn.simpleicons.org/tanstack"],
       ["TypeScript", "TS", "Systems", "/tool-logos/typescript.svg"],
       ["VS Code", "<> ", "Workflow", "/tool-logos/visual-studio-code.svg"],
     ],
@@ -493,8 +493,10 @@ function Portfolio() {
   };
 
   const enter = (delay: number) =>
-    reduced || touch
-      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
+    reduced ||
+    touch ||
+    (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
+      ? { initial: false, animate: { opacity: 1 }, transition: { duration: 0.2 } }
       : {
           initial: { opacity: 0, y: 26 },
           animate: { opacity: 1, y: 0 },
@@ -1728,8 +1730,7 @@ function ContactScene(props: {
               </a>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-muted-foreground">
-              <strong className="text-foreground">Resume / CV:</strong> available on request while
-              the latest PDF is being prepared.
+              <strong className="text-foreground">Resume / CV:</strong> available on request.
             </p>
           </div>
 
