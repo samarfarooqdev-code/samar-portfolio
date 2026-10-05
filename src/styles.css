@@ -1564,7 +1564,7 @@ footer svg {
       transparent 1px
     );
   background-size: 60px 46px;
-  transform: perspective(400px) rotateX(70deg);
+  transform: perspective(400px) rotateX(70deg) translate3d(0, 0, 0);
   opacity: 0.3;
   animation: gf-scroll 6s linear infinite;
 }
@@ -1606,9 +1606,7 @@ footer svg {
 }
 @keyframes gf-scroll {
   to {
-    background-position:
-      0 46px,
-      60px 0;
+    transform: perspective(400px) rotateX(70deg) translate3d(0, 46px, 0);
   }
 }
 

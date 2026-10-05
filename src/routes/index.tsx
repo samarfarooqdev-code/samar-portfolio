@@ -24,8 +24,6 @@ import {
 } from "motion/react";
 import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
 
-import profileAvatar from "@/assets/samar-profile-avatar-hero.webp";
-import profileAvatarMobile from "@/assets/samar-profile-avatar-mobile.webp";
 const samarLogo = "/samar-dev-logo.webp";
 import cursorArrow from "@/assets/cursor-arrow.svg";
 import cursorPointer from "@/assets/cursor-pointer.svg";
@@ -334,9 +332,7 @@ type Errors = Partial<Record<"name" | "email" | "project" | "message", string>>;
 type Theme = "light" | "dark";
 
 function useIsTouch() {
-  const [touch, setTouch] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(pointer: coarse)").matches,
-  );
+  const [touch, setTouch] = useState(false);
   useEffect(() => {
     setTouch(window.matchMedia("(pointer: coarse)").matches);
   }, []);
@@ -497,9 +493,7 @@ function Portfolio() {
   };
 
   const enter = (delay: number) =>
-    reduced ||
-    touch ||
-    (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
+    reduced || touch
       ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
       : {
           initial: { opacity: 0, y: 26 },
@@ -711,9 +705,9 @@ function Portfolio() {
               </span>
               <div className="avatar-frame">
                 <picture>
-                  <source media="(max-width: 767px)" srcSet={profileAvatarMobile} />
+                  <source media="(max-width: 767px)" srcSet="/samar-profile-avatar-mobile.webp" />
                   <img
-                    src={profileAvatar}
+                    src="/samar-profile-avatar-hero.webp"
                     alt="Illustrated portrait of Samar Dev"
                     className="avatar-image"
                     width={619}
@@ -721,8 +715,6 @@ function Portfolio() {
                     fetchPriority="high"
                     decoding="async"
                     loading="eager"
-                    fetchPriority="high"
-                    decoding="async"
                   />
                 </picture>
               </div>
