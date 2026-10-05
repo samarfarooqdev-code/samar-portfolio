@@ -7169,7 +7169,8 @@ body {
 
 @media (max-width: 767px) {
   .hero-redesign .hero-portfolio-word {
-    font-size: min(48vw, 14rem);
+    font-size: min(49.4vw, 14rem);
+    line-height: 0.82;
     -webkit-mask-image: none;
     mask-image: none;
   }
