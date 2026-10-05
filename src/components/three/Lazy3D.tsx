@@ -45,9 +45,22 @@ export function HeroCanvas() {
     setSkipScene(shouldSkip);
     if (shouldSkip) return;
 
-    const enable = () => setReady(true);
-    const timer = globalThis.setTimeout(enable, 1500);
-    return () => globalThis.clearTimeout(timer);
+    const enable = () => {
+      setReady(true);
+      window.removeEventListener("pointermove", enable);
+      window.removeEventListener("pointerdown", enable);
+      window.removeEventListener("scroll", enable);
+    };
+    window.addEventListener("pointermove", enable, { once: true, passive: true });
+    window.addEventListener("pointerdown", enable, { once: true, passive: true });
+    window.addEventListener("scroll", enable, { once: true, passive: true });
+    const timer = window.setTimeout(enable, 8000);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("pointermove", enable);
+      window.removeEventListener("pointerdown", enable);
+      window.removeEventListener("scroll", enable);
+    };
   }, []);
 
   return (
