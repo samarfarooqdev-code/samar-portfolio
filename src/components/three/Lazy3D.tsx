@@ -45,13 +45,22 @@ export function HeroCanvas() {
     setSkipScene(shouldSkip);
     if (shouldSkip) return;
 
-    const enable = () => setReady(true);
-    if ("requestIdleCallback" in window) {
-      const idleId = window.requestIdleCallback(enable, { timeout: 1800 });
-      return () => window.cancelIdleCallback(idleId);
-    }
-    const timer = window.setTimeout(enable, 1500);
-    return () => window.clearTimeout(timer);
+    const enable = () => {
+      setReady(true);
+      window.removeEventListener("pointermove", enable);
+      window.removeEventListener("pointerdown", enable);
+      window.removeEventListener("scroll", enable);
+    };
+    window.addEventListener("pointermove", enable, { once: true, passive: true });
+    window.addEventListener("pointerdown", enable, { once: true, passive: true });
+    window.addEventListener("scroll", enable, { once: true, passive: true });
+    const timer = window.setTimeout(enable, 8000);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("pointermove", enable);
+      window.removeEventListener("pointerdown", enable);
+      window.removeEventListener("scroll", enable);
+    };
   }, []);
 
   return (
