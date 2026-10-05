@@ -129,6 +129,11 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `@font-face{font-family:Manrope;font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk7PFN_C-bnTe87A.woff2) format("woff2")}@font-face{font-family:"DM Serif Display";font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/dmserifdisplay/v17/-nFnOHM81r4j6k0gjAW3mujVU2B2G_Bx0vrx52g.woff2) format("woff2")}html,body{margin:0}body{background:#f5f3ee;color:#30302f;font-family:Manrope,system-ui,sans-serif}.hero{isolation:isolate;min-height:760px}.hero-grid{display:grid;align-items:end}.hero-title{font-family:"DM Serif Display",Georgia,serif;font-weight:400;line-height:.86}.avatar-frame{position:relative;aspect-ratio:1}.avatar-frame picture,.avatar-image{display:block;width:100%;height:100%}.avatar-image{object-fit:contain;object-position:center bottom}`,
+          }}
+        />
         <HeadContent />
         <link
           rel="preload"
@@ -149,30 +154,10 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        <DeferredFonts />
         <Scripts />
       </body>
     </html>
   );
-}
-
-function DeferredFonts() {
-  useEffect(() => {
-    const load = () => {
-      if (document.querySelector("link[data-samar-fonts]")) return;
-      const link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href =
-        "https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Manrope:wght@400;500;600;700;800&display=swap";
-      link.dataset["samarFonts"] = "true";
-      document.head.appendChild(link);
-    };
-    const timer = window.setTimeout(load, 600);
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, []);
-  return null;
 }
 
 function RootComponent() {

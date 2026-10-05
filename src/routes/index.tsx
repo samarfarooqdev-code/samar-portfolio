@@ -303,7 +303,7 @@ const skillStages = [
     proof: "React · TanStack Start · TypeScript · VS Code",
     tools: [
       ["React", "R", "Interfaces", "/tool-logos/react.svg"],
-      ["TanStack Start", "TS", "Web apps", "https://cdn.simpleicons.org/tanstack"],
+      ["TanStack Start", "TS", "Web apps", "/tool-logos/tanstack.svg"],
       ["TypeScript", "TS", "Systems", "/tool-logos/typescript.svg"],
       ["VS Code", "<> ", "Workflow", "/tool-logos/visual-studio-code.svg"],
     ],
@@ -534,8 +534,10 @@ function Portfolio() {
   };
 
   const enter = (delay: number) =>
-    reduced || touch
-      ? { initial: { opacity: 0 }, animate: { opacity: 1 }, transition: { duration: 0.2 } }
+    reduced ||
+    touch ||
+    (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
+      ? { initial: false, animate: { opacity: 1 }, transition: { duration: 0.2 } }
       : {
           initial: { opacity: 0, y: 26 },
           animate: { opacity: 1, y: 0 },
