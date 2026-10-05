@@ -628,7 +628,7 @@ function Portfolio() {
               <m.p className="eyebrow mb-5" {...enter(0.55)}>
                 <span>◆</span> SAMAR DEV · CREATIVE DEVELOPER
               </m.p>
-              <m.h1 className="hero-title hero-statement" {...enter(0.6)}>
+              <m.h1 className="hero-title hero-statement">
                 I build digital
                 <br />
                 <em>
@@ -639,7 +639,7 @@ function Portfolio() {
               <m.p className="signature-line" {...enter(0.66)}>
                 Design with intent. Build with character.
               </m.p>
-              <m.div className="role-line mt-5" {...enter(0.7)}>
+              <m.div className="role-line mt-5">
                 <strong key={roleIndex}>{roles[roleIndex]}</strong>
               </m.div>
               <m.p
