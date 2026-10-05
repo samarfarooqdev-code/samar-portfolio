@@ -307,10 +307,10 @@ const skillStages = [
     kicker: "03",
     description:
       "Then I turn the system into responsive, maintainable interfaces that feel as good to use as they look.",
-    proof: "React · Next.js · TypeScript · VS Code",
+    proof: "React · TanStack Start · TypeScript · VS Code",
     tools: [
       ["React", "R", "Interfaces", "/tool-logos/react.svg"],
-      ["Next.js", "N", "Web apps", "/tool-logos/nextdotjs.svg"],
+      ["TanStack Start", "T", "Web apps", ""],
       ["TypeScript", "TS", "Systems", "/tool-logos/typescript.svg"],
       ["VS Code", "<> ", "Workflow", "/tool-logos/visual-studio-code.svg"],
     ],
@@ -346,7 +346,6 @@ function useIsTouch() {
 function Portfolio() {
   const touch = useIsTouch();
   const reduced = (useReducedMotion() ?? false) || touch;
-  const [showIntro, setShowIntro] = useState(true);
   const [roleIndex, setRoleIndex] = useState(0);
   const [activeSection, setActiveSection] = useState("About");
   const [menuOpen, setMenuOpen] = useState(false);
@@ -362,12 +361,6 @@ function Portfolio() {
   const [processProgress, setProcessProgress] = useState(0);
   const formStartedAt = useRef(Date.now());
   const lastSubmitAt = useRef(0);
-
-  const skipIntro = useCallback(() => {
-    window.localStorage.setItem("samar-dev-intro-seen", "1");
-    setShowIntro(false);
-    document.body.style.overflow = "";
-  }, []);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("samar-theme");
@@ -395,20 +388,6 @@ function Portfolio() {
   const avatarScale = useTransform(heroProgress, [0, 1], [1, reduced ? 1 : 0.9]);
   const heroCopyY = useTransform(heroProgress, [0, 1], [0, reduced ? 0 : 60]);
   const heroFade = useTransform(heroProgress, [0, 0.85], [1, reduced ? 1 : 0.15]);
-
-  useEffect(() => {
-    const introSeen = window.localStorage.getItem("samar-dev-intro-seen");
-    if (introSeen || reduced || touch) {
-      setShowIntro(false);
-      return;
-    }
-    document.body.style.overflow = "hidden";
-    const timer = window.setTimeout(skipIntro, 700);
-    return () => {
-      window.clearTimeout(timer);
-      document.body.style.overflow = "";
-    };
-  }, [reduced, skipIntro]);
 
   useEffect(() => {
     const timer = window.setInterval(
@@ -543,9 +522,7 @@ function Portfolio() {
         <a className="skip-link" href="#about">
           Skip to main content
         </a>
-        <AnimatePresence>
-          {showIntro && <LoadingIntro reduced={reduced} onSkip={skipIntro} />}
-        </AnimatePresence>
+        <AnimatePresence></AnimatePresence>
         <m.header className={cn("site-header", scrolled && "is-scrolled")} {...enter(0.75)}>
           <div className="nav-pill mx-auto grid max-w-4xl grid-cols-[minmax(0,1fr)_auto] items-center px-3 py-2 sm:flex sm:justify-between">
             <button
@@ -709,8 +686,8 @@ function Portfolio() {
                   <span>Core disciplines</span>
                 </div>
                 <div>
-                  <b>24/7</b>
-                  <span>Available for Work</span>
+                  <b>OPEN</b>
+                  <span>Open to select projects</span>
                 </div>
               </m.div>
               <m.div className="hero-project-signal" {...enter(0.88)}>
@@ -952,76 +929,6 @@ function Portfolio() {
         </Dialog>
       </main>
     </LazyMotion>
-  );
-}
-
-function LoadingIntro({ reduced, onSkip }: { reduced: boolean; onSkip: () => void }) {
-  return (
-    <m.div
-      className="loading-intro"
-      initial={{ opacity: 1 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0, y: "-100%" }}
-      transition={{ duration: reduced ? 0.2 : 0.55, ease: [0.76, 0, 0.24, 1] }}
-      aria-label="Loading Samar Dev portfolio"
-      role="button"
-      tabIndex={0}
-      onClick={onSkip}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") onSkip();
-      }}
-    >
-      <div className="loading-intro-grid" aria-hidden="true" />
-      <m.div
-        className="loading-intro-center"
-        initial={reduced ? { opacity: 0 } : { opacity: 0, scale: 0.92 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: reduced ? 0.2 : 0.5, ease: [0.2, 0.8, 0.2, 1] }}
-      >
-        <m.span
-          className="loading-orb"
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ duration: 0.3, delay: reduced ? 0 : 0.08 }}
-        />
-        <m.p
-          className="loading-code-mark"
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, delay: reduced ? 0 : 0.18 }}
-        >
-          &lt; Samar Dev /&gt;
-        </m.p>
-        <m.img
-          src={samarLogo}
-          alt="Samar Dev"
-          className="loading-logo"
-          initial={reduced ? { opacity: 0 } : { opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45, delay: reduced ? 0 : 0.28 }}
-        />
-        <m.p
-          className="loading-subtitle"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.35, delay: reduced ? 0 : 0.48 }}
-        >
-          CREATIVE DEVELOPER
-        </m.p>
-        <div className="loading-route" aria-hidden="true">
-          <span>DESIGN</span>
-          <i />
-          <span>BUILD</span>
-          <i />
-          <span>SHIP</span>
-        </div>
-      </m.div>
-      <span className="loading-status">
-        INITIALIZING EXPERIENCE <b>●</b>
-      </span>
-      <span className="loading-skip">CLICK TO ENTER</span>
-      <span className="loading-index">S / 001</span>
-    </m.div>
   );
 }
 
