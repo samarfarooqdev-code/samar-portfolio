@@ -308,7 +308,7 @@ const skillStages = [
     proof: "React · TanStack Start · TypeScript · VS Code",
     tools: [
       ["React", "R", "Interfaces", "/tool-logos/react.svg"],
-      ["TanStack Start", "TS", "Web apps", "https://cdn.simpleicons.org/tanstack"],
+      ["TanStack Start", "TS", "Web apps", "/tool-logos/tanstack.svg"],
       ["TypeScript", "TS", "Systems", "/tool-logos/typescript.svg"],
       ["VS Code", "<> ", "Workflow", "/tool-logos/visual-studio-code.svg"],
     ],
@@ -683,7 +683,7 @@ function Portfolio() {
                 </div>
                 <div>
                   <b>OPEN</b>
-                  <span>Open to select projects</span>
+                  <span>Open</span>
                 </div>
               </m.div>
               <m.div className="hero-project-signal" {...enter(0.88)}>
