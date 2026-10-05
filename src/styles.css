@@ -7123,3 +7123,164 @@ body {
     width: min(72vw, 20rem);
   }
 }
+
+/* Iteration 3 addendum: mobile readability, face clearance and in-pill controls. */
+@media (max-width: 639px) {
+  .site-header--hero-dark .nav-pill {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    column-gap: 0.4rem;
+    align-items: center;
+    padding-inline: 0.65rem;
+  }
+
+  .site-header--hero-dark .nav-pill > .brand-mark {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .site-header--hero-dark .nav-pill > .theme-toggle {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    margin: 0;
+  }
+
+  .site-header--hero-dark .nav-pill > button[aria-label="Open menu"],
+  .site-header--hero-dark .nav-pill > button[aria-label="Close menu"] {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    margin: 0;
+  }
+}
+
+/* The 768px tablet layout keeps the face to the right of every copy line. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-redesign .hero-avatar-stage {
+    left: 62%;
+  }
+
+  .hero-redesign .hero-copy .hero-lede {
+    max-width: 15rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero-redesign .hero-portfolio-word {
+    font-size: min(48vw, 14rem);
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .hero-redesign .hero-avatar-stage {
+    top: 21.5svh;
+    right: auto;
+    bottom: auto;
+    left: 52.5%;
+    width: min(70vw, 18rem);
+    height: min(52svh, 29rem);
+    aspect-ratio: auto;
+    transform: translateX(-50%);
+  }
+
+  .hero-redesign .hero-avatar-image {
+    -webkit-mask-image: linear-gradient(
+      180deg,
+      #000 0%,
+      #000 74%,
+      rgb(0 0 0 / 74%) 86%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(180deg, #000 0%, #000 74%, rgb(0 0 0 / 74%) 86%, transparent 100%);
+  }
+
+  .hero-redesign .hero-copy {
+    display: flex;
+    flex-direction: column;
+    margin: 60.5svh 0 0;
+  }
+
+  .hero-redesign .hero-copy > .hero-intro {
+    order: 1;
+  }
+
+  .hero-redesign .hero-copy > .hero-name {
+    order: 2;
+  }
+
+  .hero-redesign .hero-copy > .hero-role {
+    order: 3;
+  }
+
+  .hero-redesign .hero-copy > .hero-lede {
+    order: 5;
+  }
+
+  .hero-redesign .hero-copy > .hero-location {
+    order: 6;
+  }
+
+  .hero-redesign .hero-copy > .hero-actions {
+    display: contents;
+    animation: none;
+    margin: 0;
+  }
+
+  .hero-redesign .hero-copy > .hero-actions > div {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .hero-redesign .hero-copy > .hero-actions > div:first-child {
+    order: 4;
+    margin-top: 0.8rem;
+  }
+
+  .hero-redesign .hero-copy > .hero-actions > div:last-child {
+    order: 7;
+    margin-top: 0.45rem;
+  }
+
+  .hero-redesign .hero-sparkle-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 374px) {
+  .hero-redesign .hero-avatar-stage {
+    width: min(72vw, 18rem);
+  }
+}
+
+@media (min-width: 400px) and (max-width: 767px) {
+  .hero-redesign .hero-copy {
+    width: min(72vw, 19rem);
+    align-self: flex-start;
+  }
+
+  .hero-redesign .hero-sparkle-badge {
+    top: 57svh;
+    right: 0;
+    display: grid;
+    width: 80px;
+    height: 80px;
+    aspect-ratio: 1;
+    padding: 0.4rem;
+    font-size: 0.43rem;
+    line-height: 1.15;
+  }
+
+  .hero-redesign .hero-sparkle-badge svg {
+    width: 0.72rem;
+    height: 0.72rem;
+    margin-bottom: 0.15rem;
+  }
+}
+
+@media (max-width: 399px) {
+  .hero-redesign .hero-sparkle-badge {
+    display: none;
+  }
+}
