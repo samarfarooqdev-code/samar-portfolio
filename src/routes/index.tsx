@@ -628,14 +628,14 @@ function Portfolio() {
               <m.p className="eyebrow mb-5" {...enter(0.55)}>
                 <span>◆</span> SAMAR DEV · CREATIVE DEVELOPER
               </m.p>
-              <m.h1 className="hero-title hero-statement">
+              <h1 className="hero-title hero-statement">
                 I build digital
                 <br />
                 <em>
                   experiences with
                   <br />a point of view.
                 </em>
-              </m.h1>
+              </h1>
               <m.p className="signature-line" {...enter(0.66)}>
                 Design with intent. Build with character.
               </m.p>
