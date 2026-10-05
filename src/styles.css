@@ -7285,3 +7285,36 @@ body {
     display: none;
   }
 }
+
+
+/* Iteration 4: deepen the desktop word/portrait overlap without changing mobile composition. */
+@media (min-width: 768px) {
+  .hero-redesign .hero-portfolio-word {
+    font-size: 23.68vw;
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 86%, transparent 100%);
+  }
+
+  .hero-redesign .hero-word-desktop {
+    letter-spacing: 0.015em;
+    background: linear-gradient(180deg, #e23b2e 0%, #b32419 85%, #0b0b0c 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+
+  .hero-redesign .hero-avatar-stage {
+    width: min(100%, 50.4svh, 34rem);
+  }
+
+  .hero-redesign .hero-sparkle-badge {
+    top: 40%;
+    right: auto;
+    left: 74%;
+  }
+}
+
+@media (min-width: 1807px) {
+  .hero-redesign .hero-portfolio-word {
+    font-size: 23.77vw;
+  }
+}
