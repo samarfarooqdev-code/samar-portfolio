@@ -7167,7 +7167,7 @@ body {
 
 @media (max-width: 767px) {
   .hero-redesign .hero-portfolio-word {
-    font-size: min(49.4vw, 14rem);
+    font-size: min(46vw, 13rem);
     line-height: 0.82;
     -webkit-mask-image: none;
     mask-image: none;
@@ -7198,7 +7198,7 @@ body {
   .hero-redesign .hero-copy {
     display: flex;
     flex-direction: column;
-    margin: 60.5svh 0 0;
+    margin: 59svh 0 0;
   }
 
   .hero-redesign .hero-copy > .hero-intro {
@@ -7214,11 +7214,11 @@ body {
   }
 
   .hero-redesign .hero-copy > .hero-lede {
-    order: 5;
+    order: 6;
   }
 
   .hero-redesign .hero-copy > .hero-location {
-    order: 6;
+    order: 7;
   }
 
   .hero-redesign .hero-copy > .hero-actions {
@@ -7238,7 +7238,7 @@ body {
   }
 
   .hero-redesign .hero-copy > .hero-actions > div:last-child {
-    order: 7;
+    order: 5;
     margin-top: 0.45rem;
   }
 
