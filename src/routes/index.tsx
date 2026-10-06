@@ -148,7 +148,7 @@ const projects: Project[] = [
     liveUrl: "https://www.adnanpizzaburgerpoint.online/",
     screenshot: "/adnan-pizza-live.webp",
     screenshotAlt: "Live Adnan Pizza Burger Point website captured from the deployed site",
-    screenshotSmall: "/adnan-pizza-live-660.webp",
+    screenshotSmall: "/adnan-pizza-live-320.webp 320w, /adnan-pizza-live-660.webp 660w",
     features: [
       "Menu browsing for pizzas, burgers, shawarma, rolls, drinks and sides.",
       "Online ordering and cart experience.",
@@ -2108,7 +2108,7 @@ function ProjectArtwork({ project, compact = false }: { project: Project; compac
       <figure className="project-real-preview">
         <picture>
           {project.screenshotSmall && (
-            <source media="(max-width: 767px)" srcSet={project.screenshotSmall} />
+            <source media="(max-width: 767px)" srcSet={project.screenshotSmall} sizes="92vw" />
           )}
           <img
             src={project.screenshot}
