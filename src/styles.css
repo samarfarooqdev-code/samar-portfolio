@@ -5706,6 +5706,15 @@ body {
   mask-image: linear-gradient(to bottom, #000 0 72%, transparent 100%);
 }
 
+@media (max-width: 767px) {
+  .hero-avatar-image {
+    -webkit-mask-image: none;
+    mask-image: none;
+    animation: none;
+    transition: none;
+  }
+}
+
 .hero-redesign .hero-grid {
   position: relative;
   z-index: 4;
@@ -7283,7 +7292,6 @@ body {
     display: none;
   }
 }
-
 
 /* Iteration 4: deepen the desktop word/portrait overlap without changing mobile composition. */
 @media (min-width: 768px) {
