@@ -132,7 +132,7 @@ type Project = {
   techStack: string[];
   codeUrl?: string;
   testimonial?: string;
-  visualTheme: "restaurant" | "fashion" | "heritage";
+  visualTheme: "restaurant" | "fashion" | "heritage" | "furniture";
 };
 
 const projects: Project[] = [
@@ -197,8 +197,38 @@ const projects: Project[] = [
     visualTheme: "fashion",
   },
   {
-    id: "farooq-saharan",
+    id: "wooders-manufacturers",
     number: "03",
+    title: "Wooders Manufacturers — Bespoke Furniture Experience",
+    category: "FURNITURE BRAND · MADE-TO-MEASURE EXPERIENCE",
+    description:
+      "An editorial furniture experience rooted in Chiniot, pairing room-led discovery with a considered bespoke journey for handcrafted, made-to-measure pieces.",
+    tags: ["Furniture Website", "Made to Measure", "Craft Storytelling", "Responsive UX"],
+    liveUrl: "https://woodersmanufacturers.vercel.app/",
+    screenshot: "/wooders-manufacturers-live.webp",
+    screenshotAlt: "Live Wooders Manufacturers homepage captured from the deployed site",
+    features: [
+      "Browse furniture by room, from living and bedroom to dining, home office and bespoke spaces.",
+      "Explore collections and furniture categories through a dedicated catalogue experience.",
+      "Start a custom request with room dimensions, references or photos.",
+      "A clear made-to-measure journey from sharing an idea through design, crafting and delivery.",
+      "Craft and heritage storytelling rooted in Chiniot woodworking.",
+      "WhatsApp and quote-request actions, FAQs and delivery information for customers across Pakistan.",
+    ],
+    challenge:
+      "Bring handcrafted furniture, room-based discovery and custom orders together in one clear digital experience.",
+    solution:
+      "Connected collection browsing with bespoke-request guidance and editorial storytelling around Chiniot craft.",
+    outcome:
+      "A cohesive destination that moves from furniture inspiration to a made-to-measure conversation.",
+    role: "Brand experience · UI design · Frontend development",
+    techStack: ["Custom frontend", "Responsive UI", "Vercel"],
+    codeUrl: "https://github.com/samarfarooqdev-code",
+    visualTheme: "furniture",
+  },
+  {
+    id: "farooq-saharan",
+    number: "04",
     title: "Farooq Saharan — Heritage Craft Portfolio",
     category: "EDITORIAL PORTFOLIO · HERITAGE CRAFT",
     description:
@@ -763,7 +793,7 @@ function Portfolio() {
                 aria-label="Samar Dev availability and portfolio statistics"
               >
                 <li>
-                  <strong>03</strong>
+                  <strong>{String(projects.length).padStart(2, "0")}</strong>
                   <span>Projects shipped</span>
                 </li>
                 <li>
@@ -1652,7 +1682,7 @@ function FeaturedWorkStrip({
         <p className="eyebrow">
           <span>◆</span> SELECTED WORK
         </p>
-        <span>THREE LIVE PROJECTS</span>
+        <span>{projects.length} LIVE PROJECTS</span>
       </div>
       <div className="featured-work-grid">
         {projects.map((project, index) => (
@@ -2086,6 +2116,8 @@ function ProjectArtwork({ project, compact = false }: { project: Project; compac
       <FashionArtwork compact={compact} />
     ) : project.visualTheme === "heritage" ? (
       <HeritageArtwork compact={compact} />
+    ) : project.visualTheme === "furniture" ? (
+      <FurnitureArtwork compact={compact} />
     ) : (
       <RestaurantArtwork compact={compact} />
     );
@@ -2274,6 +2306,51 @@ function HeritageArtwork({ compact = false }: { compact?: boolean }) {
         <span>Craft · Assignments · Contact</span>
       </div>
       <span className="heritage-mark">+</span>
+    </div>
+  );
+}
+
+function FurnitureArtwork({ compact = false }: { compact?: boolean }) {
+  return (
+    <div
+      className={cn("furniture-art", compact && "is-compact")}
+      aria-label="Original art-directed preview of the Wooders Manufacturers bespoke furniture experience"
+      role="img"
+    >
+      <span className="art-preview-label">ORIGINAL ART-DIRECTED PREVIEW</span>
+      <div className="furniture-grain" aria-hidden="true" />
+      <div className="furniture-browser">
+        <div className="furniture-browser-bar">
+          <i />
+          <i />
+          <i />
+          <span>woodersmanufacturers.vercel.app</span>
+        </div>
+        <header>
+          <b>WOODERS</b>
+          <nav>COLLECTIONS&nbsp;&nbsp; CRAFT&nbsp;&nbsp; CUSTOM</nav>
+        </header>
+        <div className="furniture-editorial">
+          <small>CHINIOT / PAKISTAN</small>
+          <strong>
+            Furniture with
+            <br />
+            <em>a soul.</em>
+          </strong>
+          <span>EXPLORE THE COLLECTION ↗</span>
+        </div>
+        <div className="furniture-showroom" aria-hidden="true">
+          <i />
+          <i />
+          <b />
+        </div>
+      </div>
+      <div className="furniture-detail-card">
+        <small>MADE TO MEASURE</small>
+        <b>Crafted in Chiniot</b>
+        <span>Thoughtfully made for your space</span>
+      </div>
+      <span className="furniture-mark">WOODERS · 01</span>
     </div>
   );
 }
