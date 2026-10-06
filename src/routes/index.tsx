@@ -771,8 +771,8 @@ function Portfolio() {
                   <span>Core disciplines</span>
                 </li>
                 <li>
-                  <strong>24/7</strong>
-                  <span>Available for work</span>
+                  <strong>OPEN</strong>
+                  <span>Available</span>
                 </li>
               </ul>
               <p className="hero-coordinates">
