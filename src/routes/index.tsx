@@ -123,6 +123,7 @@ type Project = {
   liveUrl: string;
   screenshot: string;
   screenshotAlt: string;
+  screenshotSmall?: string;
   image?: string;
   features: string[];
   challenge: string;
@@ -147,6 +148,7 @@ const projects: Project[] = [
     liveUrl: "https://www.adnanpizzaburgerpoint.online/",
     screenshot: "/adnan-pizza-live.webp",
     screenshotAlt: "Live Adnan Pizza Burger Point website captured from the deployed site",
+    screenshotSmall: "/adnan-pizza-live-320.webp 320w, /adnan-pizza-live-660.webp 660w",
     features: [
       "Menu browsing for pizzas, burgers, shawarma, rolls, drinks and sides.",
       "Online ordering and cart experience.",
@@ -595,7 +597,16 @@ function Portfolio() {
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               aria-label="Samar Dev — Back to top"
             >
-              <img src={samarLogo} alt="Samar Dev" className="brand-logo" width={258} height={58} />
+              <picture className="brand-logo-picture">
+                <source media="(max-width: 640px)" srcSet="/samar-dev-logo-202.webp" />
+                <img
+                  src={samarLogo}
+                  alt="Samar Dev"
+                  className="brand-logo"
+                  width={258}
+                  height={58}
+                />
+              </picture>
             </button>
             <nav className="hidden items-center gap-1 sm:flex" aria-label="Main navigation">
               {navItems.map((item) => (
@@ -854,15 +865,18 @@ function Portfolio() {
         <footer>
           <div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">
             <a className="footer-brand" href="#top" aria-label="Samar Dev — Back to top">
-              <img
-                src={samarLogo}
-                alt="Samar Dev personal brand logo"
-                className="footer-logo"
-                loading="lazy"
-                decoding="async"
-                width={258}
-                height={58}
-              />
+              <picture className="footer-logo-picture">
+                <source media="(max-width: 640px)" srcSet="/samar-dev-logo-202.webp" />
+                <img
+                  src={samarLogo}
+                  alt="Samar Dev personal brand logo"
+                  className="footer-logo"
+                  loading="lazy"
+                  decoding="async"
+                  width={258}
+                  height={58}
+                />
+              </picture>
             </a>
             <p>© 2026 Samar Dev. Built with curiosity.</p>
             <div className="footer-links">
@@ -2092,14 +2106,19 @@ function ProjectArtwork({ project, compact = false }: { project: Project; compac
   return (
     <div className="project-visual-stack">
       <figure className="project-real-preview">
-        <img
-          src={project.screenshot}
-          alt={project.screenshotAlt}
-          loading="lazy"
-          decoding="async"
-          width={1440}
-          height={900}
-        />
+        <picture>
+          {project.screenshotSmall && (
+            <source media="(max-width: 767px)" srcSet={project.screenshotSmall} sizes="92vw" />
+          )}
+          <img
+            src={project.screenshot}
+            alt={project.screenshotAlt}
+            loading="lazy"
+            decoding="async"
+            width={1440}
+            height={900}
+          />
+        </picture>
         <figcaption>LIVE SITE / REAL CAPTURE</figcaption>
       </figure>
       <div className="project-art-preview">{art}</div>
