@@ -347,12 +347,41 @@ function Portfolio() {
   const [copied, setCopied] = useState(false);
   const [theme, setTheme] = useState<Theme>("light");
   const [themeLoaded, setThemeLoaded] = useState(false);
+  const [belowFoldReady, setBelowFoldReady] = useState(touch);
   const processRef = useRef<HTMLElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const [utcTime, setUtcTime] = useState("--:--");
   const [processProgress, setProcessProgress] = useState(0);
   const formStartedAt = useRef(Date.now());
   const lastSubmitAt = useRef(0);
+
+  useEffect(() => {
+    if (touch) {
+      setBelowFoldReady(true);
+      return;
+    }
+    const reveal = () => {
+      setBelowFoldReady(true);
+      window.removeEventListener("scroll", reveal);
+      window.removeEventListener("pointerdown", reveal);
+    };
+    window.addEventListener("scroll", reveal, { once: true, passive: true });
+    window.addEventListener("pointerdown", reveal, { once: true, passive: true });
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(reveal, { timeout: 1800 });
+      return () => {
+        window.cancelIdleCallback(idleId);
+        window.removeEventListener("scroll", reveal);
+        window.removeEventListener("pointerdown", reveal);
+      };
+    }
+    const timer = window.setTimeout(reveal, 1800);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", reveal);
+      window.removeEventListener("pointerdown", reveal);
+    };
+  }, [touch]);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("samar-theme");
@@ -762,61 +791,65 @@ function Portfolio() {
 
         <FeaturedWorkStrip reduced={reduced} onOpen={setSelectedProject} />
 
-        <AboutSection reduced={reduced} touch={touch} />
+        {belowFoldReady ? (
+          <>
+            <AboutSection reduced={reduced} touch={touch} />
+            <SkillsSection reduced={reduced} />
+            <ProjectsSection onOpen={setSelectedProject} touch={touch} reduced={reduced} />
+            <FullStackProofSection reduced={reduced} />
+            <ServicesSection reduced={reduced} />
+            <ExperienceSection reduced={reduced} />
+          </>
+        ) : (
+          <div className="below-fold-placeholder" aria-hidden="true" />
+        )}
+        {belowFoldReady && (
+          <>
+            <section id="process" ref={processRef} className="section-shell border-t border-border">
+              <SectionIndex
+                number="06"
+                label="Process"
+                aside="Clear stages. Close collaboration. No black boxes."
+              />
+              <div className="process-layout mt-14">
+                <div className="process-rail" aria-hidden="true">
+                  <span style={{ transform: `scaleY(${processProgress})` }} />
+                </div>
+                <div className="process-steps">
+                  {process.map(([title, description], index) => (
+                    <article
+                      key={title}
+                      className={cn(
+                        "process-step",
+                        processProgress >= index / process.length && "is-reached",
+                      )}
+                    >
+                      <b>0{index + 1}</b>
+                      <h3>{title}</h3>
+                      <p>{description}</p>
+                      <span className="process-diamond" />
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </section>
 
-        <SkillsSection reduced={reduced} />
+            <AvailabilityBand onCta={() => scrollTo("Contact")} reduced={reduced} />
 
-        <ProjectsSection onOpen={setSelectedProject} touch={touch} reduced={reduced} />
-
-        <FullStackProofSection reduced={reduced} />
-
-        <ServicesSection reduced={reduced} />
-
-        <ExperienceSection reduced={reduced} />
-
-        <section id="process" ref={processRef} className="section-shell border-t border-border">
-          <SectionIndex
-            number="06"
-            label="Process"
-            aside="Clear stages. Close collaboration. No black boxes."
-          />
-          <div className="process-layout mt-14">
-            <div className="process-rail" aria-hidden="true">
-              <span style={{ transform: `scaleY(${processProgress})` }} />
-            </div>
-            <div className="process-steps">
-              {process.map(([title, description], index) => (
-                <article
-                  key={title}
-                  className={cn(
-                    "process-step",
-                    processProgress >= index / process.length && "is-reached",
-                  )}
-                >
-                  <b>0{index + 1}</b>
-                  <h3>{title}</h3>
-                  <p>{description}</p>
-                  <span className="process-diamond" />
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <AvailabilityBand onCta={() => scrollTo("Contact")} reduced={reduced} />
-
-        <ContactScene
-          reduced={reduced}
-          touch={touch}
-          copied={copied}
-          onCopy={copyEmail}
-          errors={errors}
-          projectType={projectType}
-          setProjectType={setProjectType}
-          submitState={submitState}
-          setSubmitState={setSubmitState}
-          onSubmit={submitContact}
-        />
+            <ContactScene
+              reduced={reduced}
+              touch={touch}
+              copied={copied}
+              onCopy={copyEmail}
+              errors={errors}
+              projectType={projectType}
+              setProjectType={setProjectType}
+              submitState={submitState}
+              setSubmitState={setSubmitState}
+              onSubmit={submitContact}
+            />
+          </>
+        )}
 
         <footer>
           <div className="section-shell flex flex-col gap-6 py-8 sm:flex-row sm:items-center sm:justify-between">
