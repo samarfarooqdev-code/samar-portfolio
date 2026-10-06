@@ -23,7 +23,16 @@ import {
   useScroll,
   useTransform,
 } from "motion/react";
-import { FormEvent, type CSSProperties, useCallback, useEffect, useRef, useState } from "react";
+import {
+  FormEvent,
+  lazy,
+  Suspense,
+  type CSSProperties,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 const samarLogo = "/samar-dev-logo.webp";
 import cursorArrow from "@/assets/cursor-arrow.svg";
@@ -446,32 +455,47 @@ function Portfolio() {
     if (!hero || !desktopPointer.matches || reducedMotion.matches) return;
 
     let frame = 0;
+    let bounds: DOMRect | null = null;
+    let pointer: { clientX: number; clientY: number } | null = null;
+    const measure = () => {
+      bounds = hero.getBoundingClientRect();
+    };
     const reset = () => {
       window.cancelAnimationFrame(frame);
+      pointer = null;
+      bounds = null;
       hero.style.removeProperty("--hero-avatar-x");
       hero.style.removeProperty("--hero-avatar-y");
     };
     const move = (event: PointerEvent) => {
-      const bounds = hero.getBoundingClientRect();
-      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+      pointer = { clientX: event.clientX, clientY: event.clientY };
+      if (!bounds) measure();
       window.cancelAnimationFrame(frame);
       frame = window.requestAnimationFrame(() => {
+        if (!bounds || !pointer) return;
+        const x = (pointer.clientX - bounds.left) / bounds.width - 0.5;
+        const y = (pointer.clientY - bounds.top) / bounds.height - 0.5;
         hero.style.setProperty("--hero-avatar-x", `${(x * 4).toFixed(1)}px`);
         hero.style.setProperty("--hero-avatar-y", `${(y * 2).toFixed(1)}px`);
       });
     };
+    hero.addEventListener("pointerenter", measure, { passive: true });
     hero.addEventListener("pointermove", move, { passive: true });
     hero.addEventListener("pointerleave", reset);
+    window.addEventListener("resize", measure, { passive: true });
     return () => {
+      hero.removeEventListener("pointerenter", measure);
       hero.removeEventListener("pointermove", move);
       hero.removeEventListener("pointerleave", reset);
+      window.removeEventListener("resize", measure);
       reset();
     };
   }, []);
 
   useEffect(() => {
+    let frame = 0;
     const update = () => {
+      frame = 0;
       const line = window.innerHeight * 0.35;
       let current = navItems[0]!;
       navItems.forEach((item) => {
@@ -480,17 +504,23 @@ function Portfolio() {
       });
       setActiveSection(current);
     };
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(update);
+    };
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
     return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
     };
   }, []);
 
   useEffect(() => {
+    let frame = 0;
     const updateProgress = () => {
+      frame = 0;
       const section = processRef.current;
       if (!section) return;
       const rect = section.getBoundingClientRect();
@@ -498,9 +528,17 @@ function Portfolio() {
       const value = (window.innerHeight * 0.65 - rect.top) / distance;
       setProcessProgress(Math.max(0, Math.min(1, value)));
     };
-    updateProgress();
-    window.addEventListener("scroll", updateProgress, { passive: true });
-    return () => window.removeEventListener("scroll", updateProgress);
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(updateProgress);
+    };
+    schedule();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
   }, []);
 
   const scrollTo = (item: string) => {
@@ -922,7 +960,7 @@ function Portfolio() {
                 <DialogDescription>{selectedProject.category}</DialogDescription>
               </DialogHeader>
               <div className={cn("dialog-art", `project-${selectedProject.visualTheme}`)}>
-                <ProjectArtwork project={selectedProject} compact />
+                <LazyProjectArtwork project={selectedProject} compact />
               </div>
               <p className="dialog-lede">{selectedProject.description}</p>
               <div className="flex flex-wrap gap-2">
@@ -988,6 +1026,45 @@ function Portfolio() {
   );
 }
 
+function LazyProjectArtwork({ project, compact = false }: { project: Project; compact?: boolean }) {
+  return (
+    <Suspense fallback={<ProjectArtworkFallback project={project} compact={compact} />}>
+      <LazyProjectArtworkModule project={project} compact={compact} />
+    </Suspense>
+  );
+}
+
+function ProjectArtworkFallback({
+  project,
+  compact = false,
+}: {
+  project: Project;
+  compact?: boolean;
+}) {
+  return (
+    <div className={cn("project-visual-stack", compact && "is-compact")}>
+      <figure className="project-real-preview">
+        <picture>
+          {project.screenshotSmall && (
+            <source media="(max-width: 767px)" srcSet={project.screenshotSmall} sizes="92vw" />
+          )}
+          <img
+            src={project.screenshot}
+            alt={project.screenshotAlt}
+            loading="lazy"
+            decoding="async"
+            width={1440}
+            height={900}
+          />
+        </picture>
+        <figcaption>LIVE SITE / REAL CAPTURE</figcaption>
+      </figure>
+    </div>
+  );
+}
+
+const LazyProjectArtworkModule = lazy(() => import("@/components/projects/ProjectArtwork"));
+
 /* ---------- Ticker: CSS-only, two-copy marquee ---------- */
 function Ticker({ reduced: _reduced }: { reduced: boolean }) {
   return (
@@ -1010,16 +1087,33 @@ function AboutSection({ reduced, touch }: { reduced: boolean; touch: boolean }) 
   const orbitRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (touch || reduced) return;
-    const onMove = (e: PointerEvent) => {
+    let frame = 0;
+    let bounds: DOMRect | null = null;
+    let pointer: { clientX: number; clientY: number } | null = null;
+    const measure = () => {
       const el = orbitRef.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const dx = (e.clientX - (r.left + r.width / 2)) / window.innerWidth;
-      const dy = (e.clientY - (r.top + r.height / 2)) / window.innerHeight;
-      el.style.transform = `rotateX(${-dy * 16}deg) rotateY(${dx * 20}deg)`;
+      if (el) bounds = el.getBoundingClientRect();
     };
+    const onMove = (e: PointerEvent) => {
+      pointer = { clientX: e.clientX, clientY: e.clientY };
+      if (!bounds) measure();
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const el = orbitRef.current;
+        if (!el || !bounds || !pointer) return;
+        const dx = (pointer.clientX - (bounds.left + bounds.width / 2)) / window.innerWidth;
+        const dy = (pointer.clientY - (bounds.top + bounds.height / 2)) / window.innerHeight;
+        el.style.transform = `rotateX(${-dy * 16}deg) rotateY(${dx * 20}deg)`;
+      });
+    };
+    measure();
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => window.removeEventListener("pointermove", onMove);
+    window.addEventListener("resize", measure, { passive: true });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("resize", measure);
+    };
   }, [touch, reduced]);
 
   return (
@@ -1509,23 +1603,36 @@ function ProjectStage({
 }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState(false);
+  const frameRef = useRef(0);
+  const boundsRef = useRef<DOMRect | null>(null);
+  const pointerRef = useRef<{ clientX: number; clientY: number } | null>(null);
 
   const onPointerMove = (e: React.PointerEvent) => {
     if (touch || reduced) return;
     const el = stageRef.current;
     if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - 0.5;
-    const y = (e.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty("--tilt-x", `${-y * 6}deg`);
-    el.style.setProperty("--tilt-y", `${x * 8}deg`);
-    el.style.setProperty("--sweep-x", `${(x + 0.5) * 100}%`);
-    el.style.setProperty("--parallax-x", `${x * 14}px`);
-    el.style.setProperty("--parallax-y", `${y * 10}px`);
+    pointerRef.current = { clientX: e.clientX, clientY: e.clientY };
+    if (!boundsRef.current) boundsRef.current = el.getBoundingClientRect();
+    window.cancelAnimationFrame(frameRef.current);
+    frameRef.current = window.requestAnimationFrame(() => {
+      const r = boundsRef.current;
+      const pointer = pointerRef.current;
+      if (!r || !pointer) return;
+      const x = (pointer.clientX - r.left) / r.width - 0.5;
+      const y = (pointer.clientY - r.top) / r.height - 0.5;
+      el.style.setProperty("--tilt-x", `${-y * 6}deg`);
+      el.style.setProperty("--tilt-y", `${x * 8}deg`);
+      el.style.setProperty("--sweep-x", `${(x + 0.5) * 100}%`);
+      el.style.setProperty("--parallax-x", `${x * 14}px`);
+      el.style.setProperty("--parallax-y", `${y * 10}px`);
+    });
   };
 
   const reset = () => {
     setHover(false);
+    window.cancelAnimationFrame(frameRef.current);
+    pointerRef.current = null;
+    boundsRef.current = null;
     const el = stageRef.current;
     if (el) {
       el.style.setProperty("--tilt-x", "0deg");
@@ -1559,7 +1666,10 @@ function ProjectStage({
           ref={stageRef}
           className={cn("project-stage", `project-${project.visualTheme}`, hover && "is-hover")}
           onPointerMove={onPointerMove}
-          onPointerEnter={() => setHover(true)}
+          onPointerEnter={(event) => {
+            boundsRef.current = event.currentTarget.getBoundingClientRect();
+            setHover(true);
+          }}
           onPointerLeave={reset}
         >
           <button
@@ -1581,7 +1691,7 @@ function ProjectStage({
               ease: [0.2, 0.8, 0.2, 1],
             }}
           >
-            <ProjectArtwork project={project} />
+            <LazyProjectArtwork project={project} />
           </m.div>
           <m.span
             className="stage-number"
@@ -2091,208 +2201,5 @@ function Field({
         </small>
       )}
     </label>
-  );
-}
-
-function ProjectArtwork({ project, compact = false }: { project: Project; compact?: boolean }) {
-  const art =
-    project.visualTheme === "fashion" ? (
-      <FashionArtwork compact={compact} />
-    ) : project.visualTheme === "heritage" ? (
-      <HeritageArtwork compact={compact} />
-    ) : (
-      <RestaurantArtwork compact={compact} />
-    );
-  return (
-    <div className="project-visual-stack">
-      <figure className="project-real-preview">
-        <picture>
-          {project.screenshotSmall && (
-            <source media="(max-width: 767px)" srcSet={project.screenshotSmall} sizes="92vw" />
-          )}
-          <img
-            src={project.screenshot}
-            alt={project.screenshotAlt}
-            loading="lazy"
-            decoding="async"
-            width={1440}
-            height={900}
-          />
-        </picture>
-        <figcaption>LIVE SITE / REAL CAPTURE</figcaption>
-      </figure>
-      <div className="project-art-preview">{art}</div>
-    </div>
-  );
-}
-
-function RestaurantArtwork({ compact = false }: { compact?: boolean }) {
-  return (
-    <div className={cn("restaurant-art", compact && "is-compact")} aria-hidden="true">
-      <div className="restaurant-ambient" />
-      <span className="art-preview-label">ORIGINAL ART-DIRECTED PREVIEW</span>
-      <div className="restaurant-browser">
-        <div className="restaurant-browser-bar">
-          <i />
-          <i />
-          <i />
-          <span>adnanpizzaburgerpoint.online</span>
-        </div>
-        <div className="restaurant-home">
-          <header>
-            <b>ADNAN</b>
-            <span>Pizza · Burger · Point</span>
-            <nav>MENU&nbsp;&nbsp; RESERVE&nbsp;&nbsp; CONTACT</nav>
-          </header>
-          <div className="restaurant-hero-copy">
-            <small>CHINIOT · OPEN FOR ORDERS</small>
-            <strong>
-              Late-night cravings,
-              <br />
-              <em>served warm.</em>
-            </strong>
-            <span>ORDER NOW ↗</span>
-          </div>
-          <div className="restaurant-plate">
-            <i className="pizza-slice" />
-            <i className="pizza-cut one" />
-            <i className="pizza-cut two" />
-            <b className="topping t1" />
-            <b className="topping t2" />
-            <b className="topping t3" />
-            <b className="topping t4" />
-          </div>
-        </div>
-      </div>
-      <div className="restaurant-menu-card">
-        <small>POPULAR MENU</small>
-        <b>Chicken Pizza</b>
-        <span>Freshly prepared · multiple sizes</span>
-        <strong>ADD TO CART&nbsp; +</strong>
-      </div>
-      <div className="restaurant-cart-card">
-        <small>YOUR ORDER</small>
-        <b>2 items</b>
-        <span>Takeaway · Chiniot</span>
-        <strong>VIEW CART ↗</strong>
-      </div>
-      <div className="restaurant-hours-card">
-        <small>VISIT US</small>
-        <b>Chiniot, Punjab</b>
-        <span>Opening hours & location</span>
-      </div>
-      <span className="restaurant-mark mark-one">◆</span>
-      <span className="restaurant-mark mark-two">+</span>
-    </div>
-  );
-}
-
-function FashionArtwork({ compact = false }: { compact?: boolean }) {
-  return (
-    <div
-      className={cn("fashion-art", compact && "is-compact")}
-      aria-label="Original art-directed preview of the Dastan-e-Nysa fashion commerce experience"
-      role="img"
-    >
-      <span className="art-preview-label">ORIGINAL ART-DIRECTED PREVIEW</span>
-      <div className="fashion-fabric" />
-      <div className="fashion-browser">
-        <div className="fashion-browser-bar">
-          <i />
-          <i />
-          <i />
-          <span>dastan-story-shop.vercel.app</span>
-        </div>
-        <header>
-          <b>DASTAN-E-NYSA</b>
-          <nav>SHOP&nbsp;&nbsp; COLLECTIONS&nbsp;&nbsp; SIZE GUIDE</nav>
-        </header>
-        <div className="fashion-editorial">
-          <small>STORIES WOVEN INTO EVERY DETAIL</small>
-          <strong>
-            Ethnic wear,
-            <br />
-            <em>told beautifully.</em>
-          </strong>
-          <span>DISCOVER COLLECTIONS ↗</span>
-        </div>
-        <div className="fashion-silhouette">
-          <i />
-          <i />
-          <i />
-        </div>
-      </div>
-      <div className="fashion-product-card one">
-        <small>COLLECTION</small>
-        <b>Chikankari Anarkali</b>
-        <span>VIEW PRODUCT ↗</span>
-      </div>
-      <div className="fashion-product-card two">
-        <small>NEW STORY</small>
-        <b>Noor e Sehar Crimson Set</b>
-        <span>PKR · PRODUCT DETAIL</span>
-      </div>
-      <div className="fashion-guide-card">
-        <small>SHOP WITH CONFIDENCE</small>
-        <b>Size Guide</b>
-        <span>WhatsApp assistance available</span>
-      </div>
-      <span className="fashion-mark">◇</span>
-    </div>
-  );
-}
-
-function HeritageArtwork({ compact = false }: { compact?: boolean }) {
-  return (
-    <div
-      className={cn("heritage-art", compact && "is-compact")}
-      aria-label="Original art-directed preview of the Farooq Saharan heritage craft portfolio"
-      role="img"
-    >
-      <span className="art-preview-label">ORIGINAL ART-DIRECTED PREVIEW</span>
-      <div className="heritage-carving" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-      </div>
-      <div className="heritage-browser">
-        <div className="heritage-browser-bar">
-          <i />
-          <i />
-          <i />
-          <span>farooqsaharan.vercel.app</span>
-        </div>
-        <header>
-          <b>FAROOQ SAHARAN</b>
-          <nav>LEGACY&nbsp;&nbsp; CRAFT&nbsp;&nbsp; PORTFOLIO</nav>
-        </header>
-        <div className="heritage-editorial">
-          <small>THIRD-GENERATION MASTER WOOD ARTISAN · CHINIOT</small>
-          <strong>
-            A legacy shaped
-            <br />
-            <em>by hand.</em>
-          </strong>
-          <span>EXPLORE THE CRAFT ↗</span>
-        </div>
-        <div className="heritage-door">
-          <i />
-          <i />
-          <i />
-          <b>◆</b>
-        </div>
-      </div>
-      <div className="heritage-detail-card">
-        <small>AREAS OF MASTERY</small>
-        <b>Architectural Woodwork</b>
-        <span>Doors · Joinery · Staircases</span>
-      </div>
-      <div className="heritage-legacy-card">
-        <small>PORTFOLIO INDEX</small>
-        <b>Legacy / Sketches</b>
-        <span>Craft · Assignments · Contact</span>
-      </div>
-      <span className="heritage-mark">+</span>
-    </div>
   );
 }
