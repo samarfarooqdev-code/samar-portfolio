@@ -97,7 +97,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       {
-        rel: "stylesheet",
+        id: "app-css-preload",
+        rel: "preload",
+        as: "style",
         href: appCss,
       },
       {
@@ -131,10 +133,18 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <style
           dangerouslySetInnerHTML={{
-            __html: `@font-face{font-family:Manrope;font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk7PFN_C-bnTe87A.woff2) format("woff2")}@font-face{font-family:"DM Serif Display";font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/dmserifdisplay/v17/-nFnOHM81r4j6k0gjAW3mujVU2B2G_Bx0vrx52g.woff2) format("woff2")}html,body{margin:0}body{background:#f5f3ee;color:#30302f;font-family:Manrope,system-ui,sans-serif}.hero{isolation:isolate;min-height:760px}.hero-grid{display:grid;align-items:end}.hero-title{font-family:"DM Serif Display",Georgia,serif;font-weight:400;line-height:.86}.avatar-frame{position:relative;aspect-ratio:1}.avatar-frame picture,.avatar-image{display:block;width:100%;height:100%}.avatar-image{object-fit:contain;object-position:center bottom}`,
+            __html: `@font-face{font-family:Manrope;font-style:normal;font-weight:500;font-display:swap;src:url(https://fonts.gstatic.com/s/manrope/v20/xn7_YHE41ni1AdIRqAuZuw1Bx9mbZk7PFN_C-bnTe87A.woff2) format("woff2")}@font-face{font-family:"DM Serif Display";font-style:normal;font-weight:400;font-display:swap;src:url(https://fonts.gstatic.com/s/dmserifdisplay/v17/-nFnOHM81r4j6k0gjAW3mujVU2B2G_Bx0vrx52g.woff2) format("woff2")}html,body{margin:0}body{background:oklch(.968 .006 85);color:oklch(.19 0 0);font-family:Manrope,system-ui,sans-serif}.hero-redesign{position:relative;display:grid;min-height:max(100svh,44rem);align-items:end;isolation:isolate;padding-top:max(8.5rem,calc(7.25rem + env(safe-area-inset-top)));padding-bottom:max(1.25rem,calc(1rem + env(safe-area-inset-bottom)));background:oklch(.968 .006 85)}.hero-redesign .hero-grid{position:relative;z-index:4;display:grid;grid-template-columns:minmax(0,.82fr) minmax(13rem,.28fr);grid-template-rows:1fr auto;align-items:end;gap:clamp(1.5rem,5vw,7rem);min-height:clamp(33rem,73vh,48rem)}.hero-avatar-stage{position:absolute;z-index:2;bottom:-.35rem;left:54%;width:clamp(25rem,43vw,39rem);transform:translateX(-30%);pointer-events:none}.hero-avatar-stage picture,.hero-avatar-image{display:block;width:100%;height:auto}.hero-avatar-image{object-fit:contain;object-position:center bottom}.hero-redesign .hero-copy{z-index:2;max-width:35rem;padding-bottom:clamp(3.6rem,9vh,7rem)}.hero-name{display:grid;margin:0;color:oklch(.19 0 0);font-family:"DM Serif Display",Georgia,serif;font-size:clamp(4.35rem,7.4vw,8.75rem);font-weight:400;letter-spacing:-.065em;line-height:.7;text-transform:uppercase}.hero-name span:last-child{padding-left:clamp(1.25rem,5vw,5rem)}.hero-redesign::after{position:absolute;z-index:3;right:0;bottom:0;left:0;height:12rem;background:linear-gradient(transparent,oklch(.968 .006 85) 78%);content:"";pointer-events:none}@media (max-width:767px){.hero-redesign{min-height:100svh;padding-top:8rem}.hero-redesign .hero-grid{grid-template-columns:1fr;grid-template-rows:1fr auto;min-height:calc(100svh - 8rem);gap:0}.hero-redesign .hero-avatar-stage{top:21.5svh;right:auto;bottom:auto;left:52.5%;width:min(70vw,18rem);height:min(52svh,29rem);transform:translateX(-50%)}.hero-redesign .hero-copy{display:flex;flex-direction:column;margin:60.5svh 0 0;padding-bottom:2rem}.hero-redesign .hero-name{font-size:clamp(4rem,17vw,6rem)}.hero-redesign::after{height:10rem}}`,
           }}
         />
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(()=>{const l=document.getElementById("app-css-preload");if(l){l.onload=()=>{l.onload=null;l.rel="stylesheet"};if(l.sheet)l.rel="stylesheet"}})()`,
+          }}
+        />
+        <noscript>
+          <link rel="stylesheet" href={appCss} />
+        </noscript>
         <link
           rel="preload"
           as="font"
