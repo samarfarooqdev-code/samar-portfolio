@@ -7569,6 +7569,80 @@ body {
   }
 }
 
+/* Usability follow-up: improve meaningful copy and control affordances. */
+.hero-redesign .hero-topline > span:first-child {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.hero-redesign .hero-topline > span:last-child {
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+}
+.hero-redesign .hero-role {
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.hero-redesign .hero-location {
+  font-size: 0.75rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.skills-proof > span:last-child {
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+.skill-stage-proof {
+  font-size: 0.75rem;
+}
+.contact-fallback {
+  font-size: 0.75rem;
+}
+.project-real-preview figcaption {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+.hero-redesign .scroll-cue {
+  width: fit-content;
+  min-height: 44px;
+  justify-self: start;
+  justify-content: flex-start;
+  gap: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: color-mix(in oklab, var(--background) 70%, transparent);
+  padding: 0.65rem 1rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+}
+.project-actions .view-project,
+.project-actions .live-project {
+  min-height: 44px;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+.project-actions .view-project {
+  border: 1px solid currentColor;
+}
+@media (max-width: 767px) {
+  .hero-redesign .hero-topline > span:last-child {
+    font-size: 0.6rem;
+  }
+  .hero-redesign .scroll-cue {
+    grid-column: auto;
+    grid-row: auto;
+    margin-top: 0.75rem;
+  }
+  .stage-panel h3 {
+    font-size: clamp(2rem, 10vw, 2.7rem);
+  }
+}
+@media (max-width: 374px) {
+  .hero-redesign .hero-topline > span:last-child {
+    font-size: 0.55rem;
+  }
+}
+
 @media (min-width: 1807px) {
   .hero-redesign .hero-portfolio-word {
     font-size: 23.77vw;

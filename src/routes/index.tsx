@@ -1341,7 +1341,7 @@ function FullStackProofSection({ reduced }: { reduced: boolean }) {
             ))}
           </div>
           <a
-            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.12em] underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground"
+            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold tracking-normal underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground"
             href={`mailto:${EMAIL}?subject=Full-stack%20case%20study`}
           >
             Ask about the build <ArrowUpRight className="arrow-icon" />
@@ -2132,7 +2132,7 @@ function ProjectArtwork({ project, compact = false }: { project: Project; compac
           width={1440}
           height={900}
         />
-        <figcaption>LIVE SITE / REAL CAPTURE</figcaption>
+        <figcaption>Live site / real capture</figcaption>
       </figure>
       <div className="project-art-preview">{art}</div>
     </div>
