@@ -6613,10 +6613,12 @@ body {
 
 @keyframes hero-word-reveal {
   from {
-    clip-path: inset(100% 0 0);
+    clip-path: inset(0 0 0);
+    transform: translateY(0.045em);
   }
   to {
     clip-path: inset(0 0 0);
+    transform: translateY(0);
   }
 }
 
@@ -6631,7 +6633,7 @@ body {
 
 @keyframes hero-copy-rise {
   from {
-    opacity: 0;
+    opacity: 1;
     transform: translateY(0.65rem);
   }
   to {
@@ -6788,7 +6790,7 @@ body {
   .hero-word-mobile > span {
     display: block;
     width: 100%;
-    clip-path: inset(100% 0 0);
+    clip-path: inset(0 0 0);
     animation: hero-word-reveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
 
@@ -7167,7 +7169,7 @@ body {
 
 @media (max-width: 767px) {
   .hero-redesign .hero-portfolio-word {
-    font-size: min(49.4vw, 14rem);
+    font-size: min(46vw, 13rem);
     line-height: 0.82;
     -webkit-mask-image: none;
     mask-image: none;
@@ -7198,7 +7200,7 @@ body {
   .hero-redesign .hero-copy {
     display: flex;
     flex-direction: column;
-    margin: 60.5svh 0 0;
+    margin: 59svh 0 0;
   }
 
   .hero-redesign .hero-copy > .hero-intro {
@@ -7214,11 +7216,11 @@ body {
   }
 
   .hero-redesign .hero-copy > .hero-lede {
-    order: 5;
+    order: 6;
   }
 
   .hero-redesign .hero-copy > .hero-location {
-    order: 6;
+    order: 7;
   }
 
   .hero-redesign .hero-copy > .hero-actions {
@@ -7238,7 +7240,7 @@ body {
   }
 
   .hero-redesign .hero-copy > .hero-actions > div:last-child {
-    order: 7;
+    order: 5;
     margin-top: 0.45rem;
   }
 

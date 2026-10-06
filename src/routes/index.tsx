@@ -665,17 +665,31 @@ function Portfolio() {
             <div className="hero-avatar-stage">
               <picture>
                 <source
+                  media="(max-width: 767px)"
                   type="image/avif"
-                  srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-640.avif 640w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
-                  sizes="(max-width: 374px) 72vw, (max-width: 421px) 70vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+                  srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w"
+                  sizes="(max-width: 374px) 72vw, 70vw"
                 />
                 <source
+                  media="(max-width: 767px)"
+                  type="image/webp"
+                  srcSet="/samar-hero-320.webp 320w, /samar-hero-480.webp 480w"
+                  sizes="(max-width: 374px) 72vw, 70vw"
+                />
+                <source
+                  media="(min-width: 768px)"
+                  type="image/avif"
+                  srcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-640.avif 640w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
+                  sizes="(max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+                />
+                <source
+                  media="(min-width: 768px)"
                   type="image/webp"
                   srcSet="/samar-hero-320.webp 320w, /samar-hero-480.webp 480w, /samar-hero-640.webp 640w, /samar-hero-720.webp 720w, /samar-hero-940.webp 940w"
-                  sizes="(max-width: 374px) 72vw, (max-width: 421px) 70vw, (max-width: 767px) 320px, (max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
+                  sizes="(max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
                 />
                 <img
-                  src="/samar-hero-720.webp"
+                  src="/samar-hero-320.webp"
                   alt="Portrait of Samar Dev in a dark hoodie with red rim lighting"
                   className="hero-avatar-image"
                   width={941}
@@ -742,7 +756,7 @@ function Portfolio() {
                   <span>Core disciplines</span>
                 </li>
                 <li>
-                  <strong>24/7</strong>
+                  <strong>OPEN</strong>
                   <span>Available for work</span>
                 </li>
               </ul>
