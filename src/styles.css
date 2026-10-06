@@ -129,6 +129,11 @@ button {
   width: 8.6rem;
   height: auto;
 }
+.brand-logo-picture,
+.footer-logo-picture,
+.project-real-preview picture {
+  display: block;
+}
 .dark .brand-logo,
 .dark .footer-logo {
   filter: brightness(0) invert(1);
