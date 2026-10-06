@@ -10,6 +10,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import criticalHeroCss from "../styles/critical-hero.css?inline";
 import faviconAsset from "@/assets/samar-dev-favicon.png?inline";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
@@ -96,10 +97,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:image", content: "https://samar-dev.vercel.app/og-image.png" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "preload", as: "style", href: appCss },
+      { rel: "stylesheet", href: appCss, media: "print" },
       {
         rel: "preload",
         as: "font",
@@ -135,6 +134,7 @@ function RootShell({ children }: { children: ReactNode }) {
           }}
         />
         <HeadContent />
+        <style dangerouslySetInnerHTML={{ __html: criticalHeroCss }} />
         <link
           rel="preload"
           as="font"
@@ -161,6 +161,26 @@ function RootShell({ children }: { children: ReactNode }) {
           imageSrcSet="/samar-hero-320.avif 320w, /samar-hero-480.avif 480w, /samar-hero-640.avif 640w, /samar-hero-720.avif 720w, /samar-hero-940.avif 940w"
           imageSizes="(max-width: 1023px) 52vw, (max-width: 1199px) 40svh, min(29vw, 480px)"
           fetchPriority="high"
+        />
+        <noscript>
+          <link rel="stylesheet" href={appCss} />
+        </noscript>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(() => {
+              const href = ${JSON.stringify(appCss)};
+              const link = [...document.querySelectorAll('link[rel="stylesheet"][media="print"]')]
+                .find((candidate) => candidate.href === new URL(href, document.baseURI).href);
+              if (!link) return;
+              const apply = () => { link.media = "all"; };
+              const loaded = performance.getEntriesByName(link.href).some((entry) => entry.responseEnd > 0);
+              if (loaded) apply();
+              else {
+                link.addEventListener("load", apply, { once: true });
+                link.addEventListener("error", apply, { once: true });
+              }
+            })();`,
+          }}
         />
       </head>
       <body>
